@@ -1,13 +1,14 @@
 import pygame
 from settings import *
 
+
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos,groups,obstacle_sprite):
+    def __init__(self, pos, groups, obstacle_sprite):
         super().__init__(groups)
         self.image = pygame.image.load('graphic/player.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         # ZMENA VELIKOSTI HITBOXU
-        self.hitbox = self.rect.inflate(0,-11)
+        self.hitbox = self.rect.inflate(0, -11)
 
         self.direction = pygame.math.Vector2()
         self.speed = 2
@@ -80,8 +81,8 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 0
 
         # interaction
-        if keys[pygame.K_e]:
-            print('inter')
+        # if keys[pygame.K_e]:
+        #     print('inter')
 
     def move(self, speed):
         if self.direction.magnitude() != 0:
@@ -103,7 +104,7 @@ class Player(pygame.sprite.Sprite):
         elif self.direction.y < 0:
             self.last_direction = 'up'
 
-    def collision (self,direction):
+    def collision (self, direction):
         if direction == 'horizontal':
             for sprite in self.obstacle_sprite:
                 if sprite.hitbox.colliderect(self.hitbox):
