@@ -1,10 +1,19 @@
 import os
+from enum import Enum
 
 # global variables
-WIDTH = 600
-HEIGHT = 280
+WIDTH = 1920
+HEIGHT = 1080
 FPS = 60
 TILESIZE = 16
+
+
+# states in game
+class GameState(Enum):
+    MENU = 0
+    OVER_WORLD = 1
+    MINIGAME = 2
+
 
 # ui
 BAR_HEIGHT = 20
