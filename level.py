@@ -26,6 +26,7 @@ class Level:
         self.creat_map()
 
     #   user interface
+        pygame.mouse.set_visible(False)
         self.ui = UI()
         self.menu = Menu(self.player)
 
@@ -89,7 +90,9 @@ class Level:
             self.menu.display()
         else:
             self.visible_sprites.update()
-            self.ui.display(self.player)
+            self.ui.display(self.player, self.visible_sprites.offset.y)
+
+
 class YSortCameraGroup (pygame.sprite.Group):
     def __init__(self):
 
@@ -103,6 +106,7 @@ class YSortCameraGroup (pygame.sprite.Group):
     #     vytvareni podlahy
         self.floor_surf = pygame.image.load('graphic/background.png').convert()
         self.floor_rect = self.floor_surf.get_rect(topleft=(0, 0))
+
     def custum_draw(self,player):
 
         # ziskani offsetu
@@ -111,6 +115,16 @@ class YSortCameraGroup (pygame.sprite.Group):
 
 
         # vykreslovani podlahy
+        if self.offset.x < 0:
+            self.offset.x = 0
+        if self.offset.x > 160:
+            self.offset.x = 160
+
+        if self.offset.y < 0:
+            self.offset.y = 0
+        if self.offset.y > 80:
+            self.offset.y = 80
+
         floor_offset_pos = self.floor_rect.topleft - self.offset
         self.display_surface.blit(self.floor_surf, floor_offset_pos)
 

@@ -26,17 +26,16 @@ class UI:
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, current_rect, 3)
 
     def show_exp(self,exp):
-        text_surf = self.font.render(str(int(exp)),False,TEXT_COLOR)
+        text_surf = self.font.render(str(int(exp)), False, TEXT_COLOR)
         x = self.display_surface.get_size()[0] - 20
         y = 0 + 20
-        text_rect = text_surf.get_rect(topright = (x, y))
+        text_rect = text_surf.get_rect(topright=(x, y))
 
         pygame.draw.rect(self.display_surface,UI_BG_COLOR, text_rect.inflate(5,5))
         self.display_surface.blit(text_surf, text_rect)
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, text_rect.inflate(5, 5),3)
 
-    def display(self, player):
+    def display(self, player, displayed):
         self.show_bar(player.health, player.stats['health'], self.health_bar_rect, HEALTH_COLOR)
 
-        self.show_exp(player.exp)
-        # pygame.draw.rect(self.display_surface, 'red', self.health_bar_rect)
+        self.show_exp(displayed)
