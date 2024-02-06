@@ -23,7 +23,7 @@ class Game:
                     if event.key == pygame.K_SPACE:
                         self.level.toggle_menu()
 
-            self.screen.fill((0, 0, 0))
+            # if not self.level.game_paused:
             self.level.run()
             pygame.display.update()
             self.clock.tick(FPS)

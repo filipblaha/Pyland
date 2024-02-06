@@ -4,7 +4,7 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, obstacle_sprite):
         super().__init__(groups)
-        self.image = pygame.image.load('graphic/player.png').convert_alpha()
+        self.image = pygame.image.load('char/Spirit/Look_down.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         # changing size of hitbox
         self.hitbox = self.rect.inflate(0, -11)
