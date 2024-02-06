@@ -7,7 +7,7 @@ class Menu:
 
         # General setup
         self.display_surface = pygame.display.get_surface()
-        self.display_surface = self.display_surface.convert_alpha()  # Přidáno pro podporu alfa kanálu
+        self.display_surface = self.display_surface.convert_alpha()  # added to support alpha channel
         self.player = player
 
     def display(self):
