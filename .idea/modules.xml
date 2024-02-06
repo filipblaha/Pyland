@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Pyland.iml" filepath="$PROJECT_DIR$/.idea/Pyland.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Pythland.iml" filepath="$PROJECT_DIR$/.idea/Pythland.iml" />
     </modules>
   </component>
 </project>
