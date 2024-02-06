@@ -11,17 +11,6 @@ from menu import Menu
 
 import pygame
 
-# Nastavení rozlišení hry
-NEW_WIDTH = WIDTH
-NEW_HEIGHT = HEIGHT
-
-# Inicializace Pygame
-pygame.init()
-
-# Nastavení velikosti obrazovky
-screen = pygame.display.set_mode((NEW_WIDTH, NEW_HEIGHT))
-pygame.display.set_caption("Your Game Title")
-
 class Level:
     def __init__(self):
 
