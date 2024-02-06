@@ -6,7 +6,8 @@ from level import Level
 class Game:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN, pygame.SCALED)
+        # self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption('Pyland')
         self.clock = pygame.time.Clock()
 

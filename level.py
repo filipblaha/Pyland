@@ -6,24 +6,22 @@ from random import choice
 from ui import UI
 from menu import Menu
 
-import pygame
-
 
 class Level:
     def __init__(self):
 
-        #get the display surface
+        # get the display surface
         self.display_surface = pygame.display.get_surface()
         self.game_paused = False
 
-        #sprite group setup
+        # sprite group setup
         self.visible_sprites = YSortCameraGroup()
         self.obstacle_sprite = pygame.sprite.Group()
 
-        #sprite setup
+        # sprite setup
         self.create_map()
 
-    #   user interface
+        # user interface
         self.player = Player((195, 170), [self.visible_sprites], self.obstacle_sprite)
         pygame.mouse.set_visible(False)
         self.ui = UI()
@@ -72,6 +70,11 @@ class Level:
                                     surf = pygame.image.load(image_path).convert_alpha()
                                     Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf)
 
+                            if int(col) == 10000:
+                                    image_name = 'Wizard.png'
+                                    image_path = os.path.join('map', 'Object', image_name)
+                                    surf = pygame.image.load(image_path).convert_alpha()
+                                    Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf)
 
     def toggle_menu(self):
         self.game_paused = not self.game_paused

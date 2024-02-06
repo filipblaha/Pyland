@@ -15,7 +15,7 @@ class UI:
         # draw bg
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
 
-    # converting stat ti pixel
+        # converting stat ti pixel
         ratio = current / max_amount
         current_width = bg_rect.width * ratio
         current_rect = bg_rect.copy()
