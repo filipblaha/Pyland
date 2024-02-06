@@ -1,7 +1,7 @@
 import os
 
-WIDTH   = 1920
-HEIGHT  = 1080
+WIDTH   = 640
+HEIGHT  = 360
 FPS     = 60
 TILESIZE= 16
 

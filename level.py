@@ -102,7 +102,7 @@ class YSortCameraGroup (pygame.sprite.Group):
 
     #     vytvareni podlahy
         self.floor_surf = pygame.image.load('graphic/background.png').convert()
-        self.floor_rect = self.floor_surf.get_rect(topleft = (0,0))
+        self.floor_rect = self.floor_surf.get_rect(topleft=(0, 0))
     def custum_draw(self,player):
 
         # ziskani offsetu
@@ -112,8 +112,8 @@ class YSortCameraGroup (pygame.sprite.Group):
 
         # vykreslovani podlahy
         floor_offset_pos = self.floor_rect.topleft - self.offset
-        self.display_surface.blit(self.floor_surf,floor_offset_pos)
+        self.display_surface.blit(self.floor_surf, floor_offset_pos)
 
         for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset
-            self.display_surface.blit(sprite.image,offset_pos)
+            self.display_surface.blit(sprite.image, offset_pos)
