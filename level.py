@@ -8,6 +8,7 @@ from menu import Menu
 
 import pygame
 
+
 class Level:
     def __init__(self):
 
@@ -20,17 +21,15 @@ class Level:
         self.obstacle_sprite = pygame.sprite.Group()
 
         #sprite setup
-        self.creat_map()
+        self.create_map()
 
     #   user interface
+        self.player = Player((195, 170), [self.visible_sprites], self.obstacle_sprite)
         pygame.mouse.set_visible(False)
         self.ui = UI()
         self.menu = Menu(self.player)
 
-        self.zoom_level = 1.0  # Úroveň přiblížení
-
-
-    def creat_map(self):
+    def create_map(self):
         layout = {
                 'boundary': import_csv_layout('map/zelda_FloorBlocks.csv'),
                 'grass': import_csv_layout('map/zelda_Grass.csv'),
@@ -41,18 +40,18 @@ class Level:
                 'object': import_folder('map/Object')
         }
 
-        for style,layout in layout.items():
+        for style, layout in layout.items():
             for row_index, row in enumerate(layout):
                 for col_index, col in enumerate(row):
                     if col != '-1':
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
                         if style == 'boundary':
-                            Tile((x, y),[self.obstacle_sprite],'invinsible')
+                            Tile((x, y), [self.obstacle_sprite],'invinsible')
 
                         if style == 'grass':
                             random_grass_image = choice(graphics['grass'])
-                            Tile((x, y),[self.visible_sprites,self.obstacle_sprite],'grass',random_grass_image)
+                            Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'grass', random_grass_image)
 
                         if style == 'object':
                             if int(col) == 222:
@@ -74,13 +73,11 @@ class Level:
                                     Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf)
 
 
-        self.player = Player((195, 170), [self.visible_sprites], self.obstacle_sprite)
-
     def toggle_menu(self):
         self.game_paused = not self.game_paused
 
     def run(self):
-        self.visible_sprites.custum_draw(self.player)
+        self.visible_sprites.draw_floor(self.player)
         # update and draw the game
         # pause
         if self.game_paused:
@@ -93,25 +90,24 @@ class Level:
 class YSortCameraGroup (pygame.sprite.Group):
     def __init__(self):
 
-        # zakladni nastaveni - NASTAVENI KAMERY
+        # camera setup
         super().__init__()
         self.display_surface = pygame.display.get_surface()
         self.half_width = self.display_surface.get_size()[0] // 2
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
 
-    #     vytvareni podlahy
+        # making floor
         self.floor_surf = pygame.image.load('graphic/background.png').convert()
         self.floor_rect = self.floor_surf.get_rect(topleft=(0, 0))
 
-    def custum_draw(self,player):
+    def draw_floor(self, player):
 
-        # ziskani offsetu
+        # getting offset
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
 
-
-        # vykreslovani podlahy
+        # conditions for camera movement
         if self.offset.x < 0:
             self.offset.x = 0
         if self.offset.x > 160:
@@ -122,6 +118,7 @@ class YSortCameraGroup (pygame.sprite.Group):
         if self.offset.y > 80:
             self.offset.y = 80
 
+        # drawing floor
         floor_offset_pos = self.floor_rect.topleft - self.offset
         self.display_surface.blit(self.floor_surf, floor_offset_pos)
 

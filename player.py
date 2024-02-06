@@ -103,7 +103,7 @@ class Player(pygame.sprite.Sprite):
         elif self.direction.y < 0:
             self.last_direction = 'up'
 
-    def collision (self, direction):
+    def collision(self, direction):
         # checking horizontal collisions
         if direction == 'horizontal':
             for sprite in self.obstacle_sprite:
