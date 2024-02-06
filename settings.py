@@ -1,21 +1,20 @@
 import os
 
-WIDTH   = 600
-HEIGHT  = 280
-FPS     = 60
-TILESIZE= 16
-
+# global variables
+WIDTH = 600
+HEIGHT = 280
+FPS = 60
+TILESIZE = 16
 
 # ui
 BAR_HEIGHT = 20
 HEALTH_BAR_WIDTH = 200
 
-
-# Adresář, ve kterém se nachází váš skript
+# path to script
 base_path = os.path.dirname(os.path.abspath(__file__))
-# Název souboru s fontem
+# name of font
 font_filename = 'Cabal-w5j3.ttf'
-# Celá cesta k souboru
+# full path to file
 UI_FONT = os.path.join(base_path, 'graphic', 'font', font_filename)
 
 UI_FONT_SIZE = 18

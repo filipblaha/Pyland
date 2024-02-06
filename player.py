@@ -1,5 +1,4 @@
 import pygame
-from settings import *
 
 
 class Player(pygame.sprite.Sprite):
@@ -7,7 +6,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load('graphic/player.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        # ZMENA VELIKOSTI HITBOXU
+        # changing size of hitbox
         self.hitbox = self.rect.inflate(0, -11)
 
         self.direction = pygame.math.Vector2()
@@ -15,7 +14,7 @@ class Player(pygame.sprite.Sprite):
 
         self.obstacle_sprite = obstacle_sprite
 
-        # ANIMACE
+        # animations
         self.animation_speed = 0.08
         self.animation_frames_up = [
             pygame.image.load('char/Spirit/Walk_up_1.png').convert_alpha(),
@@ -59,7 +58,7 @@ class Player(pygame.sprite.Sprite):
         ]
 
         self.last_direction = None
-        # Aktuální index snímku animace
+        # actual index of a frame
         self.frame_index = 0
 
     # movement
@@ -86,7 +85,7 @@ class Player(pygame.sprite.Sprite):
 
     def move(self, speed):
         if self.direction.magnitude() != 0:
-            self.direction = self.direction.normalize()     # NASTAVENÍ STEJNÉ RYCHLOSTI DO VŠECH SMĚRŮ
+            self.direction = self.direction.normalize()     # changing velocity to normal in every direction
 
         self.hitbox.x += self.direction.x * speed
         self.collision('horizontal')
@@ -94,7 +93,7 @@ class Player(pygame.sprite.Sprite):
         self.collision('vertical')
         self.rect.center = self.hitbox.center
 
-    #     ANIMACE
+        # animations
         if self.direction.x > 0:
             self.last_direction = 'right'
         elif self.direction.x < 0:
@@ -105,38 +104,40 @@ class Player(pygame.sprite.Sprite):
             self.last_direction = 'up'
 
     def collision (self, direction):
+        # checking horizontal collisions
         if direction == 'horizontal':
             for sprite in self.obstacle_sprite:
                 if sprite.hitbox.colliderect(self.hitbox):
-                    if self.direction.x > 0: #pohyb vpravo
+                    if self.direction.x > 0:
                         self.hitbox.right = sprite.hitbox.left
-                    if self.direction.x < 0:  # pohyb vlevo
+                    if self.direction.x < 0:
                         self.hitbox.left = sprite.hitbox.right
 
+        # checking vertical collisions
         if direction == 'vertical':
             for sprite in self.obstacle_sprite:
                 if sprite.hitbox.colliderect(self.hitbox):
-                    if self.direction.y > 0:  # pohyb dolu
+                    if self.direction.y > 0:
                         self.hitbox.bottom = sprite.hitbox.top
-                    if self.direction.y < 0:  # pohyb nahoru
+                    if self.direction.y < 0:
                         self.hitbox.top = sprite.hitbox.bottom
 
     def animate(self):
-        # Podmínky pro určení směru pohybu
-        if self.direction.y < 0:  # pohyb nahoru
+        # conditions of deciding the direction of moving
+        if self.direction.y < 0:
             animation = self.animation_frames_up
             self.last_direction = 'up'
-        elif self.direction.y > 0:  # pohyb dolů
+        elif self.direction.y > 0:
             animation = self.animation_frames_down
             self.last_direction = 'down'
-        elif self.direction.x < 0:  # pohyb vlevo
+        elif self.direction.x < 0:
             animation = self.animation_frames_left
             self.last_direction = 'left'
-        elif self.direction.x > 0:  # pohyb vpravo
+        elif self.direction.x > 0:
             animation = self.animation_frames_right
             self.last_direction = 'right'
         else:
-            # Výchozí animace pro stání (podle posledního směru)
+            # animations for standing still
             if self.last_direction == 'left':
                 animation = self.idle_frames_left
             elif self.last_direction == 'right':
@@ -146,19 +147,20 @@ class Player(pygame.sprite.Sprite):
             else:
                 animation = self.idle_frames_up
 
-        # Aktualizace indexu snímku
+        # updating the animation index
         self.frame_index += self.animation_speed
         if self.frame_index >= len(animation):
             self.frame_index = 0
 
-        # Nastavení obrázku
+        # settings of the image
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.hitbox.center)
 
-        # stats
+        # stats ##################ZMEN NA UKOL
         self.stats = {'health': 100}
-        self.health = self.stats['health'] * 0.5 # UPRAVA ZIVOTU
+        self.health = self.stats['health'] * 0.5
         self.exp = 1
+
     def update(self):
         self.input()
         self.move(self.speed)
