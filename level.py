@@ -22,7 +22,7 @@ class Level:
         self.create_map()
 
         # user interface
-        self.player = Player((195, 170), [self.visible_sprites], self.obstacle_sprite)
+        self.player = Player((400, 350), [self.visible_sprites], self.obstacle_sprite)
         pygame.mouse.set_visible(False)
         self.ui = UI()
         self.menu = Menu(self.player)
@@ -87,7 +87,7 @@ class Level:
             self.menu.display()
         else:
             self.visible_sprites.update()
-            self.ui.display(self.player, self.visible_sprites.offset.y)
+            self.ui.display(self.player, self.visible_sprites.offset.x)
 
 
 class YSortCameraGroup (pygame.sprite.Group):
@@ -113,13 +113,13 @@ class YSortCameraGroup (pygame.sprite.Group):
         # conditions for camera movement
         if self.offset.x < 0:
             self.offset.x = 0
-        if self.offset.x > 160:
-            self.offset.x = 160
+        if self.offset.x > 64:
+            self.offset.x = 64
 
         if self.offset.y < 0:
             self.offset.y = 0
-        if self.offset.y > 80:
-            self.offset.y = 80
+        if self.offset.y > 94:
+            self.offset.y = 94
 
         # drawing floor
         floor_offset_pos = self.floor_rect.topleft - self.offset
