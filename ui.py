@@ -7,6 +7,7 @@ class UI:
         # general
         self.display_surface = pygame.display.get_surface()
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
+        self.max_chars_in_row = 20
 
         # bar setup
         self.health_bar_rect = pygame.Rect(10, 10, HEALTH_BAR_WIDTH, BAR_HEIGHT)
@@ -40,6 +41,25 @@ class UI:
 
         self.show_exp(displayed)
 
-    def show_dialog_window(self, x, y, width, height):
-        dialog_rect = pygame.Rect(x, y, width, height)
-        pygame.draw.rect(self.display_surface, UI_BG_COLOR, dialog_rect)
+    def show_dialog_window(self, message, x, y, width, height):
+
+        # text_surf = self.font.render(str(message), False, 'black')
+        # text_rect = text_surf.get_rect(center=(x, y))
+        # dialog_window_rect = text_rect.inflate((50, 50))
+        #
+        # dialog_window_surf = pygame.image.load('graphic/dialog_window.png').convert()
+        # dialog_window_surf = pygame.transform.scale(dialog_window_surf, dialog_window_rect.size)
+        # dialog_window_surf.set_alpha(200)  # alpha level
+        # self.display_surface.blit(dialog_window_surf, text_rect)
+        # self.display_surface.blit(text_surf, text_rect)
+
+        rect = pygame.Rect(0, 0, width, height)
+        rect.center = (x, y)
+        dialog_window_surf = pygame.image.load('graphic/dialog_window.png').convert()
+        dialog_window_surf = pygame.transform.scale(dialog_window_surf, rect.size)
+        dialog_window_surf.set_alpha(200)  # alpha level
+        self.display_surface.blit(dialog_window_surf, rect)
+
+        text_surf = self.font.render(str(message), False, 'black')
+        text_rect = text_surf.get_rect(center=(x, y))
+        self.display_surface.blit(text_surf, text_rect)

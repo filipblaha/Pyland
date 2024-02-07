@@ -5,7 +5,7 @@ from enum import Enum
 WIDTH = 1920
 HEIGHT = 1080
 FPS = 60
-TILESIZE = 32
+TILE_SIZE = 32
 
 
 # states in game

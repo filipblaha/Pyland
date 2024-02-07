@@ -20,20 +20,20 @@ class Minigame:
 
         self.visible_sprites = YSortCameraGroup()
 
-        self.border = Object('graphic/minigame/forest.png', 1180, 980, 700, 50)
-        self.enemy = Object('graphic/minigame/goblin.png', 250, 300, 1200, 600)
-        self.code = Object('graphic/minigame/code.png', 600, 750, 50, 50)
-        self.button = Object('graphic/minigame/check_button.png', 400, 150, 150, 83)
+        self.border_surf = Object('graphic/minigame/forest.png', 1180, 980, 700, 50)
+        self.enemy_surf = Object('graphic/minigame/goblin.png', 250, 300, 1200, 600)
+        self.code_surf = Object('graphic/minigame/code.png', 600, 750, 50, 50)
+        self.button_surf = Object('graphic/minigame/check_button.png', 400, 150, 150, 83)
 
     def run(self):
         self.visible_sprites.draw_floor()
         self.visible_sprites.update()
 
         # self.display_surface.fill((100, 100, 100))
-        # self.display_surface.blit(self.code.sprite, self.code.rect)
-        # self.display_surface.blit(self.border.sprite, self.border.rect)
-        # self.display_surface.blit(self.enemy.sprite, self.enemy.rect)
-        # self.display_surface.blit(self.button.sprite, self.button.rect)
+        # self.display_surface.blit(self.code_surf.sprite, self.code.rect)
+        # self.display_surface.blit(self.border_surf.sprite, self.border.rect)
+        # self.display_surface.blit(self.enemy_surf.sprite, self.enemy.rect)
+        # self.display_surface.blit(self.button_surf.sprite, self.button.rect)
 
 
 class YSortCameraGroup (pygame.sprite.Group):

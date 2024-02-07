@@ -111,8 +111,6 @@ class Player(pygame.sprite.Sprite):
             for sprite in self.obstacle_sprite:
                 if sprite.zone.colliderect(self.hitbox):
                     self.can_interact = True
-                else:
-                    self.can_interact = False
                 if sprite.hitbox.colliderect(self.hitbox):
                     if self.direction.x > 0:
                         self.hitbox.right = sprite.hitbox.left

@@ -22,7 +22,7 @@ class Level:
         self.create_map()
 
         # user interface
-        self.player = Player((400, 350), [self.visible_sprites], self.obstacle_sprite)
+        self.player = Player((1400, 600), [self.visible_sprites], self.obstacle_sprite) # 400 350
         pygame.mouse.set_visible(False)
         self.ui = UI()
         self.menu = Menu(self.player)
@@ -42,8 +42,8 @@ class Level:
             for row_index, row in enumerate(layout):
                 for col_index, col in enumerate(row):
                     if col != '-1':
-                        x = col_index * TILESIZE
-                        y = row_index * TILESIZE
+                        x = col_index * TILE_SIZE
+                        y = row_index * TILE_SIZE
                         if style == 'boundary':
                             Tile((x, y), [self.obstacle_sprite],'invinsible')
 
@@ -74,12 +74,17 @@ class Level:
                                     image_name = 'Wizard.png'
                                     image_path = os.path.join('map', 'Object', image_name)
                                     surf = pygame.image.load(image_path).convert_alpha()
+
+                                    image_name2 = 'Wizard_action.png'
+                                    image_path2 = os.path.join('map', 'Object', image_name2)
+                                    surf2 = pygame.image.load(image_path2).convert_alpha()
                                     Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf, 'wizard')
 
     def toggle_menu(self):
         self.game_paused = not self.game_paused
 
     def run(self):
+        self.player.can_interact = False
         self.visible_sprites.draw_floor(self.player)
         # update and draw the game
         # pause
@@ -89,7 +94,9 @@ class Level:
             self.visible_sprites.update()
             self.ui.display(self.player, self.visible_sprites.offset.x)
         if self.player.can_interact:
-            self.ui.show_dialog_window(1100, 450, 200, 100)
+            self.ui.show_dialog_window('Press E to start.', 1450 - self.visible_sprites.offset.x,
+                                       550 - self.visible_sprites.offset.y,
+                                       200, 100)
 
 
 class YSortCameraGroup (pygame.sprite.Group):
