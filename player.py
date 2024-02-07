@@ -61,6 +61,8 @@ class Player(pygame.sprite.Sprite):
         # actual index of a frame
         self.frame_index = 0
 
+        self.can_interact = False
+
     # movement
     def input(self):
         keys = pygame.key.get_pressed()
@@ -107,6 +109,10 @@ class Player(pygame.sprite.Sprite):
         # checking horizontal collisions
         if direction == 'horizontal':
             for sprite in self.obstacle_sprite:
+                if sprite.zone.colliderect(self.hitbox):
+                    self.can_interact = True
+                else:
+                    self.can_interact = False
                 if sprite.hitbox.colliderect(self.hitbox):
                     if self.direction.x > 0:
                         self.hitbox.right = sprite.hitbox.left

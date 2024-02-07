@@ -74,7 +74,7 @@ class Level:
                                     image_name = 'Wizard.png'
                                     image_path = os.path.join('map', 'Object', image_name)
                                     surf = pygame.image.load(image_path).convert_alpha()
-                                    Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf)
+                                    Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf, 'wizard')
 
     def toggle_menu(self):
         self.game_paused = not self.game_paused
@@ -88,6 +88,8 @@ class Level:
         else:
             self.visible_sprites.update()
             self.ui.display(self.player, self.visible_sprites.offset.x)
+        if self.player.can_interact:
+            self.ui.show_dialog_window(1100, 450, 200, 100)
 
 
 class YSortCameraGroup (pygame.sprite.Group):
