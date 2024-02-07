@@ -22,20 +22,20 @@ class Level:
         self.create_map()
 
         # user interface
-        self.player = Player((1400, 600), [self.visible_sprites], self.obstacle_sprite) # 400 350
+        self.player = Player((1400, 600), [self.visible_sprites], self.obstacle_sprite)  # 400 350
         pygame.mouse.set_visible(False)
         self.ui = UI()
         self.menu = Menu(self.player)
 
     def create_map(self):
         layout = {
-                'boundary': import_csv_layout('map/zelda_FloorBlocks.csv'),
-                'grass': import_csv_layout('map/zelda_Grass.csv'),
-                'object': import_csv_layout('map/zelda_Objects.csv'),
+            'boundary': import_csv_layout('map/zelda_FloorBlocks.csv'),
+            'grass': import_csv_layout('map/zelda_Grass.csv'),
+            'object': import_csv_layout('map/zelda_Objects.csv'),
         }
         graphics = {
-                'grass': import_folder('map/Grass'),
-                'object': import_folder('map/Object')
+            'grass': import_folder('map/Grass'),
+            'object': import_folder('map/Object')
         }
 
         for style, layout in layout.items():
@@ -45,7 +45,7 @@ class Level:
                         x = col_index * TILE_SIZE
                         y = row_index * TILE_SIZE
                         if style == 'boundary':
-                            Tile((x, y), [self.obstacle_sprite],'invinsible')
+                            Tile((x, y), [self.obstacle_sprite], 'invinsible')
 
                         if style == 'grass':
                             random_grass_image = choice(graphics['grass'])
@@ -59,34 +59,31 @@ class Level:
                                 Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf)
 
                             if int(col) == 26:
-                                    image_name = 'JehlStrom.png'
-                                    image_path = os.path.join('map', 'Object', image_name)
-                                    surf = pygame.image.load(image_path).convert_alpha()
-                                    Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf)
+                                image_name = 'JehlStrom.png'
+                                image_path = os.path.join('map', 'Object', image_name)
+                                surf = pygame.image.load(image_path).convert_alpha()
+                                Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf)
 
                             if int(col) == -2147482840:
-                                    image_name = 'Ztrazce_cely.png'
-                                    image_path = os.path.join('map', 'Object', image_name)
-                                    surf = pygame.image.load(image_path).convert_alpha()
-                                    Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf)
+                                image_name = 'Ztrazce_cely.png'
+                                image_path = os.path.join('map', 'Object', image_name)
+                                surf = pygame.image.load(image_path).convert_alpha()
+                                Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf)
 
                             if int(col) == 10000:
-                                    image_name = 'Wizard.png'
-                                    image_path = os.path.join('map', 'Object', image_name)
-                                    surf = pygame.image.load(image_path).convert_alpha()
+                                image_name = 'Wizard.png'
+                                image_path = os.path.join('map', 'Object', image_name)
+                                surf = pygame.image.load(image_path).convert_alpha()
 
-                                    image_name2 = 'Wizard_action.png'
-                                    image_path2 = os.path.join('map', 'Object', image_name2)
-                                    surf2 = pygame.image.load(image_path2).convert_alpha()
-                                    Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf, 'wizard')
+                                Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf, 'wizard')
 
     def toggle_menu(self):
         self.game_paused = not self.game_paused
 
     def run(self):
-        self.player.can_interact = False
         self.visible_sprites.draw_floor(self.player)
         # update and draw the game
+        self.player.can_interact = False
         # pause
         if self.game_paused:
             self.menu.display()
@@ -99,7 +96,7 @@ class Level:
                                        200, 100)
 
 
-class YSortCameraGroup (pygame.sprite.Group):
+class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):
 
         # camera setup
@@ -135,5 +132,12 @@ class YSortCameraGroup (pygame.sprite.Group):
         self.display_surface.blit(self.floor_surf, floor_offset_pos)
 
         for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
-            offset_pos = sprite.rect.topleft - self.offset
-            self.display_surface.blit(sprite.image, offset_pos)
+            if sprite.rect == (1472, 608, 128, 64):
+                offset_pos = sprite.rect.topleft - self.offset
+                if player.can_interact:
+                    self.display_surface.blit(sprite.image, offset_pos, (64, 0, 128, 64))
+                else:
+                    self.display_surface.blit(sprite.image, offset_pos, (0, 0, 64, 64))
+            else:
+                offset_pos = sprite.rect.topleft - self.offset
+                self.display_surface.blit(sprite.image, offset_pos)
