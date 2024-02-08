@@ -15,7 +15,7 @@ class Tile(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(topleft=(pos[0], pos[1] - TILE_SIZE))
             self.hitbox = self.rect.inflate(0, -3)
             if not name == 0:
-                self.zone = self.rect.inflate(350, 350)
+                self.zone = self.rect.inflate(100, 100)
         else:
             self.rect = self.image.get_rect(topleft=pos)
         # changing the size of tiles

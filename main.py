@@ -1,9 +1,12 @@
 import pygame
 import sys
+
+import level
 from settings import *
 from level import Level
 from text import Text
 from minigame import Minigame
+from player import Player
 
 
 class Game:
@@ -14,7 +17,8 @@ class Game:
         pygame.display.set_caption('Pyland')
         self.clock = pygame.time.Clock()
 
-        self.level = Level()
+        self.can_interact = False
+        self.level = Level(self.can_interact)
         self.minigame = Minigame()
         self.text = Text("Arial", 36)
         self.game_state = GameState.OVER_WORLD
@@ -45,6 +49,9 @@ class Game:
                     return "SPACE"
                 # pressed other keys
                 else:
+                    # interaction
+                    if event.key == pygame.K_e and self.can_interact and self.game_state == GameState.OVER_WORLD:
+                        self.game_state = GameState.MINIGAME
                     if not self.text.user_text or event.key != pygame.K_KP_ENTER:
                         self.text.user_text[-1] += event.unicode
         return pygame.key.get_pressed()
@@ -53,6 +60,7 @@ class Game:
 
         # OVER_WORLD
         if self.game_state == GameState.OVER_WORLD:
+            self.can_interact = self.level.interact()
             if not action:
                 pygame.quit()
                 sys.exit()
@@ -61,7 +69,7 @@ class Game:
                 self.level.toggle_menu()
 
         # MINIGAME
-        if self.game_state == GameState.OVER_WORLD:
+        if self.game_state == GameState.MINIGAME:
             if not action:
                 pygame.quit()
                 sys.exit()
@@ -80,21 +88,6 @@ class Game:
                     pygame.time.set_timer(pygame.USEREVENT, 500)
             elif action == "ANIMATION":
                 game.minigame.player.change_animation()
-
-    # def run(self):
-    #     while True:
-    #         for event in pygame.event.get():
-    #             if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-    #                 pygame.quit()
-    #                 sys.exit()
-    #             if event.type == pygame.KEYDOWN:
-    #                 if event.key == pygame.K_SPACE:
-    #                     self.level.toggle_menu()
-    #
-    #         self.level.run()
-    #         pygame.display.update()
-    #         self.clock.tick(FPS)
-
 
 game = Game()
 

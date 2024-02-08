@@ -2,7 +2,7 @@ import pygame
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, obstacle_sprite):
+    def __init__(self, pos, groups, obstacle_sprite, can_interact):
         super().__init__(groups)
         self.image = pygame.image.load('char/Spirit/Look_down.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
@@ -60,8 +60,7 @@ class Player(pygame.sprite.Sprite):
         self.last_direction = None
         # actual index of a frame
         self.frame_index = 0
-
-        self.can_interact = False
+        self.can_interact = can_interact
 
     # movement
     def input(self):
@@ -80,10 +79,6 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = -1
         else:
             self.direction.x = 0
-
-        # interaction
-        # if keys[pygame.K_e]:
-        #     print('inter')
 
     def move(self, speed):
         if self.direction.magnitude() != 0:

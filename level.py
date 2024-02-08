@@ -8,7 +8,7 @@ from menu import Menu
 
 
 class Level:
-    def __init__(self):
+    def __init__(self, can_interact):
 
         # get the display surface
         self.display_surface = pygame.display.get_surface()
@@ -22,7 +22,8 @@ class Level:
         self.create_map()
 
         # user interface
-        self.player = Player((1400, 600), [self.visible_sprites], self.obstacle_sprite)  # 400 350
+        # self.player = Player((400, 350), [self.visible_sprites], self.obstacle_sprite, can_interact)
+        self.player = Player((1400, 600), [self.visible_sprites], self.obstacle_sprite, can_interact)
         pygame.mouse.set_visible(False)
         self.ui = UI()
         self.menu = Menu(self.player)
@@ -95,6 +96,11 @@ class Level:
                                        550 - self.visible_sprites.offset.y,
                                        200, 100)
 
+    def interact(self):
+        if self.player.can_interact:
+            return True
+        else:
+            return False
 
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):
