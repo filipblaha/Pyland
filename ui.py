@@ -32,7 +32,7 @@ class UI:
         y = 0 + 20
         text_rect = text_surf.get_rect(topright=(x, y))
 
-        pygame.draw.rect(self.display_surface, UI_BG_COLOR, text_rect.inflate(5,5))
+        pygame.draw.rect(self.display_surface, UI_BG_COLOR, text_rect.inflate(5, 5))
         self.display_surface.blit(text_surf, text_rect)
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, text_rect.inflate(5, 5), 3)
 
