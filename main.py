@@ -1,34 +1,31 @@
 import pygame
 import sys
 
-import level
 from settings import *
-from level import Level
 from text import Text
+from level import Level
 from minigame import Minigame
-from player import Player
 
 
 class Game:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN, pygame.SCALED)
-        # self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption('Pyland')
         self.clock = pygame.time.Clock()
-
         self.can_interact = False
-        self.level = Level(self.can_interact)
-        self.minigame = Minigame()
+
         self.text = Text("Arial", 36)
-        self.game_state = GameState.OVER_WORLD
-        # self.game_state = GameState.MINIGAME
+        self.level = Level(self.can_interact)
+        self.minigame = Minigame(self.text, self.screen)
+        # self.game_state = GameState.OVER_WORLD
+        self.game_state = GameState.MINIGAME
 
     def player_input(self):
         for event in pygame.event.get():
             # user pressing ESC or X (CLOSE APP) to quit
             if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                return False
+                return "QUIT"
             # user pressing button to check
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 return "BUTTON_PRESSED"
@@ -49,49 +46,58 @@ class Game:
                     return "SPACE"
                 # pressed other keys
                 else:
-                    # interaction
-                    if event.key == pygame.K_e and self.can_interact and self.game_state == GameState.OVER_WORLD:
-                        self.game_state = GameState.MINIGAME
-                    if not self.text.user_text or event.key != pygame.K_KP_ENTER:
-                        self.text.user_text[-1] += event.unicode
-        return pygame.key.get_pressed()
+                    return event
+        return "PASS"
 
     def logic(self, action_from_input):
 
         # OVER_WORLD
         if self.game_state == GameState.OVER_WORLD:
             self.can_interact = self.level.interact()
-            if not action:
+            if not action_from_input:
                 pygame.quit()
                 sys.exit()
             # pressed SPACE
-            elif action == "SPACE":
+            elif action_from_input == "SPACE":
                 self.level.toggle_menu()
+
+                # pressed e for interaction
+            elif self.can_interact and action_from_input.key == pygame.K_e:
+                self.game_state = GameState.MINIGAME
 
         # MINIGAME
         if self.game_state == GameState.MINIGAME:
-            if not action:
+            if action_from_input == "QUIT":
                 pygame.quit()
                 sys.exit()
-            if action == "ENTER":
+            if action_from_input == "ENTER":
                 self.text.user_text.append("")
             # pressed BACKSPACE
-            elif action == "BACKSPACE":
-                if self.text.user_text:
+            elif action_from_input == "BACKSPACE":
+                if self.text.user_text and len(self.text.user_text[0]) > 0:
+                    if self.text.user_text[-1] == '':
+                        self.text.user_text.pop()
                     self.text.user_text[-1] = self.text.user_text[-1][:-1]
             # pressed SPACE
-            elif action == "SPACE":
+            elif action_from_input == "SPACE":
                 self.level.toggle_menu()
-            elif action == "BUTTON_PRESSED":
+            elif action_from_input == "BUTTON_PRESSED":
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 if game.minigame.button.rect.collidepoint(mouse_x, mouse_y):
                     pygame.time.set_timer(pygame.USEREVENT, 500)
-            elif action == "ANIMATION":
+            elif action_from_input == "ANIMATION":
                 game.minigame.player.change_animation()
+            elif action_from_input == "PASS":
+                pass
+            else:
+                self.text.user_text[-1] += action_from_input.unicode
+
 
 game = Game()
 
+step = 0
 while True:
+    step = step + 1
     action = game.player_input()
     game.logic(action)
 

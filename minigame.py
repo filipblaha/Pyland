@@ -1,6 +1,5 @@
 import pygame
 
-
 class Object:
     def __init__(self, png, width, height, x, y):
         self.sprite = pygame.image.load(png).convert_alpha()
@@ -13,7 +12,10 @@ class Object:
 
 
 class Minigame:
-    def __init__(self):
+    def __init__(self, typing, screen):
+
+        self.typing = typing
+        self.screen = screen
 
         self.display_surface = pygame.display.get_surface()
         self.display_surface = self.display_surface.convert_alpha()  # added to support alpha channel
@@ -34,6 +36,7 @@ class Minigame:
         # self.display_surface.blit(self.border_surf.sprite, self.border.rect)
         # self.display_surface.blit(self.enemy_surf.sprite, self.enemy.rect)
         # self.display_surface.blit(self.button_surf.sprite, self.button.rect)
+        self.typing.render_user_text(self.screen, 65, 55)
 
 
 class YSortCameraGroup (pygame.sprite.Group):

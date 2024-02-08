@@ -7,7 +7,6 @@ HEIGHT = 1080
 FPS = 60
 TILE_SIZE = 32
 
-
 # states in game
 class GameState(Enum):
     MENU = 0
