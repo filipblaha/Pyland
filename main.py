@@ -15,11 +15,11 @@ class Game:
         self.clock = pygame.time.Clock()
         self.can_interact = False
 
-        self.text = Text("Arial", 36)
+        self.text = Text("Arial", 27)
         self.level = Level(self.can_interact)
         self.minigame = Minigame(self.text, self.screen)
-        # self.game_state = GameState.OVER_WORLD
-        self.game_state = GameState.MINIGAME
+        self.game_state = GameState.OVER_WORLD
+        # self.game_state = GameState.MINIGAME
 
     def player_input(self):
         for event in pygame.event.get():
@@ -54,16 +54,18 @@ class Game:
         # OVER_WORLD
         if self.game_state == GameState.OVER_WORLD:
             self.can_interact = self.level.interact()
-            if not action_from_input:
+            if action_from_input == "QUIT":
                 pygame.quit()
                 sys.exit()
             # pressed SPACE
             elif action_from_input == "SPACE":
                 self.level.toggle_menu()
-
+            elif action_from_input == "PASS":
+                pass
                 # pressed e for interaction
             elif self.can_interact and action_from_input.key == pygame.K_e:
                 self.game_state = GameState.MINIGAME
+                return
 
         # MINIGAME
         if self.game_state == GameState.MINIGAME:

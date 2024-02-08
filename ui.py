@@ -37,21 +37,11 @@ class UI:
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, text_rect.inflate(5, 5), 3)
 
     def display(self, player, displayed):
-        self.show_bar(player.health, player.stats['health'], self.health_bar_rect, HEALTH_COLOR)
-
-        self.show_exp(displayed)
+        # self.show_bar(player.health, player.stats['health'], self.health_bar_rect, HEALTH_COLOR)
+        pass
+        # self.show_exp(displayed)
 
     def show_dialog_window(self, message, x, y, width, height):
-
-        # text_surf = self.font.render(str(message), False, 'black')
-        # text_rect = text_surf.get_rect(center=(x, y))
-        # dialog_window_rect = text_rect.inflate((50, 50))
-        #
-        # dialog_window_surf = pygame.image.load('graphic/dialog_window.png').convert()
-        # dialog_window_surf = pygame.transform.scale(dialog_window_surf, dialog_window_rect.size)
-        # dialog_window_surf.set_alpha(200)  # alpha level
-        # self.display_surface.blit(dialog_window_surf, text_rect)
-        # self.display_surface.blit(text_surf, text_rect)
 
         rect = pygame.Rect(0, 0, width, height)
         rect.center = (x, y)

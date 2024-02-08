@@ -1,6 +1,11 @@
 import ast
 
 
+def check_code(code_lines):
+    errors = find_syntax_errors(code_lines)
+    log_errors(errors)
+
+
 def find_syntax_errors(code_lines):
     code = '\n'.join(code_lines)
     try:
@@ -23,14 +28,12 @@ def log_errors(error):
 
 # Example code lines
 example_code_lines = [
-    "wizard_lives = 10",
+    "wizard_lives = 10s",
     "my_damage = 1",
     "",
-    "for i in range(10):s",
+    "for i in range(10):",
     "   wizard_lives - hurt_wizard",
     ""
 ]
-
-errors = find_syntax_errors(example_code_lines)
-log_errors(errors)
+check_code(example_code_lines)
 
