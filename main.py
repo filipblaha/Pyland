@@ -43,6 +43,10 @@ class Game:
                 # pressed RIGHT KEY
                 elif event.key == pygame.K_RIGHT:
                     return "RIGHT"
+                elif event.key == pygame.K_UP:
+                    return "UP"
+                elif event.key == pygame.K_DOWN:
+                    return "DOWN"
                 # pressed ENTER
                 elif event.key == pygame.K_RETURN:
                     return "ENTER"
@@ -91,29 +95,60 @@ class Game:
             elif action_from_input == "LEFT":
                 if self.text.cursor_index > 0:
                     self.text.cursor_index -= 1
+                elif self.text.cursor_row > 0:
+                    self.text.cursor_row -= 1
+                    self.text.cursor_index = len(self.text.user_text[self.text.cursor_row])
             # pressed RIGHT KEY
             elif action_from_input == "RIGHT":
-                if self.text.cursor_index < len(self.text.user_text):
+                if self.text.cursor_index < len(self.text.user_text[self.text.cursor_row]):
                     self.text.cursor_index += 1
+                elif self.text.cursor_row < len(self.text.user_text) - 1:
+                    self.text.cursor_row += 1
+                    self.text.cursor_index = 0
+            elif action_from_input == "UP":
+                if self.text.cursor_row > 0:
+                    self.text.cursor_row -= 1
+                    self.text.cursor_index = min(self.text.cursor_index, len(self.text.user_text[self.text.cursor_row]))
+            elif action_from_input == "DOWN":
+                if self.text.cursor_row < len(self.text.user_text) - 1:
+                    self.text.cursor_row += 1
+                    self.text.cursor_index = min(self.text.cursor_index, len(self.text.user_text[self.text.cursor_row]))
+
             elif action_from_input == "ENTER":
-                self.text.user_text.append("")
+                self.text.user_text.insert(self.text.cursor_row + 1, '')
                 self.text.cursor_row += 1
+                self.text.cursor_index = 0
             # pressed BACKSPACE
             elif action_from_input == "BACKSPACE":
-                if self.text.cursor_index > 0:
-                    self.text.user_text[0] = (self.text.user_text[0][:self.text.cursor_index - 1]
-                                              + self.text.user_text[0][self.text.cursor_index:])
+                if self.text.cursor_index == 0 and self.text.cursor_row > 0:
+                    self.text.cursor_row -= 1
+                    self.text.cursor_index = len(self.text.user_text[self.text.cursor_row])
+                    self.text.user_text[self.text.cursor_row] += self.text.user_text.pop(self.text.cursor_row + 1)
+
+                elif self.text.cursor_index > 0:
+                    self.text.user_text[self.text.cursor_row] = (self.text.user_text[self.text.cursor_row][:self.text.cursor_index - 1]
+                         + self.text.user_text[self.text.cursor_row][self.text.cursor_index:])
                     self.text.cursor_index -= 1
+
             elif action_from_input == "DELETE":
-                if self.text.cursor_index < len(self.text.user_text[0]):
-                    self.text.user_text[0] = (self.text.user_text[0][:self.text.cursor_index]
-                                              + self.text.user_text[0][self.text.cursor_index + 1:])
-            # pressed SPACE
+                if self.text.cursor_index < len(self.text.user_text[self.text.cursor_row]):
+                    self.text.user_text[self.text.cursor_row] = (self.text.user_text[self.text.cursor_row][:self.text.cursor_index]
+                         + self.text.user_text[self.text.cursor_row][self.text.cursor_index + 1:])
+                elif self.text.cursor_row < len(self.text.user_text) - 1:
+                    self.text.user_text[self.text.cursor_row] = self.text.user_text.pop(self.text.cursor_row + 1)
+                    # pressed SPACE
             elif action_from_input == "SPACE":
-                self.text.user_text[-1] += " "
+                self.text.user_text[self.text.cursor_row] = (self.text.user_text[self.text.cursor_row][
+                                                             :self.text.cursor_index] + ' ' +
+                                                             self.text.user_text[self.text.cursor_row][
+                                                             self.text.cursor_index:])
                 self.text.cursor_index += 1
+                pass
             elif action_from_input == "TAB":
-                self.text.user_text[-1] += "    "
+                self.text.user_text[self.text.cursor_row] = (self.text.user_text[self.text.cursor_row][
+                                                             :self.text.cursor_index] + '    ' +
+                                                             self.text.user_text[self.text.cursor_row][
+                                                             self.text.cursor_index:])
                 self.text.cursor_index += 4
             elif action_from_input == "BUTTON_PRESSED":
                 mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -128,8 +163,8 @@ class Game:
             elif action_from_input == "PASS":
                 pass
             else:
-                self.text.user_text[0] = (self.text.user_text[0][:self.text.cursor_index] + action_from_input.unicode +
-                                          self.text.user_text[0][self.text.cursor_index:])
+                self.text.user_text[self.text.cursor_row] = (self.text.user_text[self.text.cursor_row][:self.text.cursor_index] + action_from_input.unicode +
+                                                             self.text.user_text[self.text.cursor_row][self.text.cursor_index:])
                 self.text.cursor_index += 1
 
 
