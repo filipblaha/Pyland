@@ -50,6 +50,9 @@ class Game:
                 elif event.key == pygame.K_BACKSPACE:
                     if self.text.user_text:
                         return "BACKSPACE"
+                elif event.key == pygame.K_DELETE:
+                    if self.text.user_text:
+                        return "DELETE"
                 # pressed SPACE
                 elif event.key == pygame.K_SPACE:
                     return "SPACE"
@@ -97,17 +100,14 @@ class Game:
                 self.text.cursor_row += 1
             # pressed BACKSPACE
             elif action_from_input == "BACKSPACE":
-                if self.text.user_text and len(self.text.user_text[0]) > 0:
-                    # if self.text.user_text[-1] == '':
-                    #     self.text.user_text.pop()
-                    #     self.text.cursor_row -= 1
-                    # else:
-                    #     self.text.user_text[-1] = self.text.user_text[-1][:-1]
-                    #     self.text.cursor_index -= 1
-                    if self.text.cursor_index > 0:
-                        self.text.user_text[0] = (self.text.user_text[0][:self.text.cursor_index - 1]
-                                                  + self.text.user_text[0][self.text.cursor_index:])
-                        self.text.cursor_index -= 1
+                if self.text.cursor_index > 0:
+                    self.text.user_text[0] = (self.text.user_text[0][:self.text.cursor_index - 1]
+                                              + self.text.user_text[0][self.text.cursor_index:])
+                    self.text.cursor_index -= 1
+            elif action_from_input == "DELETE":
+                if self.text.cursor_index < len(self.text.user_text[0]):
+                    self.text.user_text[0] = (self.text.user_text[0][:self.text.cursor_index]
+                                              + self.text.user_text[0][self.text.cursor_index + 1:])
             # pressed SPACE
             elif action_from_input == "SPACE":
                 self.text.user_text[-1] += " "
@@ -148,4 +148,3 @@ while True:
 
     pygame.display.update()
     game.clock.tick(FPS)
-
