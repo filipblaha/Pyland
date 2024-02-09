@@ -15,9 +15,13 @@ def check_code(code_lines, assignment):
         assignment_result = globals_dict.get(assignment[0])
 
         # Execute written code
-        for line in code_lines:
-            if line.strip():  # Zkontroluje, zda je řádek neprázdný po odstranění bílých znaků
-                exec(line, globals_dict)
+        # for line in code_lines:
+        #     if line.strip():  # Zkontroluje, zda je řádek neprázdný po odstranění bílých znaků
+        #         exec(line, globals_dict)
+
+        written_code_str = "\n".join(code_lines)
+        exec(written_code_str, globals_dict)
+        written_result = globals_dict.get('wizard_health')
 
         written_code_str = "\n".join(code_lines)
         exec(written_code_str, globals_dict)
