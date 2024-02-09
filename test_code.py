@@ -14,21 +14,11 @@ def check_code(code_lines, assignment):
         exec(assignment[1], globals_dict)
         assignment_result = globals_dict.get(assignment[0])
 
-        # Execute written code
-        # for line in code_lines:
-        #     if line.strip():  # Zkontroluje, zda je řádek neprázdný po odstranění bílých znaků
-        #         exec(line, globals_dict)
-
-        written_code_str = "\n".join(code_lines)
-        exec(written_code_str, globals_dict)
-        written_result = globals_dict.get('wizard_health')
-
         written_code_str = "\n".join(code_lines)
         exec(written_code_str, globals_dict)
         written_result = globals_dict.get(assignment[0])
-
         # Compare results
-        if not assignment_result == written_result or code_lines[-1] == ['']:
+        if not assignment_result >= written_result or code_lines[-1] == ['']:
             return ['Code is valid', 'Complete the quest']
         else:
             return None

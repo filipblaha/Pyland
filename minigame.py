@@ -45,6 +45,7 @@ class Minigame:
 
         self.insert_preset_text()
         if self.minigame_num == 0:
+            self.ui.show_dialog_window('Kill the wizard!', 950, 150, 500, 200)
             self.ui.show_error_window()
             if self.log:
                 self.ui.show_error(self.error_message)

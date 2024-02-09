@@ -50,7 +50,8 @@ class UI:
         dialog_window_surf.set_alpha(200)  # alpha level
         self.display_surface.blit(dialog_window_surf, rect)
 
-        text_surf = self.font.render(str(message), False, 'black')
+        font = pygame.font.Font(UI_FONT, 40)
+        text_surf = font.render(str(message), False, 'black')
         text_rect = text_surf.get_rect(center=(x, y))
         self.display_surface.blit(text_surf, text_rect)
 
