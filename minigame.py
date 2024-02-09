@@ -13,16 +13,24 @@ class Object:
 
 
 class Minigame:
-    def __init__(self, text, screen):
+    def __init__(self, screen, text,ui):
 
         self.text = text
+        self.ui = ui
         self.screen = screen
 
         self.display_surface = pygame.display.get_surface()
         self.display_surface = self.display_surface.convert_alpha()  # added to support alpha channel
         self.visible_sprites = MinigameSprites()
 
+        self.current_time = pygame.time.get_ticks()
+        self.minigame_num = 0
+        self.log = True
+        self.error_message = []
+
         pygame.mouse.set_visible(True)
+
+        self.wizard_health = 10
 
     def run(self):
         self.current_time = pygame.time.get_ticks()
@@ -32,6 +40,18 @@ class Minigame:
         if self.current_time % 1000 < 500:
             self.text.blink_cursor()
         self.text.render_user_text()
+
+        if self.minigame_num == 0:
+            self.ui.show_error_window()
+            if self.log:
+                self.ui.show_error(self.error_message)
+
+    def goal(self):
+        if self.minigame_num == 0:
+            if self.wizard_health == 0:
+                return True
+            else:
+                return False
 
 
 class MinigameSprites (pygame.sprite.Group):
@@ -48,7 +68,7 @@ class MinigameSprites (pygame.sprite.Group):
         self.check_button_surf = pygame.image.load('graphic/minigame/check_button.png')
 
         self.forest_rect = self.forest_surf.get_rect(topleft=(0, 0))
-        self.enemy_rect = self.enemy_surf.get_rect(topleft=(950, 200))
+        self.enemy_rect = self.enemy_surf.get_rect(topleft=(1080, 200))
         self.code_paper_rect = self.code_paper_surf.get_rect(topleft=(0, 0))
         self.check_button_rect = self.check_button_surf.get_rect(center=(850, 750))
 
@@ -59,10 +79,8 @@ class MinigameSprites (pygame.sprite.Group):
         self.display_surface.blit(self.code_paper_surf, self.code_paper_rect.topleft)
         self.display_surface.blit(self.check_button_surf, self.check_button_rect.topleft)
 
-
     def blink_button(self):
         enlarged_image_surf = pygame.transform.scale(self.check_button_surf, (450, 180))
         self.display_surface.blit(enlarged_image_surf, (625, 660))
         pygame.display.flip()
         pygame.time.delay(200)  # Počkejme 400 milisekund
-        # self.display_surface.blit(image, image_rect)

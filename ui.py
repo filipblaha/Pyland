@@ -53,3 +53,28 @@ class UI:
         text_surf = self.font.render(str(message), False, 'black')
         text_rect = text_surf.get_rect(center=(x, y))
         self.display_surface.blit(text_surf, text_rect)
+
+    def show_error_window(self):
+        pygame.draw.rect(self.display_surface, 'black', (680, 450, 335, 200))
+
+        text_surf_name = self.font.render('Log Console', False, 'white')
+        text_rect_name = text_surf_name.get_rect(topleft=(690, 460))
+        self.display_surface.blit(text_surf_name, text_rect_name)
+
+        # text_surf = self.font.render(str(message), False, 'red')
+        # text_rect = text_surf.get_rect(topleft=(720, 490))
+        #
+        # self.display_surface.blit(text_surf, text_rect)
+    def show_error(self, message):
+        if not message:
+            color = 'green'
+            message = ['Well done!']
+        elif message == ['Code is valid', 'Complete the quest']:
+            color = 'yellow'
+        else:
+            color = 'red'
+
+        for i, row in enumerate(message):
+            text_surf = self.font.render(row, True, color)
+            text_width, text_text_height = text_surf.get_size()
+            self.display_surface.blit(text_surf, (720, 490 + i * text_text_height))

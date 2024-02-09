@@ -13,11 +13,11 @@ def check_code(code_lines):
 def log_errors(code_lines, error):
     # The code is valid
     if error is None:
-        return True
-
+        return None
     # The code is invalid
     else:
-        print("Code contains a syntax error:")
-        print("On line", error.lineno, "there is an error:", error.msg)
-        print("Code snippet near the error:", code_lines[error.lineno - 1])
-        print(" " * (error.offset + 10) + "^")  # Show where the error starts with a caret
+        messages = [str("Line " + error.lineno + " near " + code_lines[error.lineno - 1]), "Error Type: " + error.msg]
+        # print("Code contains a syntax error:")
+        # print("On line", error.lineno, "there is an error:", error.msg)
+        # print("Code snippet near the error:", code_lines[error.lineno - 1])
+        # print(" " * (error.offset + 10) + "^")  # Show where the error starts with a caret

@@ -13,10 +13,6 @@ class Text(pygame.sprite.Sprite):
         self.text_x = 140
         self.text_y = 110
 
-    def render(self, text_to_render, x, y):
-        text_surf = self.f.render(text_to_render, True, (255, 255, 255))
-        self.screen.blit(text_surf, (x - text_surf.get_width() // 2, y - text_surf.get_height() // 2))
-
     def render_user_text(self):
         for i, row in enumerate(self.user_text):
             text_surf = self.f.render(row, True, (0, 0, 0))
@@ -26,5 +22,3 @@ class Text(pygame.sprite.Sprite):
     def blink_cursor(self):
         cursor_rect = pygame.Rect(self.text_x + self.f.size(self.user_text[self.cursor_row][:self.cursor_index])[0], self.text_y + self.cursor_row * 31, 2, 30)  # Cursor
         pygame.draw.rect(self.screen, 'black', cursor_rect)
-
-

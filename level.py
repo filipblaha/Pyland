@@ -3,12 +3,11 @@ from tile import Tile
 from player import Player
 from support import *
 from random import choice
-from ui import UI
 from menu import Menu
 
 
 class Level:
-    def __init__(self, can_interact):
+    def __init__(self, can_interact, ui):
 
         # get the display surface
         self.display_surface = pygame.display.get_surface()
@@ -22,10 +21,9 @@ class Level:
         self.create_map()
 
         # user interface
-        # self.player = Player((400, 350), [self.visible_sprites], self.obstacle_sprite, can_interact)
-        self.player = Player((1400, 600), [self.visible_sprites], self.obstacle_sprite, can_interact)
+        self.player = Player((400, 350), [self.visible_sprites], self.obstacle_sprite, can_interact)
         pygame.mouse.set_visible(False)
-        self.ui = UI()
+        self.ui = ui
         self.menu = Menu(self.player)
 
     def create_map(self):
@@ -101,6 +99,7 @@ class Level:
             return True
         else:
             return False
+
 
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):

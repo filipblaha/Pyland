@@ -3,6 +3,7 @@ import sys
 
 from settings import *
 from text import Text
+from ui import UI
 from level import Level
 from minigame import *
 import test_code
@@ -16,8 +17,9 @@ class Game:
         self.can_interact = False
 
         self.text = Text("Arial", 27, self.screen)
-        self.level = Level(self.can_interact)
-        self.minigame = Minigame(self.text, self.screen)
+        self.ui = UI()
+        self.level = Level(self.can_interact, self.ui)
+        self.minigame = Minigame(self.screen, self.text, self.ui)
         self.minigame_sprites = MinigameSprites()
         # self.game_state = GameState.OVER_WORLD
         self.game_state = GameState.MINIGAME
@@ -155,10 +157,16 @@ class Game:
                 if game.minigame_sprites.check_button_rect.collidepoint(mouse_x, mouse_y):
                     self.minigame_sprites.blink_button()
                     error = test_code.check_code(self.text.user_text)
-                    if error is None:
-                        print("bum")
-                    else:
-                        test_code.log_errors(self.text.user_text, error)
+
+                    if self.minigame.minigame_num == 0:
+                        message = test_code.log_errors(self.text.user_text, error)
+                        goal = self.minigame.goal()
+                        if not message and goal:
+                            self.minigame.log = True
+                        elif not message and not goal:
+                            self.minigame.log = ['Code is valid', 'Complete the quest']
+                        else:
+                            self.minigame.log = False
 
             elif action_from_input == "PASS":
                 pass
