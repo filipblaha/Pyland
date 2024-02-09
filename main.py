@@ -50,7 +50,7 @@ class Game:
                 elif event.key == pygame.K_DOWN:
                     return "DOWN"
                 # pressed ENTER
-                elif event.key == pygame.K_RETURN:
+                elif event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
                     return "ENTER"
                 # pressed BACKSPACE
                 elif event.key == pygame.K_BACKSPACE:
@@ -158,10 +158,11 @@ class Game:
                     self.minigame_sprites.blink_button()
 
                     goal = self.minigame.goal()
-                    error = test_code.check_code(self.text.user_text, goal)
+                    code = self.text.preset_text + self.text.user_text
+                    error = test_code.check_code(code, goal)
 
                     if self.minigame.minigame_num == 0:
-                        self.minigame.error_message = test_code.log_errors(self.text.user_text, error)
+                        self.minigame.error_message = test_code.log_errors(code, error)
                         if self.minigame.error_message:
                             self.minigame.log = True
                         else:

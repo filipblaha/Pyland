@@ -39,8 +39,11 @@ class Minigame:
 
         if self.current_time % 1000 < 500:
             self.text.blink_cursor()
+
+        self.text.render_preset_text()
         self.text.render_user_text()
 
+        self.insert_preset_text()
         if self.minigame_num == 0:
             self.ui.show_error_window()
             if self.log:
@@ -48,7 +51,11 @@ class Minigame:
 
     def goal(self):
         if self.minigame_num == 0:
-            return ['wizard_health', 'wizard_health = 1']
+            return ['wizard_health', 'wizard_health = 0']
+
+    def insert_preset_text(self):
+        if self.minigame_num == 0:
+            self.text.preset_text = ['wizard_health = 20']
 
 
 class MinigameSprites (pygame.sprite.Group):
