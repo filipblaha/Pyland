@@ -25,8 +25,8 @@ class Minigame:
 
         self.current_time = pygame.time.get_ticks()
         self.minigame_num = 0
-        self.log = True
-        self.error_message = []
+        self.log = False
+        self.error_message = ['']
 
         pygame.mouse.set_visible(True)
 
@@ -48,10 +48,7 @@ class Minigame:
 
     def goal(self):
         if self.minigame_num == 0:
-            if self.wizard_health == 0:
-                return True
-            else:
-                return False
+            return ['wizard_health', 'wizard_health = 1']
 
 
 class MinigameSprites (pygame.sprite.Group):

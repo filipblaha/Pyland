@@ -1,39 +1,29 @@
-# Zadání
-zadani = """
-wizard_health = 10
-if wizard_health > 0:
-    wizard_health -= 10
-"""
+import ast
 
-# Napsaný kód (list s řádky kódu)
-napsany_kod = [
-    "wizard_health = 10",
-    "if wizard_health > 0:",
-    "    wizard_health -= 10"
+def find_syntax_errors(code_lines):
+    code = '\n'.join(code_lines)
+    try:
+        ast.parse(code)
+        return None  # No errors found
+    except SyntaxError as e:
+        return e  # Return SyntaxError object with error information
+
+# Example code lines
+example_code_lines = [
+    "w = 10",
+    "for num in range(1)",
+    "    w = 1"
 ]
 
-# Funkce pro kontrolu výsledků
-def kontrola_vysledku(zadani, napsany_kod):
-    # Globální slovník pro vykonání kódu
-    globals_dict = {}
+error = find_syntax_errors(example_code_lines)
 
-    try:
-        # Spustit zadání
-        exec(zadani, globals_dict)
-        zadani_vysledek = globals_dict.get('wizard_health')
+if error is None:
+    print("Code is valid.")
+    # You can perform further checks and run the player's code here
+else:
 
-        # Spustit napsaný kód
-        napsany_kod_str = "\n".join(napsany_kod)
-        exec(napsany_kod_str, globals_dict)
-        napsany_vysledek = globals_dict.get('wizard_health')
-
-        # Porovnat výsledky
-        if zadani_vysledek == napsany_vysledek:
-            print("Napsaný kód dosahuje stejného výsledku jako zadání.")
-        else:
-            print("Napsaný kód nedosahuje stejného výsledku jako zadání.")
-    except Exception as e:
-        print("Chyba při vykonávání kódu:", e)
-
-# Zkontrolovat výsledky
-kontrola_vysledku(zadani, napsany_kod)
+    messages = [str("Line " + str(error.lineno) + " near " + example_code_lines[error.lineno - 1]), "Error Type: " + error.msg]
+    print("Code contains a syntax error:")
+    print("On line", error.lineno, "there is an error:", error.msg)
+    print("Code snippet near the error:", example_code_lines[error.lineno - 1])
+    print(" " * (error.offset + 10) + "^")  # Show where the error starts with a caret

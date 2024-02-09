@@ -66,9 +66,8 @@ class UI:
         #
         # self.display_surface.blit(text_surf, text_rect)
     def show_error(self, message):
-        if not message:
+        if message ==  ['Well done!']:
             color = 'green'
-            message = ['Well done!']
         elif message == ['Code is valid', 'Complete the quest']:
             color = 'yellow'
         else:

@@ -156,15 +156,14 @@ class Game:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 if game.minigame_sprites.check_button_rect.collidepoint(mouse_x, mouse_y):
                     self.minigame_sprites.blink_button()
-                    error = test_code.check_code(self.text.user_text)
+
+                    goal = self.minigame.goal()
+                    error = test_code.check_code(self.text.user_text, goal)
 
                     if self.minigame.minigame_num == 0:
-                        message = test_code.log_errors(self.text.user_text, error)
-                        goal = self.minigame.goal()
-                        if not message and goal:
+                        self.minigame.error_message = test_code.log_errors(self.text.user_text, error)
+                        if self.minigame.error_message:
                             self.minigame.log = True
-                        elif not message and not goal:
-                            self.minigame.log = ['Code is valid', 'Complete the quest']
                         else:
                             self.minigame.log = False
 
