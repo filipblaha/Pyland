@@ -41,7 +41,7 @@ class UI:
         pass
         # self.show_exp(displayed)
 
-    def show_dialog_window(self, message, x, y, width, height):
+    def show_dialog_window(self, message, x, y, width, height, font_size, pos='center', color='black'):
 
         rect = pygame.Rect(0, 0, width, height)
         rect.center = (x, y)
@@ -50,31 +50,38 @@ class UI:
         dialog_window_surf.set_alpha(200)  # alpha level
         self.display_surface.blit(dialog_window_surf, rect)
 
-        font = pygame.font.Font(UI_FONT, 40)
-        text_surf = font.render(str(message), False, 'black')
-        text_rect = text_surf.get_rect(center=(x, y))
+        if not message == '':
+            self.show_dialog_text(message, x, y, font_size, pos, color)
+
+    def show_dialog_text(self, message, x, y, font_size, pos='center', color='black'):
+
+        self.font = pygame.font.Font(UI_FONT, font_size)
+        text_surf = self.font.render(str(message), False, color)
+
+        if pos == 'center':
+            text_rect = text_surf.get_rect(center=(x, y))
+        else:
+            text_rect = text_surf.get_rect(topleft=(x, y))
         self.display_surface.blit(text_surf, text_rect)
 
     def show_error_window(self):
         pygame.draw.rect(self.display_surface, 'black', (680, 450, 335, 200))
 
-        text_surf_name = self.font.render('Log Console', False, 'white')
+        font = pygame.font.Font(UI_FONT, 18)
+        text_surf_name = font.render('Log Console', False, 'white')
         text_rect_name = text_surf_name.get_rect(topleft=(690, 460))
         self.display_surface.blit(text_surf_name, text_rect_name)
 
-        # text_surf = self.font.render(str(message), False, 'red')
-        # text_rect = text_surf.get_rect(topleft=(720, 490))
-        #
-        # self.display_surface.blit(text_surf, text_rect)
     def show_error(self, message):
-        if message ==  ['Well done!']:
+        if message == ['Well done!']:
             color = 'green'
         elif message == ['Code is valid', 'Complete the quest']:
             color = 'yellow'
         else:
             color = 'red'
 
+        font = pygame.font.Font(UI_FONT, 18)
         for i, row in enumerate(message):
-            text_surf = self.font.render(row, True, color)
+            text_surf = font.render(row, True, color)
             text_width, text_text_height = text_surf.get_size()
             self.display_surface.blit(text_surf, (720, 490 + i * text_text_height))

@@ -86,12 +86,14 @@ class Game:
                 # pressed e for interaction
             elif self.can_interact and action_from_input.key == pygame.K_e:
                 self.game_state = GameState.MINIGAME
+                pygame.mouse.set_visible(True)
                 return
 
         # MINIGAME
         if self.game_state == GameState.MINIGAME:
             if action_from_input == "QUIT":
                 self.game_state = GameState.OVER_WORLD
+                pygame.mouse.set_visible(False)
                 return
             # pressed LEFT KEY
             elif action_from_input == "LEFT":
@@ -161,12 +163,18 @@ class Game:
                     code = self.text.preset_text + self.text.user_text
                     error = test_code.check_code(code, goal)
 
-                    if self.minigame.minigame_num == 0:
-                        self.minigame.error_message = test_code.log_errors(code, error)
-                        if self.minigame.error_message:
-                            self.minigame.log = True
-                        else:
-                            self.minigame.log = False
+                    self.minigame.error_message = test_code.log_errors(code, error)
+                    if not test_code.ordered_word(self.text.user_text, self.minigame.ordered_words):
+                        self.minigame.error_message = ['You are not using ordered words:', self.minigame.ordered_words]
+                    if test_code.banned_words(self.text.user_text, self.minigame.banned_words) and not self.minigame.banned_words == '':
+                        self.minigame.error_message = ['You are using banned words:', self.minigame.banned_words]
+
+                    if self.minigame.error_message:
+                        self.minigame.log = True
+                        if self.minigame.error_message == ['Well done!']:
+                            self.minigame.correct_answer = True
+                    else:
+                        self.minigame.log = False
 
             elif action_from_input == "PASS":
                 pass

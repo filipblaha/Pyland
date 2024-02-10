@@ -26,10 +26,32 @@ def check_code(code_lines, assignment):
         return ['Code is valid', 'Complete the quest']     # Return SyntaxError object with error information
 
 
+def banned_words(code_lines, banned):
+    for line in code_lines:
+        if banned in line:
+            # there is a banned word in the list
+            return True
+        else:
+            pass
+    # there is not a banned word in the list
+    return False
+
+
+def ordered_word(code_lines, ordered):
+    for line in code_lines:
+        if ordered in line:
+            # there is an ordered word in the list
+            return True
+        else:
+            pass
+    # there is not an ordered word in the list
+    return False
+
+
 def log_errors(code_lines, error):
     # The code is valid
     if error is None:
-        return  ['Well done!']
+        return ['Well done!']
     # The code is invalid
     if error == ['Code is valid', 'Complete the quest']:
         return error

@@ -90,9 +90,7 @@ class Level:
             self.visible_sprites.update()
             self.ui.display(self.player, self.visible_sprites.offset.x)
         if self.player.can_interact:
-            self.ui.show_dialog_window('Press E to start.', 1450 - self.visible_sprites.offset.x,
-                                       550 - self.visible_sprites.offset.y,
-                                       200, 100)
+            self.ui.show_dialog_window('Press E to start.', 1450 - self.visible_sprites.offset.x, 550 - self.visible_sprites.offset.y, 200, 100, UI_FONT_SIZE)
 
     def interact(self):
         if self.player.can_interact:
