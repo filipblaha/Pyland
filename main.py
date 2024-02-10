@@ -86,14 +86,19 @@ class Game:
                 # pressed e for interaction
             elif self.can_interact and action_from_input.key == pygame.K_e:
                 self.game_state = GameState.MINIGAME
+                self.text.user_text = ['']
                 if self.level.player.rect.x <= 700:
                     self.minigame.minigame_type = 0
+                    self.minigame.minigame_num = 0
+                    self.minigame.insert_preset_text()
                     if self.minigame.cutscene_frame < 4:
                         self.minigame.cutscene_on = True
                     else:
                         self.minigame.cutscene_on = False
                 else:
                     self.minigame.minigame_type = 1
+                    self.minigame.minigame_num = 0
+                    self.minigame.insert_preset_text()
                 pygame.mouse.set_visible(True)
                 return
 
@@ -169,6 +174,12 @@ class Game:
                 self.text.cursor_index += 4
             elif action_from_input == "BUTTON_PRESSED":
                 mouse_x, mouse_y = pygame.mouse.get_pos()
+                # player clicks on hint
+                if game.ui.hint_rect.collidepoint(mouse_x, mouse_y):
+                    self.minigame.hint_request = True
+                    self.minigame.insert_preset_text()
+
+                # player clicks on check button
                 if game.minigame_sprites.check_button_rect.collidepoint(mouse_x, mouse_y):
                     self.minigame_sprites.blink_button()
 

@@ -9,6 +9,8 @@ class UI:
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
         self.max_chars_in_row = 20
 
+        self.hint_rect = pygame.Rect(520, 40, 80, 30)
+
         # bar setup
         self.health_bar_rect = pygame.Rect(10, 10, HEALTH_BAR_WIDTH, BAR_HEIGHT)
 
@@ -85,3 +87,8 @@ class UI:
             text_surf = font.render(row, True, color)
             text_width, text_text_height = text_surf.get_size()
             self.display_surface.blit(text_surf, (720, 490 + i * text_text_height))
+
+    def show_hint(self):
+        font = pygame.font.Font(UI_FONT, 25)
+        text_surf_name = font.render('Hint', False, 'black')
+        self.display_surface.blit(text_surf_name, self.hint_rect)

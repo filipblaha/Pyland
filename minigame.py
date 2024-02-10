@@ -22,8 +22,9 @@ class Minigame:
         self.you_win = False
         self.skip_cutscene = False
         self.cutscene_on = False
+        self.hint_request = False
 
-        pygame.mouse.set_visible(False)
+        pygame.mouse.set_visible(True)
         self.insert_preset_text()
 
         self.wizard_health = 10
@@ -40,7 +41,6 @@ class Minigame:
                 self.cutscene_on = False
             self.animate_cutscene()
 
-
         # wizard
         if self.minigame_type == 1:
             if self.you_win:
@@ -55,10 +55,10 @@ class Minigame:
             # round 2
             if self.minigame_num == 1:
                 self.ui.show_dialog_window('', 950, 150, 500, 200, 40)
-                self.ui.show_dialog_text('Now try it while using', 800, 100, 30, 'topleft')
-                self.ui.show_dialog_text('the ', 850, 160, 30, 'topleft')
-                self.ui.show_dialog_text('for cycle', 915, 157, 32, 'topleft', 'green')
-                self.ui.show_dialog_text('.', 1060, 160, 30, 'topleft')
+                self.ui.show_dialog_text('It has done nothing!?', 800, 100, 30, 'topleft')
+                self.ui.show_dialog_text('Try the ', 820, 160, 30, 'topleft')
+                self.ui.show_dialog_text('for cycle', 935, 157, 32, 'topleft', 'green')
+                self.ui.show_dialog_text('.', 1085, 160, 30, 'topleft')
 
             # round 3
             if self.minigame_num == 2:
@@ -77,6 +77,7 @@ class Minigame:
         if self.current_time % 1000 < 500:
             self.text.blink_cursor()
 
+        self.ui.show_hint()
         self.text.render_preset_text()
         self.text.render_user_text()
         self.current_time = pygame.time.get_ticks()
@@ -87,8 +88,10 @@ class Minigame:
             self.ui.show_error(self.error_message)
         if self.correct_answer:
             self.minigame_num += 1
-            if self.minigame_num == 2:
+            self.hint_request = False
+            if self.minigame_num == 3:
                 self.you_win = True
+                self.correct_answer = False
             else:
                 self.correct_answer = False
                 self.insert_preset_text()
@@ -116,7 +119,7 @@ class Minigame:
     def goal(self):
         if self.minigame_type == 0:
             if self.minigame_num == 0:
-                return ['', '']
+                return ['name', "name = 'filip'"]
 
         if self.minigame_type == 1:
             if self.minigame_num == 0:
@@ -136,15 +139,27 @@ class Minigame:
     def insert_preset_text(self):
         if self.minigame_type == 0:
             if self.minigame_num == 0:
-                self.text.preset_text = ['# name = your_name']
+                if self.hint_request:
+                    self.text.preset_text = ['# name = your_name']
+                else:
+                    self.text.preset_text = []
 
         if self.minigame_type == 1:
             if self.minigame_num == 0:
-                self.text.preset_text = ['wizard_health = 10']
+                if self.hint_request:
+                    self.text.preset_text = ['# will he die with no health?', '', 'wizard_health = 10']
+                else:
+                    self.text.preset_text = ['wizard_health = 10']
             if self.minigame_num == 1:
-                self.text.preset_text = ['wizard_health = 10', 'my_damage = 1']
+                if self.hint_request:
+                    self.text.preset_text = ['# for i in range(n):', '', 'wizard_health = 10', 'my_damage = 1']
+                else:
+                    self.text.preset_text = ['wizard_health = 10', 'my_damage = 1']
             if self.minigame_num == 2:
-                self.text.preset_text = ['wizard_health = 10', 'my_damage = 1']
+                if self.hint_request:
+                    self.text.preset_text = ['# while statement_a > statement_b:', 'wizard_health = 10', 'my_damage = 1']
+                else:
+                    self.text.preset_text = ['wizard_health = 10', 'my_damage = 1']
             if self.minigame_num == 3:
                 self.text.preset_text = ['DEMO = False', 'GitHub = github.com/filipblaha', '', '',
                                          'Thank you for playing']

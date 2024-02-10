@@ -21,7 +21,7 @@ class Level:
         self.create_map()
 
         # user interface
-        self.player = Player((380, 400), [self.visible_sprites], self.obstacle_sprite, can_interact)
+        self.player = Player((380, 600), [self.visible_sprites], self.obstacle_sprite, can_interact)
         pygame.mouse.set_visible(False)
         self.ui = ui
         self.menu = Menu(self.player)
@@ -96,10 +96,6 @@ class Level:
         else:
             self.visible_sprites.update()
             self.ui.display(self.player, self.visible_sprites.offset.x)
-        if self.player.rect.x > 700:
-            print(self.player.rect.x)
-        if not self.player.can_interact:
-            print(self.player.rect.x)
 
         if self.player.can_interact and self.player.rect.x <= 700:
             self.ui.show_dialog_window('Press E to start.', 400 - self.visible_sprites.offset.x, 250 - self.visible_sprites.offset.y, 200, 100, UI_FONT_SIZE)
