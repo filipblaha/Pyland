@@ -21,7 +21,7 @@ class Level:
         self.create_map()
 
         # user interface
-        self.player = Player((400, 350), [self.visible_sprites], self.obstacle_sprite, can_interact)
+        self.player = Player((380, 400), [self.visible_sprites], self.obstacle_sprite, can_interact)
         pygame.mouse.set_visible(False)
         self.ui = ui
         self.menu = Menu(self.player)
@@ -69,12 +69,19 @@ class Level:
                                 surf = pygame.image.load(image_path).convert_alpha()
                                 Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf)
 
+                            if int(col) == 500:
+                                image_name = 'Mystery_man.png'
+                                image_path = os.path.join('map', 'Object', image_name)
+                                surf = pygame.image.load(image_path).convert_alpha()
+
+                                Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf, 1)
+
                             if int(col) == 10000:
                                 image_name = 'Wizard.png'
                                 image_path = os.path.join('map', 'Object', image_name)
                                 surf = pygame.image.load(image_path).convert_alpha()
 
-                                Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf, 'wizard')
+                                Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf, 0)
 
     def toggle_menu(self):
         self.game_paused = not self.game_paused
@@ -89,7 +96,14 @@ class Level:
         else:
             self.visible_sprites.update()
             self.ui.display(self.player, self.visible_sprites.offset.x)
-        if self.player.can_interact:
+        if self.player.rect.x > 700:
+            print(self.player.rect.x)
+        if not self.player.can_interact:
+            print(self.player.rect.x)
+
+        if self.player.can_interact and self.player.rect.x <= 700:
+            self.ui.show_dialog_window('Press E to start.', 400 - self.visible_sprites.offset.x, 250 - self.visible_sprites.offset.y, 200, 100, UI_FONT_SIZE)
+        if self.player.can_interact and self.player.rect.x > 700:
             self.ui.show_dialog_window('Press E to start.', 1450 - self.visible_sprites.offset.x, 550 - self.visible_sprites.offset.y, 200, 100, UI_FONT_SIZE)
 
     def interact(self):

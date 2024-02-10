@@ -21,8 +21,8 @@ class Game:
         self.level = Level(self.can_interact, self.ui)
         self.minigame = Minigame(self.screen, self.text, self.ui)
         self.minigame_sprites = MinigameSprites()
-        # self.game_state = GameState.OVER_WORLD
-        self.game_state = GameState.MINIGAME
+        self.game_state = GameState.OVER_WORLD
+        # self.game_state = GameState.MINIGAME
 
         # Timing
         self.clock = pygame.time.Clock()
@@ -86,12 +86,25 @@ class Game:
                 # pressed e for interaction
             elif self.can_interact and action_from_input.key == pygame.K_e:
                 self.game_state = GameState.MINIGAME
+                if self.level.player.rect.x <= 700:
+                    self.minigame.minigame_type = 0
+                    if self.minigame.cutscene_frame < 4:
+                        self.minigame.cutscene_on = True
+                    else:
+                        self.minigame.cutscene_on = False
+                else:
+                    self.minigame.minigame_type = 1
                 pygame.mouse.set_visible(True)
                 return
 
         # MINIGAME
         if self.game_state == GameState.MINIGAME:
-            if action_from_input == "QUIT":
+            # cutscene
+            if self.minigame.cutscene_on:
+                if not action_from_input == 'PASS':
+                    self.minigame.skip_cutscene = True
+                    self.minigame.cutscene_frame += 1
+            elif action_from_input == "QUIT":
                 self.game_state = GameState.OVER_WORLD
                 pygame.mouse.set_visible(False)
                 return
