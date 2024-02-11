@@ -152,7 +152,7 @@ class Minigame:
                     self.text.preset_text = ['wizard_health = 10']
             if self.minigame_num == 1:
                 if self.hint_request:
-                    self.text.preset_text = ['# for i in range(n):', '', 'wizard_health = 10', 'my_damage = 1']
+                    self.text.preset_text = ['# for i in range(n):e', '', 'wizard_health = 10', 'my_damage = 1']
                 else:
                     self.text.preset_text = ['wizard_health = 10', 'my_damage = 1']
             if self.minigame_num == 2:
