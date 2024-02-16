@@ -2,8 +2,11 @@ import pygame
 import os
 from enum import Enum
 
+WIDTH = 1920
+HEIGHT = 1080
 FPS = 60
 TILE_SIZE = 32
+
 # font setup
 FONT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'graphic', 'font', 'Cabal-w5j3.ttf')
 FONT_SIZE = 18
@@ -14,5 +17,6 @@ class GameState(Enum):
     MENU = 0
     OVER_WORLD = 1
     IDE = 2
+
 
 

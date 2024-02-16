@@ -1,7 +1,9 @@
-from tile import *
-from sprites import *
+import sys
 from random import choice
 
+
+from tile import *
+from sprites import *
 from player import *
 from support import *
 
@@ -79,8 +81,27 @@ class OverWorld:
 
                                 Tile((x, y), [self.visible_sprites, self.obstacle_sprite], 'object', surf, 0)
 
-    def logic(self, action):
+    def logic(self, action_key):
         self.player.can_interact = False
+
+        if action_key == "QUIT":
+            pygame.quit()
+            sys.exit()
+        if action_key[pygame.K_UP] or action_key[pygame.K_w]:
+            self.player.direction.y = -1
+        elif action_key[pygame.K_DOWN] or action_key[pygame.K_s]:
+            self.player.direction.y = 1
+        else:
+            self.player.direction.y = 0
+
+        if action_key[pygame.K_RIGHT] or action_key[pygame.K_d]:
+            self.player.direction.x = 1
+        elif action_key[pygame.K_LEFT] or action_key[pygame.K_a]:
+            self.player.direction.x = -1
+        else:
+            self.player.direction.x = 0
+
+        self.player.move()
 
     def render(self):
         # update and draw the game

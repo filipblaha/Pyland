@@ -1,8 +1,4 @@
-import pygame
 import pygame.image
-import pygame
-from csv import reader
-from os import walk
 
 from globalvariables import *
 
