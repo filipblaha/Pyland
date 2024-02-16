@@ -9,7 +9,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.x, self.rect.y)
-        self.speed = 0.35
+        self.speed = 4
         self.obstacle_sprite = obstacle_sprite
 
         # hitbox interaction
@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.can_interact = False
 
         # animations
-        self.animation_speed = 0.008
+        self.animation_speed = 0.08
         self.animation_frames_up = [
             pygame.image.load('char/Spirit/Walk_up_1.png').convert_alpha(),
             pygame.image.load('char/Spirit/Walk_up_2.png').convert_alpha(),
@@ -68,14 +68,10 @@ class Player(pygame.sprite.Sprite):
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()     # changing velocity to normal in every direction
 
-        self.pos.x += self.direction.x * self.speed
-        self.pos.y += self.direction.y * self.speed
-
-        self.hitbox.centerx = self.pos.x
-        self.hitbox.centery = self.pos.y
-
-        self.collision('vertical')
+        self.hitbox.x += self.direction.x * self.speed
         self.collision('horizontal')
+        self.hitbox.y += self.direction.y * self.speed
+        self.collision('vertical')
         self.rect.center = self.hitbox.center
 
         # animations
@@ -97,10 +93,8 @@ class Player(pygame.sprite.Sprite):
                 if sprite.hitbox.colliderect(self.hitbox):
                     if self.direction.x > 0:
                         self.hitbox.right = sprite.hitbox.left
-                        self.pos.x = self.hitbox.centerx
                     if self.direction.x < 0:
                         self.hitbox.left = sprite.hitbox.right
-                        self.pos.x = self.hitbox.centerx
 
         # checking vertical collisions
         if direction == 'vertical':

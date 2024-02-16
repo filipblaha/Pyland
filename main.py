@@ -45,13 +45,15 @@ class Game:
         # elif self.game_state == GameState.IDE:
         #     self.ide.render()
 
-        pygame.display.flip()
+        pygame.display.update()
 
     def game_loop(self):
         while True:
             action = self.input()
             self.logic(action)
             self.render()
+
+            game.clock.tick(FPS)
 
 
 if __name__ == "__main__":
