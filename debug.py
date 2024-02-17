@@ -22,17 +22,27 @@ class DialogWindow:
         dialog_rect.center = (pos_x, pos_y)
         pygame.draw.rect(self.screen, self.dialog_color, dialog_rect)
 
-        y_offset = (height - dialog_height) // 2   # Calculate y_offset for vertical centering
+        # y_offset = (height - dialog_height) // 2   # Calculate y_offset for vertical centering
         for i, (line, colors, sizes) in enumerate(lines):
-            total_width = sum(self.font.size(word)[0] for word in line) + (len(line) - 1) * self.font.size(" ")[0]
+            # total_width = sum(self.font.size(word)[0] for word in line) + (len(line) - 1) * self.font.size(" ")[0]
+            total_width = (len(line) - 1) * self.font.size(" ")[0]
+            for word, size in zip(line, sizes):
+                self.font = pygame.font.Font(None, size)
+                word_w, word_h = self.font.size(word)
+                total_width += word_w
+
+            #yoff = nejvetsi //2 + tohle // 2
             x_offset = (width - total_width) // 2
             for segment, color, size in zip(line, colors, sizes):
+                self.font = pygame.font.Font(None, size)
+                this_font_width, this_font_height = self.font.size(segment)
+                y_offset = (height - dialog_height + line_heights[i] - this_font_height) // 2 + sum(line_heights[:i])
                 text_surface = self.font.render(segment, True, color)
                 text_rect = text_surface.get_rect(topleft=(pos_x - width // 2 + x_offset, pos_y - height // 2 + y_offset))
                 self.screen.blit(text_surface, text_rect)
                 if segment != line[-1]:
                     x_offset += self.font.size(segment)[0] + self.font.size(" ")[0]  # Add space width to x_offset
-            y_offset += line_heights[i]
+            # y_offset += line_heights[i]
 
         pygame.display.flip()
 
@@ -96,7 +106,7 @@ def main():
         dialog.screen.fill((255, 255, 255))
         dialog.show_dialog(
             "Don't waste time and GO to the park", 32,
-            1000, 500, 300, 200, highlight_words=["GO", "park"], highlight_font=40, highlight_color=(255, 0, 0))
+            1000, 500, 300, 200, highlight_words=["GO"], highlight_font=80, highlight_color=(255, 0, 0))
 
         pygame.display.update()
 
