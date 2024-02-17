@@ -1,83 +1,88 @@
 import pygame
 import sys
 
-# Inicializace pygame
-pygame.init()
+class DialogWindow:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.screen = pygame.display.set_mode((width, height))
+        self.font = pygame.font.Font(None, 32)
+        self.dialog_color = (200, 200, 200)
+        self.text_color = (0, 0, 0)
 
-# Nastavení velikosti okna
-WIDTH, HEIGHT = 800, 600
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Text Editor")
+    def show_dialog(self, text, pos_x, pos_y, width, height, highlight_words=None, highlight_color=None):
+        if highlight_words is None:
+            highlight_words = []
+        if highlight_color is None:
+            highlight_color = (255, 0, 0)  # Default color is red
 
-# Barvy
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
+        lines, line_heights = self.split_lines(text, width - 50, highlight_words, highlight_color)
+        dialog_height = sum(line_heights)
+        dialog_rect = pygame.Rect(0, 0, width, height)
+        dialog_rect.center = (pos_x, pos_y)
+        pygame.draw.rect(self.screen, self.dialog_color, dialog_rect)
 
-# Font
-font = pygame.font.Font(None, 32)
+        y_offset = (height - dialog_height) // 2   # Calculate y_offset for vertical centering
+        for i, (line, colors) in enumerate(lines):
+            total_width = sum(self.font.size(word)[0] for word in line) + (len(line) - 1) * self.font.size(" ")[0]
+            x_offset = (width - total_width) // 2
+            for segment, color in zip(line, colors):
+                text_surface = self.font.render(segment, True, color)
+                text_rect = text_surface.get_rect(topleft=(pos_x - width // 2 + x_offset, pos_y - height // 2 + y_offset))
+                self.screen.blit(text_surface, text_rect)
+                if segment != line[-1]:
+                    x_offset += self.font.size(segment)[0] + self.font.size(" ")[0]  # Add space width to x_offset
+            y_offset += line_heights[i]
 
-# Textová proměnná pro ukládání vstupu od uživatele
-user_input = ""
+        pygame.display.flip()
 
-# Proměnná pro sledování, zda je klávesa stisknutá
-key_held = False
-key_repeat_timer = 0
-key_initial_delay = 500  # Zpoždění před opakováním (v milisekundách)
-key_repeat_interval = 30  # Interval pro opakování stisku klávesy (v milisekundách)
-pressing_event = None
-
-# Hlavní smyčka hry
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN:
-                # Pokud uživatel stiskne Enter, můžeme vytisknout text
-                print("Uživatelský vstup:", user_input)
-                # Můžete zde provést jakoukoliv další akci s uživatelským vstupem
-                user_input = ""  # Vyčistíme vstup pro další zadávání
-            elif event.key == pygame.K_BACKSPACE:
-                # Pokud uživatel stiskne Backspace, odstraníme poslední znak
-                user_input = user_input[:-1]
-                # Nastavíme proměnnou pro sledování držení klávesy
-                key_held = True
-                key_repeat_timer = pygame.time.get_ticks() + key_initial_delay
-                pressing_event = event
+    def split_lines(self, text, max_width, highlight_words, highlight_color):
+        words = text.split()
+        lines = []
+        line_heights = []
+        current_line = []
+        current_colors = []
+        current_height = 0
+        for word in words:
+            if word in highlight_words:
+                current_colors.append(highlight_color)
             else:
-                # Jinak přidáme stisknutý znak do uživatelského vstupu
-                user_input += event.unicode
-                # Nastavíme proměnnou pro sledování držení klávesy
-                key_held = True
-                key_repeat_timer = pygame.time.get_ticks() + key_initial_delay
-                pressing_event = event
-
-    # Pokud je klávesa stále držena a uplynulo zpoždění před opakováním
-    if key_held and pygame.time.get_ticks() > key_repeat_timer:
-
-        if pressing_event.key == pygame.K_e:
-            pass
-        if pygame.key.get_pressed()[pressing_event.key]:
-            if pressing_event.key == pygame.K_BACKSPACE:
-                user_input = user_input[:-1]
+                current_colors.append(self.text_color)
+            test_line = ' '.join(current_line + [word]) if current_line else word
+            line_width, line_height = self.font.size(test_line)
+            if line_width < max_width:
+                current_line.append(word)
+                current_height = max(current_height, line_height)
             else:
-                user_input += pressing_event.unicode
-            key_repeat_timer = pygame.time.get_ticks() + key_repeat_interval
+                lines.append((current_line[:], current_colors[:]))
+                line_heights.append(current_height)
+                current_line = [word]
+                current_colors = [self.text_color]
+                current_height = line_height
+        lines.append((current_line, current_colors))
+        line_heights.append(current_height)
+        return lines, line_heights
 
+def main():
+    pygame.init()
+    dialog = DialogWindow(1920, 1080)
+    # print(pygame.font.Font(None, 32).size("p"))
 
-    # Vyčištění obrazovky
-    screen.fill(WHITE)
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-    # Vykreslení textu na obrazovku
-    text_surface = font.render("Textový editor - Zadejte text:", True, BLACK)
-    screen.blit(text_surface, (20, 20))
-    input_surface = font.render(user_input, True, BLACK)
-    screen.blit(input_surface, (20, 60))
+        dialog.screen.fill((255, 255, 255))
+        dialog.show_dialog(
+            "Don't waste time and GO to the park, Don't waste time and GO to the parkDon't waste time and GO to the park",
+            1000, 500, 300, 200, highlight_words=["GO", "park"], highlight_color=(255, 0, 0))
 
-    # Obnovení obrazovky
-    pygame.display.flip()
+        pygame.display.update()
 
-# Ukončení pygame
-pygame.quit()
-sys.exit()
+    pygame.quit()
+    sys.exit()
+
+if __name__ == "__main__":
+    main()

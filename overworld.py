@@ -84,9 +84,12 @@ class OverWorld:
     def logic(self, action_key):
         self.player.can_interact = False
 
+        # Turning the game off
         if action_key == "QUIT":
             pygame.quit()
             sys.exit()
+
+        # Reacting to pressing/holding keys and setting direction of player
         if action_key[pygame.K_UP] or action_key[pygame.K_w]:
             self.player.direction.y = -1
         elif action_key[pygame.K_DOWN] or action_key[pygame.K_s]:
@@ -101,7 +104,16 @@ class OverWorld:
         else:
             self.player.direction.x = 0
 
+        # Logic behind moving the player - position, hit boxes and collisions
         self.player.move()
+
+        # Interaction with characters on map
+        if self.player.can_interact and self.player.rect.x <= 700:
+            self.ui.show_dialog_window('Press E to start.', 400 - self.visible_sprites.offset.x,
+                                       250 - self.visible_sprites.offset.y, 200, 100, UI_FONT_SIZE)
+        if self.player.can_interact and self.player.rect.x > 700:
+            self.ui.show_dialog_window('Press E to start.', 1450 - self.visible_sprites.offset.x,
+                                       550 - self.visible_sprites.offset.y, 200, 100, UI_FONT_SIZE)
 
     def render(self):
         # update and draw the game
