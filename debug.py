@@ -1,6 +1,7 @@
 import pygame
 import sys
 
+
 class DialogWindow:
     def __init__(self, width, height):
         self.width = width
@@ -10,52 +11,87 @@ class DialogWindow:
         self.dialog_color = (200, 200, 200)
         self.text_color = (0, 0, 0)
 
-    def show_dialog(self, text, font_size, pos_x, pos_y, width, height, highlight_words=None, highlight_font=32, highlight_color=None):
+    def show_dialog(self, text, pos_x, pos_y, width, height, font_size, highlight_words=None, highlight_font_size=None, highlight_color=None):
+        """
+        TEXXXXXXXXXT
+        :param text:
+        :param pos_x:
+        :param pos_y:
+        :param width:
+        :param height:
+        :param font_size:
+        :param highlight_words:
+        :param highlight_font_size:
+        :param highlight_color:
+        :return:
+        """
+
+        # default settings for highlighted words
         if highlight_words is None:
             highlight_words = []
+        if highlight_font_size is None:
+            highlight_color = 'red'
         if highlight_color is None:
-            highlight_color = (255, 0, 0)  # Default color is red
+            highlight_color = 'red'
 
-        lines, line_heights = self.split_lines(text, font_size, width - 50, highlight_words, highlight_color, highlight_font)
-        dialog_height = sum(line_heights)
+        # formatting the text string - splitting into rows, calculating heights
+        # lines is list of segments of a line(words), font sizes and colors for each word
+        lines, line_heights = self.split_lines(text, font_size, width - 50, highlight_words, highlight_color, highlight_font_size)
+
+        # drawing dialog window
         dialog_rect = pygame.Rect(0, 0, width, height)
         dialog_rect.center = (pos_x, pos_y)
         pygame.draw.rect(self.screen, self.dialog_color, dialog_rect)
 
-        # y_offset = (height - dialog_height) // 2   # Calculate y_offset for vertical centering
+        dialog_height = sum(line_heights)
+
+        # taking formatted string (lines) and using the for cycle goes through every row
         for i, (line, colors, sizes) in enumerate(lines):
-            # total_width = sum(self.font.size(word)[0] for word in line) + (len(line) - 1) * self.font.size(" ")[0]
+
+            # calculating total width of a line for the offset
             total_width = (len(line) - 1) * self.font.size(" ")[0]
             for word, size in zip(line, sizes):
                 self.font = pygame.font.Font(None, size)
                 word_w, word_h = self.font.size(word)
                 total_width += word_w
 
-            #yoff = nejvetsi //2 + tohle // 2
+            # first x_offset in line
             x_offset = (width - total_width) // 2
+
+            # goes through every word in line - setting size, color and offset
             for segment, color, size in zip(line, colors, sizes):
+
+                # font size of each word
                 self.font = pygame.font.Font(None, size)
                 this_font_width, this_font_height = self.font.size(segment)
+
+                # offsets to
+                # offsets words to the center of a line, some words can be bigger than others
                 y_offset = (height - dialog_height + line_heights[i] - this_font_height) // 2 + sum(line_heights[:i])
+
+                # rendering words
                 text_surface = self.font.render(segment, True, color)
                 text_rect = text_surface.get_rect(topleft=(pos_x - width // 2 + x_offset, pos_y - height // 2 + y_offset))
                 self.screen.blit(text_surface, text_rect)
-                if segment != line[-1]:
-                    x_offset += self.font.size(segment)[0] + self.font.size(" ")[0]  # Add space width to x_offset
-            # y_offset += line_heights[i]
 
-        pygame.display.flip()
+                # adding spaces between the words
+                if segment != line[-1]:
+                    x_offset += self.font.size(segment)[0] + self.font.size(" ")[0]
 
     def split_lines(self, text, font_size, max_width, highlight_words, highlight_color, highlight_font):
+        # splitting string into a list of words
         words = text.split()
-        max_word_height = 0
-        lines = []
-        line_width = 0
-        line_heights = []
-        current_line = []
-        line_colors = []
-        current_font_size = []
 
+        line_width = 0              # integer that watches if the line width isn't too long
+        max_word_height = 0         # integer that watches the highest words
+        line_heights = []           # list of max line heights for y_offset
+
+        lines = []                  # list of words, font sizes, colors
+        current_color = []            # list of colors
+        current_line = []           # list of words
+        current_font_size = []      # list of font sizes
+
+        # goes through every word in the text
         for word in words:
             if word in highlight_words:
                 word_color = highlight_color
@@ -66,36 +102,51 @@ class DialogWindow:
                 word_font_size = font_size
                 self.font = pygame.font.Font(None, font_size)
 
+            # adding word width
             word_width, word_height = self.font.size(word)
             line_width += word_width
+
+            # adding space width after every word except the first one to line_width
             if current_line:
                 self.font = pygame.font.Font(None, font_size)
                 space_w, space_h = self.font.size(' ')
                 line_width += space_w
 
+            # checking if the line width isn't too long
             if line_width < max_width:
+                # adding word, color and size
                 current_line.append(word)
-                line_colors.append(word_color)
+                current_color.append(word_color)
                 current_font_size.append(word_font_size)
             else:
-                lines.append((current_line[:], line_colors[:], current_font_size[:]))
+                # adding lists to lines(final list with words, font sizes, colors) height of the biggest word
+                lines.append((current_line[:], current_color[:], current_font_size[:]))
+                # and height of the biggest word
                 line_heights.append(max_word_height)
-                line_colors = [word_color]
+
+                # resetting current lists
+                # adding word that exceeds max line width with its color and font size to the next row
                 current_line = [word]
+                current_color = [word_color]
                 current_font_size = [word_font_size]
+                # resetting line width and max word height
                 line_width = 0
                 max_word_height = 0
+
+            # checking the highest word
             if word_height > max_word_height:
                 max_word_height = word_height
 
-        lines.append((current_line, line_colors, current_font_size))
+        # adding each row to lines
+        lines.append((current_line, current_color, current_font_size))
+        # adding the biggest height to each row to lines heights
         line_heights.append(max_word_height)
         return lines, line_heights
+
 
 def main():
     pygame.init()
     dialog = DialogWindow(1920, 1080)
-    # print(pygame.font.Font(None, 32).size("p"))
 
     running = True
     while running:
@@ -104,9 +155,7 @@ def main():
                 running = False
 
         dialog.screen.fill((255, 255, 255))
-        dialog.show_dialog(
-            "Don't waste time and GO to the park", 32,
-            1000, 500, 300, 200, highlight_words=["GO"], highlight_font=80, highlight_color=(255, 0, 0))
+        dialog.show_dialog("Don't waste time and GO !!!", 1000, 500, 300, 200, 32, ["GO", "Don't"], 80, "red")
 
         pygame.display.update()
 
