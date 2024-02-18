@@ -113,11 +113,11 @@ class OverWorld:
         if self.player.can_interact:
 
             if self.player.rect.x < 700:
-                self.hud.set_dialog_window('Press E to interact.', 20, 400 - self.visible_sprites.offset.x,
-                                           250 - self.visible_sprites.offset.y, 200, 100)
+                self.hud.set_dialog_window('Press E to interact.', 20,
+                                           400 - self.visible_sprites.offset.x, 250 - self.visible_sprites.offset.y, 200, 100)
             else:
-                self.hud.set_dialog_window('Press E to interact.', 20, 1450 - self.visible_sprites.offset.x,
-                                           550 - self.visible_sprites.offset.y, 200, 100)
+                self.hud.set_dialog_window('Press E to interact.', 20,
+                                           1450 - self.visible_sprites.offset.x, 550 - self.visible_sprites.offset.y, 200, 100)
 
     def render(self):
         # update and draw the game
