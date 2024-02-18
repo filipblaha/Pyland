@@ -5,6 +5,7 @@ from random import choice
 from tile import *
 from sprites import *
 from player import *
+from dialogwindow import *
 from support import *
 
 
@@ -22,6 +23,7 @@ class OverWorld:
 
         # user interface
         self.player = Player((380, 600), [self.visible_sprites], self.obstacle_sprite)
+        self.hud = DialogWindow()
         pygame.mouse.set_visible(False)
 
     def create_map(self):
@@ -108,15 +110,21 @@ class OverWorld:
         self.player.move()
 
         # Interaction with characters on map
-        if self.player.can_interact and self.player.rect.x <= 700:
-            self.ui.show_dialog_window('Press E to start.', 400 - self.visible_sprites.offset.x,
-                                       250 - self.visible_sprites.offset.y, 200, 100, UI_FONT_SIZE)
-        if self.player.can_interact and self.player.rect.x > 700:
-            self.ui.show_dialog_window('Press E to start.', 1450 - self.visible_sprites.offset.x,
-                                       550 - self.visible_sprites.offset.y, 200, 100, UI_FONT_SIZE)
+        if self.player.can_interact:
+
+            if self.player.rect.x < 700:
+                self.hud.set_dialog_window('Press E to interact.', 20, 400 - self.visible_sprites.offset.x,
+                                           250 - self.visible_sprites.offset.y, 200, 100)
+            else:
+                self.hud.set_dialog_window('Press E to interact.', 20, 1450 - self.visible_sprites.offset.x,
+                                           550 - self.visible_sprites.offset.y, 200, 100)
 
     def render(self):
         # update and draw the game
         self.visible_sprites.draw_over_world(self.player)
         self.visible_sprites.update()
+        if self.player.can_interact:
+            self.hud.display_dialog_window()
+
+
 

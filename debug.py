@@ -158,12 +158,13 @@ def main():
                 running = False
 
         dialog.screen.fill((255, 255, 255))
-        dialog.show_dialog("Don't waste time and GO !!!", 1000, 500, 300, 200, 32, ["GO", "Don't"], 80, "red")
+        dialog.show_dialog("Don't waste time and GO !!!", 32, 1000, 500, 300, 200)
 
         pygame.display.update()
 
     pygame.quit()
     sys.exit()
+
 
 if __name__ == "__main__":
     main()
