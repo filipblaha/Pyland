@@ -4,16 +4,19 @@ import sys
 
 class DialogWindow:
     def __init__(self, width, height):
-        self.width = width
-        self.height = height
         self.screen = pygame.display.set_mode((width, height))
         self.font = pygame.font.Font(None, 32)
         self.dialog_color = (200, 200, 200)
         self.text_color = (0, 0, 0)
 
-    def show_dialog(self, text, pos_x, pos_y, width, height, font_size, highlight_words=None, highlight_font_size=None, highlight_color=None):
+    def show_dialog(self, text, font_size, pos_x, pos_y, width, height, highlight_words=None, highlight_font_size=None, highlight_color=None):
         """
-        TEXXXXXXXXXT
+        Call the function to create a dialog window.
+
+         REQUIRED arguments: Text and font size. Position and size of the window.
+
+         OPTIONAL arguments: You can highlight words from the text (change their size and color).
+
         :param text:
         :param pos_x:
         :param pos_y:
