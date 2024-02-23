@@ -85,23 +85,28 @@
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Buildings.tsx": {
             "dynamicWrapping": true,
-            "scaleInDock": 0.125,
-            "scaleInEditor": 0.33
+            "scaleInDock": 0.75,
+            "scaleInEditor": 1
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Bushes and rocks.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 1.5,
-            "scaleInEditor": 3
+            "scaleInEditor": 1.5
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Characters.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1,
-            "scaleInEditor": 3
+            "scaleInEditor": 1.5
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Cliffs.tsx": {
             "dynamicWrapping": false,
+            "scaleInDock": 3,
+            "scaleInEditor": 1.5
+        },
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Dark shadow.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
-            "scaleInEditor": 1
+            "scaleInEditor": 3
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Forest Cliff.tsx": {
             "scaleInDock": 1,
@@ -109,7 +114,7 @@
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Forest Props.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 2,
+            "scaleInDock": 3,
             "scaleInEditor": 1
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Forest Structures.tsx": {
@@ -126,15 +131,19 @@
             "dynamicWrapping": true,
             "scaleInDock": 1
         },
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Grass Shadow.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 2
+        },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Grass.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1.5,
-            "scaleInEditor": 1
+            "scaleInEditor": 1.5
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Trees.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 0.5,
-            "scaleInEditor": 0.5
+            "scaleInEditor": 1.5
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Water Tileset.tsx": {
             "scaleInDock": 1,
@@ -157,6 +166,10 @@
         "Forest Tilesett.tsx": {
             "scaleInDock": 1
         },
+        "Light Shadow.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
         "Trees.tsx": {
             "scaleInDock": 1
         },
@@ -168,10 +181,10 @@
         },
         "map.tmx": {
             "scale": 1,
-            "selectedLayer": 11,
+            "selectedLayer": 8,
             "viewCenter": {
-                "x": 781.5,
-                "y": 588.5
+                "x": 777,
+                "y": 791.5
             }
         },
         "map.tmx#Pavement": {
@@ -189,29 +202,35 @@
         }
     },
     "last.externalTilesetPath": "C:/Users/ejbos/prog/Pyland/data/tsx",
-    "last.imagePath": "C:/Users/ejbos/prog/Pyland/graphics/tilesets",
+    "last.imagePath": "C:/Users/ejbos/prog/Pyland/graphics/objects",
     "openFiles": [
         "map.tmx",
-        "C:/Users/ejbos/prog/Pyland/data/tsx/Grass.tsx",
         "C:/Users/ejbos/prog/Pyland/data/tsx/Cliffs.tsx",
         "C:/Users/ejbos/prog/Pyland/data/tsx/Bushes and rocks.tsx",
         "C:/Users/ejbos/prog/Pyland/data/tsx/Trees.tsx",
         "C:/Users/ejbos/prog/Pyland/data/tsx/Buildings.tsx",
-        "C:/Users/ejbos/prog/Pyland/data/tsx/Characters.tsx"
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Characters.tsx",
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Grass.tsx",
+        "Light Shadow.tsx"
     ],
     "project": "map.tiled-project",
     "recentFiles": [
+        "Light Shadow.tsx",
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Grass.tsx",
         "C:/Users/ejbos/prog/Pyland/data/tsx/Characters.tsx",
         "C:/Users/ejbos/prog/Pyland/data/tsx/Buildings.tsx",
         "C:/Users/ejbos/prog/Pyland/data/tsx/Trees.tsx",
         "C:/Users/ejbos/prog/Pyland/data/tsx/Bushes and rocks.tsx",
         "C:/Users/ejbos/prog/Pyland/data/tsx/Cliffs.tsx",
-        "C:/Users/ejbos/prog/Pyland/data/tsx/Grass.tsx",
         "map.tmx",
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Dark shadow.tsx",
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Grass Shadow.tsx",
         "C:/Users/ejbos/prog/Pyland/data/tsx/char.tsx",
-        "C:/Users/ejbos/prog/Pyland/data/tsx/Forest Props.tsx",
-        "C:/Users/ejbos/prog/Pyland/data/tsx/Forest Structures.tsx",
-        "C:/Users/ejbos/prog/Pyland/data/tsx/Forest Tilesett.tsx",
-        "C:/Users/ejbos/prog/Pyland/data/tsx/Water Tileset.tsx"
-    ]
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Forest Props.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
 }
