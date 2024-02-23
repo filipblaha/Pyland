@@ -1,4 +1,5 @@
 from overworld import *
+from os.path import join
 
 
 class Game:
@@ -10,8 +11,9 @@ class Game:
 
         # objects
         self.over_world = OverWorld(self.screen)
+        self.tmx_maps = {0: load_pygame(join('..', 'data', 'levels', 'map.tmx'))}
 
-        self.game_state = GameState.OVER_WORLD
+        self.game_stage = GameState.OVER_WORLD
         # self.game_state = GameState.IDE
 
         # Timing
@@ -34,13 +36,13 @@ class Game:
         return [keys, None]
 
     def logic(self, action):
-        if self.game_state == GameState.OVER_WORLD:
+        if self.game_stage == GameState.OVER_WORLD:
             self.over_world.logic(action[0])
         # elif self.game_state == GameState.IDE:
         #     self.ide.logic(action)
 
     def render(self):
-        if self.game_state == GameState.OVER_WORLD:
+        if self.game_stage == GameState.OVER_WORLD:
             self.over_world.render()
         # elif self.game_state == GameState.IDE:
         #     self.ide.render()

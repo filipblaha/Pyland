@@ -16,7 +16,6 @@ class OverWorld:
 
         # sprite setup
         self.visible_sprites = pygame.sprite.Group()
-        self.tmx_data = load_pygame('data/tmx/map.tmx')
         Sprites.render_layers(self.tmx_data,  self.visible_sprites)
         Sprites.render_objects(self.tmx_data,  self.visible_sprites)
 
