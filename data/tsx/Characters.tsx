@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.2" name="Characters" class="Characters" tilewidth="64" tileheight="64" tilecount="16" columns="0">
+<tileset version="1.10" tiledversion="1.10.2" name="Characters" class="Characters" tilewidth="64" tileheight="64" tilecount="17" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="32" height="32" source="../../graphics/characters/char1.png"/>
@@ -48,5 +48,8 @@
  </tile>
  <tile id="18">
   <image width="32" height="32" source="../../graphics/characters/char8_iii.png"/>
+ </tile>
+ <tile id="19">
+  <image width="30" height="35" source="../../graphics/characters/char6_v.png"/>
  </tile>
 </tileset>

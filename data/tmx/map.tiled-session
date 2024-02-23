@@ -86,7 +86,7 @@
         "C:/Users/ejbos/prog/Pyland/data/tsx/Buildings.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 0.75,
-            "scaleInEditor": 1
+            "scaleInEditor": 0.75
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Bushes and rocks.tsx": {
             "dynamicWrapping": true,
@@ -95,7 +95,7 @@
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Characters.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 1,
+            "scaleInDock": 3,
             "scaleInEditor": 1.5
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Cliffs.tsx": {
@@ -114,7 +114,7 @@
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Forest Props.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 3,
+            "scaleInDock": 2,
             "scaleInEditor": 1
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Forest Structures.tsx": {
@@ -146,7 +146,7 @@
             "scaleInEditor": 1.5
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Water Tileset.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 2,
             "scaleInEditor": 1
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/char.tsx": {
@@ -167,6 +167,7 @@
             "scaleInDock": 1
         },
         "Light Shadow.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1.5
         },
@@ -180,16 +181,16 @@
             "scaleInDock": 1
         },
         "map.tmx": {
-            "scale": 1,
+            "scale": 0.75,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 777,
-                "y": 791.5
+                "x": 605.3333333333333,
+                "y": 487.33333333333337
             }
         },
         "map.tmx#Pavement": {
             "dynamicWrapping": false,
-            "scaleInDock": 1
+            "scaleInDock": 2
         },
         "map.tmx#TX Tileset Grass": {
             "dynamicWrapping": false,
