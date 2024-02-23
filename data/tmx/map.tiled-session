@@ -85,21 +85,23 @@
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Buildings.tsx": {
             "dynamicWrapping": true,
-            "scaleInDock": 1,
+            "scaleInDock": 0.125,
             "scaleInEditor": 0.33
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Bushes and rocks.tsx": {
             "dynamicWrapping": true,
-            "scaleInDock": 1,
-            "scaleInEditor": 1
+            "scaleInDock": 1.5,
+            "scaleInEditor": 3
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Characters.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 3
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Cliffs.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Forest Cliff.tsx": {
             "scaleInDock": 1,
@@ -107,7 +109,7 @@
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Forest Props.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 1,
+            "scaleInDock": 2,
             "scaleInEditor": 1
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Forest Structures.tsx": {
@@ -126,12 +128,13 @@
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Grass.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 1
+            "scaleInDock": 1.5,
+            "scaleInEditor": 1
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Trees.tsx": {
             "dynamicWrapping": true,
-            "scaleInDock": 1,
-            "scaleInEditor": 1
+            "scaleInDock": 0.5,
+            "scaleInEditor": 0.5
         },
         "C:/Users/ejbos/prog/Pyland/data/tsx/Water Tileset.tsx": {
             "scaleInDock": 1,
@@ -164,12 +167,16 @@
             "scaleInDock": 1
         },
         "map.tmx": {
-            "scale": 0.125,
-            "selectedLayer": 10,
+            "scale": 1,
+            "selectedLayer": 11,
             "viewCenter": {
-                "x": 1196,
-                "y": 1180
+                "x": 781.5,
+                "y": 588.5
             }
+        },
+        "map.tmx#Pavement": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
         },
         "map.tmx#TX Tileset Grass": {
             "dynamicWrapping": false,
@@ -184,21 +191,27 @@
     "last.externalTilesetPath": "C:/Users/ejbos/prog/Pyland/data/tsx",
     "last.imagePath": "C:/Users/ejbos/prog/Pyland/graphics/tilesets",
     "openFiles": [
-        "map.tmx"
+        "map.tmx",
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Grass.tsx",
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Cliffs.tsx",
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Bushes and rocks.tsx",
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Trees.tsx",
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Buildings.tsx",
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Characters.tsx"
     ],
     "project": "map.tiled-project",
     "recentFiles": [
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Characters.tsx",
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Buildings.tsx",
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Trees.tsx",
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Bushes and rocks.tsx",
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Cliffs.tsx",
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Grass.tsx",
         "map.tmx",
         "C:/Users/ejbos/prog/Pyland/data/tsx/char.tsx",
-        "C:/Users/ejbos/prog/Pyland/data/tsx/Buildings.tsx",
-        "C:/Users/ejbos/prog/Pyland/data/tsx/Bushes and rocks.tsx",
         "C:/Users/ejbos/prog/Pyland/data/tsx/Forest Props.tsx",
         "C:/Users/ejbos/prog/Pyland/data/tsx/Forest Structures.tsx",
-        "C:/Users/ejbos/prog/Pyland/data/tsx/Trees.tsx",
         "C:/Users/ejbos/prog/Pyland/data/tsx/Forest Tilesett.tsx",
-        "C:/Users/ejbos/prog/Pyland/data/tsx/Water Tileset.tsx",
-        "C:/Users/ejbos/Desktop/tlx Pixivan/map.tmx",
-        "C:/Users/ejbos/Desktop/tlx Pixivan/Water Tileset.tsx",
-        "C:/Users/ejbos/Desktop/tlx Pixivan/Trees.tsx"
+        "C:/Users/ejbos/prog/Pyland/data/tsx/Water Tileset.tsx"
     ]
 }
