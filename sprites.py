@@ -1,4 +1,6 @@
-import pygame
+import pygame.sprite
+
+from tile import *
 
 
 class Sprites(pygame.sprite.Group):
@@ -12,9 +14,6 @@ class Sprites(pygame.sprite.Group):
         self.offset = pygame.math.Vector2()
 
         # making floor
-        self.floor_surf = pygame.image.load('graphic/background.png').convert()
-        self.floor_rect = self.floor_surf.get_rect(topleft=(0, 0))
-
     def draw_over_world(self, player):
 
         # getting offset
@@ -46,3 +45,20 @@ class Sprites(pygame.sprite.Group):
             else:
                 offset_pos = sprite.rect.topleft - self.offset
                 self.display_surface.blit(sprite.image, offset_pos)
+
+    @staticmethod
+    def render_layers(tmx_data, sprite_group):
+        for layer in tmx_data.visible_layers:
+            if hasattr(layer, 'data'):
+                for x, y, surf in layer.tiles():
+                    pos = (x*16, y*16)
+                    Tile(pos=pos, surf=surf, groups=sprite_group)
+
+    @staticmethod
+    def render_objects(tmx_data, sprite_group):
+        for obj in tmx_data.objects:
+            pos = obj.x, obj.y
+            if obj.type in ('Tree', 'Rock', 'Bush', 'Log', 'Building'):
+                Tile(pos=pos, surf=obj.image, groups=sprite_group)
+            else:
+                pass    # Shapes
