@@ -1,70 +1,44 @@
 import sys
-from pytmx import load_pygame
 
-from sprites import *
+from sprites import Sprite
 from player import *
 from dialogwindow import *
-from support import *
 
 
 class OverWorld:
-    def __init__(self, screen):
+    def __init__(self, screen, tmx_map):
 
         # get the display surface
         self.display_surface = screen
-        self.game_paused = False
 
         # sprite setup
-        self.visible_sprites = pygame.sprite.Group()
-        Sprites.render_layers(self.tmx_data,  self.visible_sprites)
-        Sprites.render_objects(self.tmx_data,  self.visible_sprites)
+        self.all_sprites = pygame.sprite.Group()
+        self.collision_sprites = pygame.sprite.Group()
+        self.setup(tmx_map)
 
-        # user interface
-        self.hud = DialogWindow()
-        pygame.mouse.set_visible(False)
+    def setup(self, tmx_map):
+        for layer in ['Floor', 'Pavement', 'Vegetation', 'Cliffs3', 'Cliffs2', 'Cliffs1', 'FloorDarkShadow',
+                      'FloorBrightShadow']:
+            for x, y, surf in tmx_map.get_layer_by_name(layer).tiles():
+                Sprite((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites)
 
-    def logic(self, action_key):
+        for obj in tmx_map.get_layer_by_name('Objects'):
+            pos = obj.x, obj.y
+            if obj.name == 'Player':
+                Player(pos, self.all_sprites, self.collision_sprites)
+            else:
+                Sprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites))
 
-        # Turning the game off
-        if action_key == "QUIT":
-            pygame.quit()
-            sys.exit()
+    def render_objects(self, tmx_map):
+        pass    # Shapes
 
+    def logic(self):
+        pass
 
-        # self.player.can_interact = False
-        #
-        # # Reacting to pressing/holding keys and setting direction of player
-        # if action_key[pygame.K_UP] or action_key[pygame.K_w]:
-        #     self.player.direction.y = -1
-        # elif action_key[pygame.K_DOWN] or action_key[pygame.K_s]:
-        #     self.player.direction.y = 1
-        # else:
-        #     self.player.direction.y = 0
-        #
-        # if action_key[pygame.K_RIGHT] or action_key[pygame.K_d]:
-        #     self.player.direction.x = 1
-        # elif action_key[pygame.K_LEFT] or action_key[pygame.K_a]:
-        #     self.player.direction.x = -1
-        # else:
-        #     self.player.direction.x = 0
-        #
-        # # Logic behind moving the player - position, hit boxes and collisions
-        # self.player.move()
-        #
-        # # Interaction with characters on map
-        # if self.player.can_interact:
-        #
-        #     if self.player.rect.x < 700:
-        #         self.hud.set_dialog_window('Press E to interact.', 20,
-        #                                    400 - self.visible_sprites.offset.x, 250 - self.visible_sprites.offset.y, 200, 100)
-        #     else:
-        #         self.hud.set_dialog_window('Press E to interact.', 20,
-        #                                    1450 - self.visible_sprites.offset.x, 550 - self.visible_sprites.offset.y, 200, 100)
-
-    def render(self):
+    def render(self, dt):
         # update and draw the game
-        self.visible_sprites.draw(self.display_surface)
-        self.visible_sprites.update()
+        self.all_sprites.draw(self.display_surface)
+        self.all_sprites.update(dt)
 
 
 

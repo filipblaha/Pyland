@@ -1,5 +1,8 @@
-from overworld import *
+import pygame
+from pytmx.util_pygame import load_pygame
 from os.path import join
+from overworld import *
+from globalvariables import *
 
 
 class Game:
@@ -10,8 +13,8 @@ class Game:
         pygame.display.set_caption('Pyland')
 
         # objects
-        self.over_world = OverWorld(self.screen)
         self.tmx_maps = {0: load_pygame(join('..', 'data', 'levels', 'map.tmx'))}
+        self.over_world = OverWorld(self.screen, self.tmx_maps[0])
 
         self.game_stage = GameState.OVER_WORLD
         # self.game_state = GameState.IDE
@@ -20,47 +23,36 @@ class Game:
         self.clock = pygame.time.Clock()
         self.start_time = pygame.time.get_ticks()
 
-    def input(self):
-        keys = pygame.key.get_pressed()
-
-        for event in pygame.event.get():
-            # user pressing ESC or X (CLOSE APP) to quit
-            if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                return ["QUIT", "QUIT"]
-            # user pressing button to check
-            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                return ["BUTTON_PRESSED", "BUTTON_PRESSED"]
-            # user pressing keys
-            elif event.type == pygame.KEYDOWN:
-                return [keys, event.key]
-        return [keys, None]
-
-    def logic(self, action):
+    def logic(self):
         if self.game_stage == GameState.OVER_WORLD:
-            self.over_world.logic(action[0])
+            self.over_world.logic()
         # elif self.game_state == GameState.IDE:
-        #     self.ide.logic(action)
+        #     self.ide.logic()
 
-    def render(self):
+    def render(self, dt):
         if self.game_stage == GameState.OVER_WORLD:
-            self.over_world.render()
+            self.over_world.render(dt)
         # elif self.game_state == GameState.IDE:
         #     self.ide.render()
 
         pygame.display.update()
 
-    def game_loop(self):
+    def run(self):
         while True:
-            action = self.input()
-            self.logic(action)
-            self.render()
+            dt = self.clock.tick(FPS) / 1000
 
-            game.clock.tick(FPS)
+            # Turning the game off
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
 
+            self.logic()
+            self.render(dt)
 
 if __name__ == "__main__":
     game = Game()
-    game.game_loop()
+    game.run()
 
 
 
