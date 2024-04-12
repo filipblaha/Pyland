@@ -60,5 +60,4 @@ class OverWorld:
 
         pos = pygame.mouse.get_pos()
         self.display_surface.blit(self.mouse, pos)
-        # pygame.draw.polygon(self.display_surface, (0,0,0), self.barrier)
 

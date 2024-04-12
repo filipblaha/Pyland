@@ -29,7 +29,7 @@
   <image width="30" height="35" source="../../graphics/characters/char6_ii.png"/>
  </tile>
  <tile id="12">
-  <image width="30" height="35" source="../../graphics/characters/char6_iv.png"/>
+  <image width="40" height="47" source="../../graphics/characters/wizard/wizard1.png"/>
  </tile>
  <tile id="13">
   <image width="32" height="32" source="../../graphics/characters/char8.png"/>
@@ -50,7 +50,7 @@
   <image width="32" height="32" source="../../graphics/characters/char8_iii.png"/>
  </tile>
  <tile id="19">
-  <image width="30" height="35" source="../../graphics/characters/char6_v.png"/>
+  <image width="40" height="47" source="../../graphics/characters/char6_v.png"/>
  </tile>
  <tile id="20">
   <image width="30" height="45" source="../../graphics/characters/char9.png"/>

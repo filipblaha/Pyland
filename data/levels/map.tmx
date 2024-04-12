@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="23" nextobjectid="9165">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="23" nextobjectid="9166">
  <tileset firstgid="1" source="../tsx/Cliffs.tsx"/>
  <tileset firstgid="193" source="../tsx/Water Tileset.tsx"/>
  <tileset firstgid="303" source="../tsx/Trees.tsx"/>
@@ -1068,7 +1068,6 @@
   <object id="8401" name="sapling_small_red" type="Tree" gid="337" x="1108" y="1066.66" width="32" height="32"/>
   <object id="8402" name="sapling_small_red" type="Tree" gid="337" x="1181" y="859.665" width="32" height="32"/>
   <object id="8403" name="sapling_small_red" type="Tree" gid="337" x="1089" y="542.665" width="32" height="32"/>
-  <object id="8432" name="char6_iv" type="Character" gid="3221226946" x="422.897" y="625.932" width="30" height="35"/>
   <object id="8434" name="bush2" type="Bush" gid="1456" x="710.667" y="1059.33" width="32" height="32"/>
   <object id="8435" name="bush2" type="Bush" gid="1456" x="792.667" y="1052.33" width="32" height="32"/>
   <object id="8436" name="bush2" type="Bush" gid="1456" x="669.25" y="920.833" width="32" height="32"/>
@@ -1495,5 +1494,6 @@
   <object id="9161" name="house4" type="Building" gid="1483" x="693.333" y="471.667" width="200" height="210"/>
   <object id="9162" name="rock_big2" type="Rock" gid="1449" x="429" y="790.667" width="32" height="32"/>
   <object id="9164" name="bridge1" type="Building" gid="1487" x="401.545" y="351.682" width="46" height="97"/>
+  <object id="9165" name="wizard" type="Character" gid="2147485122" x="422" y="624.75" width="40" height="47"/>
  </objectgroup>
 </map>
