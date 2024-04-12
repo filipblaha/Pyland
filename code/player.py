@@ -1,22 +1,29 @@
+import pygame
+
 from globalvariables import *
 from os.path import join
 
+
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, collision_sprites):
-        super().__init__(groups)
+    def __init__(self, pos, group, tmx_map, name):
+        super().__init__(group)
 
         self.image = pygame.image.load(join('..', 'graphics', 'characters', 'char1.png'))
+        self.name = name
 
-        #rects
+        # rects
         self.rect = self.image.get_frect(topleft=pos)
-        self.old_rect = self.rect.copy()
+        self.hitbox_rect = self.rect
+        self.old_rect = self.hitbox_rect.copy()
 
         # movement
         self.direction = vector()
-        self.speed = 200
+        self.speed = 150
 
-        # collisions
-        self.collision_sprites = collision_sprites
+        for obj in tmx_map.get_layer_by_name('Objects'):
+            pos = obj.x, obj.y
+            if obj.name == 'barrier':
+                self.barrier = obj.points
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -39,35 +46,36 @@ class Player(pygame.sprite.Sprite):
 
         if input_vector.magnitude() != 0:
             self.direction = input_vector.normalize()
+        else:
+            self.direction = input_vector
 
         # movement
     def move(self, dt):
-        self.rect.x += self.direction.x * self.speed * dt
-        self.collision('horizontal')
-        self.rect.y += self.direction.y * self.speed * dt
-        self.collision('vertical')
 
-    def collision(self, axis):
-        for sprite in self.collision_sprites:
-            if sprite.rect.colliderect(self.rect):
-                if axis == 'horizontal':
-                    # left
-                    if self.rect.left <= sprite.rect.right and self.old_rect.left >= sprite.old_rect.right:
-                        self.rect.left = sprite.rect.right
-                    # right
+        self.hitbox_rect.x += self.direction.x * self.speed * dt
+        self.hitbox_rect.y += self.direction.y * self.speed * dt
 
-                    if self.rect.right >= sprite.rect.left and self.old_rect.right <= sprite.old_rect.left:
-                        self.rect.right = sprite.rect.left
-                elif axis == 'vertical':
-                    # top
-                    if self.rect.top <= sprite.rect.bottom and self.old_rect.top >= sprite.old_rect.bottom:
-                        self.rect.top = sprite.rect.bottom
-                    # bottom
+        if self.collision_check(self.barrier):
+            self.hitbox_rect.center = self.old_rect.center
 
-                    if self.rect.bottom >= sprite.rect.top and self.old_rect.bottom <= sprite.old_rect.top:
-                        self.rect.bottom = sprite.rect.top
+    def collision_check(self, polygon_vertices):
+        num_intersections = 0
+        player_x = self.hitbox_rect.midbottom[0]
+        player_y = self.hitbox_rect.midbottom[1]-5
+        for i in range(len(polygon_vertices)):
+            p1 = polygon_vertices[i]
+            p2 = polygon_vertices[(i + 1) % len(polygon_vertices)]
+
+            if (p1[1] > player_y) != (p2[1] > player_y) and \
+                    player_x < (p2[0] - p1[0]) * (player_y - p1[1]) / (p2[1] - p1[1]) + p1[0]:
+                num_intersections += 1
+
+        if num_intersections % 2 == 1:
+            return False
+        else:
+            return True
 
     def update(self, dt):
-        self.old_rect = self.rect.copy()
         self.input()
         self.move(dt)
+        self.old_rect = self.hitbox_rect.copy()

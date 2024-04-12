@@ -43,12 +43,13 @@ class Game:
 
             # Turning the game off
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
 
             self.logic()
             self.render(dt)
+
 
 if __name__ == "__main__":
     game = Game()
