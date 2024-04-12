@@ -7,9 +7,35 @@ from os.path import join
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group, tmx_map, name):
         super().__init__(group)
-
-        self.image = pygame.image.load(join('..', 'graphics', 'characters', 'char1.png'))
         self.name = name
+
+        self.run_animation = []
+        self.stand_animation = []
+        self.frame_size = 32
+        for i in range(8):
+            filename = f"run{i}.png"
+            image = pygame.image.load(os.path.join('..', 'graphics', 'characters', "player", filename))
+            image = pygame.Surface.convert_alpha(image)
+            dir_animation = []
+            for j in range(6):
+                frame = image.subsurface((j * self.frame_size, 0, self.frame_size, image.get_height()))
+                dir_animation.append(frame)
+            self.run_animation.append(dir_animation)
+
+        for i in range(8):
+            filename = f"stand{i}.png"
+            image = pygame.image.load(os.path.join('..', 'graphics', 'characters', "player", filename))
+            image = pygame.Surface.convert_alpha(image)
+            dir_animation = []
+            for j in range(2):
+                frame = image.subsurface((j * self.frame_size, 0, self.frame_size, image.get_height()))
+                dir_animation.append(frame)
+            self.stand_animation.append(dir_animation)
+
+        self.index = 0
+        self.counter = 0
+        # self.image = self.run_animation[self.index][1]
+        self.image = self.stand_animation[self.index][0]
 
         # rects
         self.rect = self.image.get_frect(topleft=pos)
@@ -18,7 +44,8 @@ class Player(pygame.sprite.Sprite):
 
         # movement
         self.direction = vector()
-        self.speed = 150
+        self.last_direction = vector(0, 1)
+        self.speed = 100
 
         for obj in tmx_map.get_layer_by_name('Objects'):
             pos = obj.x, obj.y
@@ -48,6 +75,8 @@ class Player(pygame.sprite.Sprite):
             self.direction = input_vector.normalize()
         else:
             self.direction = input_vector
+        if not self.direction == vector(0, 0):
+            self.last_direction = self.direction
 
         # movement
     def move(self, dt):
@@ -75,7 +104,61 @@ class Player(pygame.sprite.Sprite):
         else:
             return True
 
+    def animation(self, dt):
+        self.counter += 1
+        if self.direction == vector(0, 0):
+            animation_speed = 1000 * dt
+            if self.counter >= animation_speed:
+                self.counter = 0
+                self.index += 1
+                if self.index >= 2:
+                    self.index = 0
+
+                if self.last_direction == vector(0, 1):
+                    self.image = self.stand_animation[0][self.index]
+                elif self.last_direction == vector(-1, 1).normalize():
+                    self.image = self.stand_animation[1][self.index]
+                elif self.last_direction == vector(-1, 0):
+                    self.image = self.stand_animation[2][self.index]
+                elif self.last_direction == vector(-1, -1).normalize():
+                    self.image = self.stand_animation[3][self.index]
+                elif self.last_direction == vector(0, -1):
+                    self.image = self.stand_animation[4][self.index]
+                elif self.last_direction == vector(1, -1).normalize():
+                    self.image = self.stand_animation[5][self.index]
+                elif self.last_direction == vector(1, 0):
+                    self.image = self.stand_animation[6][self.index]
+                elif self.last_direction == vector(1, 1).normalize():
+                    self.image = self.stand_animation[7][self.index]
+
+        else:
+            animation_speed = 150 * dt
+            if self.counter >= animation_speed:
+                self.counter = 0
+                self.index += 1
+                if self.index >= 5:
+                    self.index = 0
+
+                if self.direction == vector(0, 1):
+                    self.image = self.run_animation[0][self.index]
+                elif self.direction == vector(-1, 1).normalize():
+                    self.image = self.run_animation[1][self.index]
+                elif self.direction == vector(-1, 0):
+                    self.image = self.run_animation[2][self.index]
+                elif self.direction == vector(-1, -1).normalize():
+                    self.image = self.run_animation[3][self.index]
+                elif self.direction == vector(0, -1):
+                    self.image = self.run_animation[4][self.index]
+                elif self.direction == vector(1, -1).normalize():
+                    self.image = self.run_animation[5][self.index]
+                elif self.direction == vector(1, 0):
+                    self.image = self.run_animation[6][self.index]
+                elif self.direction == vector(1, 1).normalize():
+                    self.image = self.run_animation[7][self.index]
+
     def update(self, dt):
         self.input()
         self.move(dt)
+        self.animation(dt)
         self.old_rect = self.hitbox_rect.copy()
+

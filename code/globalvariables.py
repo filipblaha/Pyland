@@ -5,7 +5,7 @@ from enum import Enum
 
 WIDTH = 1920
 HEIGHT = 1080
-FPS = 60
+FPS = 40
 TILE_SIZE = 16
 
 # font setup
