@@ -34,6 +34,7 @@ class Player(pygame.sprite.Sprite):
 
         self.index = 0
         self.counter = 0
+        self.animation_speed = 0
         # self.image = self.run_animation[self.index][1]
         self.image = self.stand_animation[self.index][0]
 
@@ -107,8 +108,8 @@ class Player(pygame.sprite.Sprite):
     def animation(self, dt):
         self.counter += 1
         if self.direction == vector(0, 0):
-            animation_speed = 1000 * dt
-            if self.counter >= animation_speed:
+            if self.counter >= self.animation_speed:
+                self.animation_speed = 1000 * dt
                 self.counter = 0
                 self.index += 1
                 if self.index >= 2:
@@ -132,8 +133,8 @@ class Player(pygame.sprite.Sprite):
                     self.image = self.stand_animation[7][self.index]
 
         else:
-            animation_speed = 150 * dt
-            if self.counter >= animation_speed:
+            self.animation_speed = 150 * dt
+            if self.counter >= self.animation_speed:
                 self.counter = 0
                 self.index += 1
                 if self.index >= 5:
