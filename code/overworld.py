@@ -1,9 +1,13 @@
 import sys
 
+import pytmx.pytmx
+
 from sprites import Sprite
 from player import *
 from dialogwindow import *
 from CameraGroup import *
+from pytmx.pytmx import TileFlags
+
 
 
 class OverWorld:
@@ -38,7 +42,10 @@ class OverWorld:
             elif obj.name == 'barrier':
                 self.barrier = obj.points
             else:
-                Sprite(pos, obj.image, self.camera_group, obj.name)
+                sprite_image = obj.image
+                if pytmx.pytmx.TileFlags(False, True, False):
+                    sprite_image = pygame.transform.flip(sprite_image, True, False)
+                Sprite(pos, sprite_image, self.camera_group, obj.name)
 
     def render_objects(self, tmx_map):
         pass    # Shapes

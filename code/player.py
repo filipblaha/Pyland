@@ -91,7 +91,7 @@ class Player(pygame.sprite.Sprite):
     def collision_check(self, polygon_vertices):
         num_intersections = 0
         player_x = self.hitbox_rect.midbottom[0]
-        player_y = self.hitbox_rect.midbottom[1]-5
+        player_y = self.hitbox_rect.midbottom[1]-10
         for i in range(len(polygon_vertices)):
             p1 = polygon_vertices[i]
             p2 = polygon_vertices[(i + 1) % len(polygon_vertices)]
