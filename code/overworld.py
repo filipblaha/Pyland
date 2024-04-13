@@ -39,25 +39,19 @@ class OverWorld:
             pos = obj.x, obj.y
             if obj.name == 'Player':
                 self.player = Player(pos, self.camera_group, tmx_map, 'Player')
-            elif obj.name == 'barrier':
-                self.barrier = obj.points
             else:
                 sprite_image = obj.image
                 if pytmx.pytmx.TileFlags(False, True, False):
                     sprite_image = pygame.transform.flip(sprite_image, True, False)
                 Sprite(pos, sprite_image, self.camera_group, obj.name)
 
-    def render_objects(self, tmx_map):
-        pass    # Shapes
-
-    def logic(self):
-        pass
-
-    def render(self, dt):
-        # update and draw the game
-        self.camera_group.custom_draw(self.player)
+    def logic(self, dt):
+        # update
         self.camera_group.update(dt)
 
-        pos = pygame.mouse.get_pos()
-        self.display_surface.blit(self.mouse, pos)
+    def render(self, dt):
+        # draw
+        self.camera_group.custom_draw(self.player)
+
+        self.display_surface.blit(self.mouse, pygame.mouse.get_pos())
 

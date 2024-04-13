@@ -9,7 +9,7 @@ class Game:
     def __init__(self):
         pygame.init()
 
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN, pygame.SCALED)
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN | pygame.SCALED)
         pygame.display.set_caption('Pyland')
 
         # objects
@@ -23,9 +23,9 @@ class Game:
         self.clock = pygame.time.Clock()
         self.start_time = pygame.time.get_ticks()
 
-    def logic(self):
+    def logic(self, dt):
         if self.game_stage == GameState.OVER_WORLD:
-            self.over_world.logic()
+            self.over_world.logic(dt)
         # elif self.game_state == GameState.IDE:
         #     self.ide.logic()
 
@@ -47,7 +47,7 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-            self.logic()
+            self.logic(dt)
             self.render(dt)
 
 

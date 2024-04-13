@@ -14,8 +14,8 @@ class CameraGroup(pygame.sprite.Group):
         self.half_h = self.display_surface.get_size()[1]//2
 
         # zoom
-        self.zoom_scale = 2.4
-        self.internal_surf_size = (670, 380)
+        self.zoom_scale = 3
+        self.internal_surf_size = (640, 360)
         self.internal_surf = pygame.Surface(self.internal_surf_size, pygame.SRCALPHA)
         self.internal_rect = self.internal_surf.get_rect(center=(self.half_w, self.half_h))
         self.internal_surf_size_vector = pygame.math.Vector2(self.internal_surf_size)
@@ -24,7 +24,7 @@ class CameraGroup(pygame.sprite.Group):
         self.internal_offset.y = self.internal_surf_size[1] // 2 - self.half_h
 
         # box setup
-        self.camera_borders = {'left': 650, 'right': 650, 'top': 380, 'bottom': 380}
+        self.camera_borders = {'left': 800, 'right': 800, 'top': 480, 'bottom': 480}
         lft = self.camera_borders['left']
         tp = self.camera_borders['top']
         rgt = self.display_surface.get_size()[0] - self.camera_borders['left'] - self.camera_borders['right']

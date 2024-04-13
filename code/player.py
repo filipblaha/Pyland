@@ -48,10 +48,12 @@ class Player(pygame.sprite.Sprite):
         self.last_direction = vector(0, 1)
         self.speed = 100
 
-        for obj in tmx_map.get_layer_by_name('Objects'):
+        for obj in tmx_map.get_layer_by_name('Zones'):
             pos = obj.x, obj.y
             if obj.name == 'barrier':
                 self.barrier = obj.points
+            # if obj.name == 'wizard_zone'
+            #     self.
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -109,7 +111,7 @@ class Player(pygame.sprite.Sprite):
         self.counter += 1
         if self.direction == vector(0, 0):
             if self.counter >= self.animation_speed:
-                self.animation_speed = 1000 * dt
+                self.animation_speed = 900 * dt
                 self.counter = 0
                 self.index += 1
                 if self.index >= 2:
