@@ -87,10 +87,10 @@ class Player(pygame.sprite.Sprite):
         self.hitbox_rect.x += self.direction.x * self.speed * dt
         self.hitbox_rect.y += self.direction.y * self.speed * dt
 
-        if self.collision_check(self.barrier):
+        if self.polygon_collision_check(self.barrier):
             self.hitbox_rect.center = self.old_rect.center
 
-    def collision_check(self, polygon_vertices):
+    def polygon_collision_check(self, polygon_vertices):
         num_intersections = 0
         player_x = self.hitbox_rect.midbottom[0]
         player_y = self.hitbox_rect.midbottom[1]-10
@@ -106,6 +106,15 @@ class Player(pygame.sprite.Sprite):
             return False
         else:
             return True
+
+    def zone_collision_check(self, zone):
+        player_x = self.hitbox_rect.centerx
+        player_y = self.hitbox_rect.centery
+
+        if zone.collidepoint((player_x, player_y)):
+            return True
+        else:
+            return False
 
     def animation(self, dt):
         self.counter += 1

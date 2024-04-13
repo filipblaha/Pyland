@@ -16,14 +16,16 @@ class OverWorld:
         # get the display surface
         self.display_surface = screen
 
+        # zones
+        self.wizard_zone = []
+
         # sprite setup
         self.camera_group = CameraGroup()
         self.player = None
         self.barrier = None
         self.setup(tmx_map)
-        # self.camera_group = CameraGroup()
 
-        ####smazat
+        # smazat
         pygame.mouse.set_visible(False)
         self.mouse = pygame.Surface((10, 10))
         self.mouse.fill((0, 0, 0))
@@ -45,7 +47,17 @@ class OverWorld:
                     sprite_image = pygame.transform.flip(sprite_image, True, False)
                 Sprite(pos, sprite_image, self.camera_group, obj.name)
 
+        for obj in tmx_map.get_layer_by_name('Zones'):
+            pos = obj.x, obj.y
+            if obj.name == 'wizard_zone':
+                self.wizard_zone = pygame.Rect(pos[0], pos[1], obj.width, obj.height)
+
     def logic(self, dt):
+
+        # zones
+        if self.player.zone_collision_check(self.wizard_zone):
+            print(1)
+
         # update
         self.camera_group.update(dt)
 
