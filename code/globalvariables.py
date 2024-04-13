@@ -9,7 +9,7 @@ FPS = 40
 TILE_SIZE = 16
 
 # font setup
-FONT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'graphic', 'font', 'Cabal-w5j3.ttf')
+FONT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'graphics', 'font', 'Cabal-w5j3.ttf')
 FONT_SIZE = 18
 
 

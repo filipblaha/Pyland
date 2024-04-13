@@ -6,8 +6,6 @@ from sprites import Sprite
 from player import *
 from dialogwindow import *
 from CameraGroup import *
-from pytmx.pytmx import TileFlags
-
 
 
 class OverWorld:
@@ -18,6 +16,9 @@ class OverWorld:
 
         # zones
         self.wizard_zone = []
+
+        # dialog windows
+        self.wizard_dialog_window = DialogWindow('Welcome', 16, (100, 100), 200, 50)
 
         # sprite setup
         self.camera_group = CameraGroup()
@@ -55,8 +56,6 @@ class OverWorld:
     def logic(self, dt):
 
         # zones
-        if self.player.zone_collision_check(self.wizard_zone):
-            print(1)
 
         # update
         self.camera_group.update(dt)
@@ -64,6 +63,9 @@ class OverWorld:
     def render(self, dt):
         # draw
         self.camera_group.custom_draw(self.player)
+
+        if self.player.zone_collision_check(self.wizard_zone):
+            self.wizard_dialog_window.display()
 
         self.display_surface.blit(self.mouse, pygame.mouse.get_pos())
 

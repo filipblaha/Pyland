@@ -2,7 +2,21 @@ from globalvariables import *
 
 
 class DialogWindow:
-    def __init__(self):
+    def __init__(self, text, font_size, pos: tuple, width, height, highlight_words=None, highlight_font_size=None, highlight_color=None):
+        """
+            REQUIRED arguments: Text and font size. Position and size of the window.
+
+            OPTIONAL arguments: You can highlight words from the text (change their size and color).
+
+            :param text:
+            :param font_size:
+            :param pos:
+            :param width:
+            :param height:
+            :param highlight_words:
+            :param highlight_font_size:
+            :param highlight_color:
+        """
 
         self.display_surface = pygame.display.get_surface()
         self.dialog_color = (200, 200, 200)
@@ -11,64 +25,34 @@ class DialogWindow:
         self.line_heights = []
         self.fonts = []
 
-        self.text = None
-        self.font_size = 0
-        self.pos = pygame.Vector2()
-        self.width = 0
-        self.height = 0
-        self.highlight_words = None
-        self.highlight_font_size = None
-        self.highlight_color = None
-        self.max_width = 0
-
-    def set_dialog_window(self, text, font_size, pos_x, pos_y, width, height, highlight_words=None, highlight_font_size=None, highlight_color=None):
-        """
-        REQUIRED arguments: Text and font size. Position and size of the window.
-
-         OPTIONAL arguments: You can highlight words from the text (change their size and color).
-
-        :param text:
-        :param font_size:
-        :param pos_x:
-        :param pos_y:
-        :param width:
-        :param height:
-        :param highlight_words:
-        :param highlight_font_size:
-        :param highlight_color:
-        """
-
-        # formatting the text string - splitting into rows, calculating heights
-        # lines is list of segments of a line(words), font sizes and colors for each word
-
         self.text = text
         self.font_size = font_size
-        self.pos = pygame.Vector2(pos_x, pos_y)
+        self.pos = pygame.Vector2(pos)
         self.width = width
         self.height = height
         self.max_width = width - 50
 
         # highlighted words
-        if self.highlight_words is None or self.highlight_words == []:
+        if highlight_words is None or highlight_words == []:
             self.highlight_words = []
         else:
             self.highlight_words = highlight_words
+
         # font
-        if self.highlight_font_size is None or self.highlight_words == 0:
+        if highlight_font_size is None or highlight_words == 0:
             self.highlight_font_size = 0
         else:
             self.highlight_font_size = highlight_font_size
-        # color
-        if self.highlight_color is None or self.highlight_words == (0, 0, 0):
+
+        if highlight_color is None or highlight_words == (0, 0, 0):
             self.highlight_color = (0, 0, 0)
+            self.lines, self.line_heights = self.split_lines()
         else:
             self.highlight_color = highlight_color
 
-            self.lines, self.line_heights = self.split_lines()
-
-    def display_dialog_window(self):
+    def display(self):
         """
-        Call the function to create a dialog window.
+        Display of the dialog window.
         """
 
         # drawing dialog window
