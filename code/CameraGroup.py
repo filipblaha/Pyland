@@ -30,7 +30,9 @@ class CameraGroup(pygame.sprite.Group):
         rgt = self.display_surface.get_size()[0] - self.camera_borders['left'] - self.camera_borders['right']
         btm = self.display_surface.get_size()[1] - self.camera_borders['top'] - self.camera_borders['bottom']
         self.camera_rect = pygame.Rect(lft, tp, rgt, btm)
-        self.camera_rect.center = (400, 240)
+
+        self.camera_rect.center = (600, 600)
+        # self.camera_rect.center = (400, 240)
 
     def box_target_camera(self, target):
         if target.rect.left < self.camera_rect.left:
@@ -50,12 +52,12 @@ class CameraGroup(pygame.sprite.Group):
 
         for sprite in self.sprites():
             offset_pos = sprite.rect.topleft - self.offset + self.internal_offset
-            if sprite.name == 'Tile' or sprite.name == 'bridge1':
+            if sprite.name == 'Tile' or sprite.name == 'bridge1' or sprite.name == 'bridge2':
                 self.internal_surf.blit(sprite.image, offset_pos)
 
         for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.midbottom[1]):
             offset_pos = sprite.rect.topleft - self.offset + self.internal_offset
-            if sprite.name == 'Tile' or sprite.name == 'bridge1':
+            if sprite.name == 'Tile' or sprite.name == 'bridge1' or sprite.name == 'bridge2':
                 pass
             else:
                 self.internal_surf.blit(sprite.image, offset_pos)

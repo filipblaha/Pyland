@@ -18,7 +18,7 @@ class OverWorld:
         self.wizard_zone = []
 
         # dialog windows
-        self.wizard_dialog_window = DialogWindow('Welcome', 16, (100, 100), 200, 50)
+        self.wizard_dialog_window = None
 
         # sprite setup
         self.camera_group = CameraGroup()
@@ -33,6 +33,7 @@ class OverWorld:
         self.mouse_mask = pygame.mask.from_surface(self.mouse)
 
     def setup(self, tmx_map):
+        # tmx
         for layer in ['Floor', 'Pavement', 'Vegetation', 'Cliffs3', 'Cliffs2', 'Cliffs1', 'FloorDarkShadow',
                       'FloorBrightShadow']:
             for x, y, surf in tmx_map.get_layer_by_name(layer).tiles():
@@ -44,28 +45,34 @@ class OverWorld:
                 self.player = Player(pos, self.camera_group, tmx_map, 'Player')
             else:
                 sprite_image = obj.image
-                if pytmx.pytmx.TileFlags(False, True, False):
-                    sprite_image = pygame.transform.flip(sprite_image, True, False)
                 Sprite(pos, sprite_image, self.camera_group, obj.name)
+                print(obj.gid)
 
         for obj in tmx_map.get_layer_by_name('Zones'):
             pos = obj.x, obj.y
             if obj.name == 'wizard_zone':
                 self.wizard_zone = pygame.Rect(pos[0], pos[1], obj.width, obj.height)
 
+        # dialog windows
+
+        self.wizard_dialog_window = DialogWindow(self.camera_group, 'Welcome home you piece of shit', 34, (-500, 580), 450, 150)
+
     def logic(self, dt):
 
         # zones
+        if self.player.zone_collision_check(self.wizard_zone):
+            self.wizard_dialog_window.active = True
+        else:
+            self.wizard_dialog_window.active = False
 
         # update
         self.camera_group.update(dt)
+        self.wizard_dialog_window.update()
 
     def render(self, dt):
         # draw
         self.camera_group.custom_draw(self.player)
-
-        if self.player.zone_collision_check(self.wizard_zone):
-            self.wizard_dialog_window.display()
+        self.wizard_dialog_window.display()
 
         self.display_surface.blit(self.mouse, pygame.mouse.get_pos())
 

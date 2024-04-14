@@ -144,7 +144,7 @@ class Player(pygame.sprite.Sprite):
                     self.image = self.stand_animation[7][self.index]
 
         else:
-            self.animation_speed = 150 * dt
+            self.animation_speed = 100 * dt
             if self.counter >= self.animation_speed:
                 self.counter = 0
                 self.index += 1

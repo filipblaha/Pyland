@@ -2,7 +2,7 @@ from globalvariables import *
 
 
 class DialogWindow:
-    def __init__(self, text, font_size, pos: tuple, width, height, highlight_words=None, highlight_font_size=None, highlight_color=None):
+    def __init__(self, camera_group, text, font_size, pos: tuple, width, height, highlight_words=None, highlight_font_size=None, highlight_color=None):
         """
             REQUIRED arguments: Text and font size. Position and size of the window.
 
@@ -17,6 +17,10 @@ class DialogWindow:
             :param highlight_font_size:
             :param highlight_color:
         """
+        self.active = False
+
+        self.image = pygame.image.load(os.path.join('..', 'graphics', 'objects', "dialog_window.png"))
+        self.image = pygame.Surface.convert_alpha(self.image)
 
         self.display_surface = pygame.display.get_surface()
         self.dialog_color = (200, 200, 200)
@@ -25,9 +29,11 @@ class DialogWindow:
         self.line_heights = []
         self.fonts = []
 
+        self.camera_group = camera_group
         self.text = text
         self.font_size = font_size
         self.pos = pygame.Vector2(pos)
+        self.scaled_pos = pygame.Vector2()
         self.width = width
         self.height = height
         self.max_width = width - 50
@@ -54,43 +60,45 @@ class DialogWindow:
         """
         Display of the dialog window.
         """
+        if self.active:
+            # drawing dialog window
+            dialog_rect = pygame.Rect(0, 0, self.width, self.height)
+            dialog_rect.center = (self.scaled_pos.x, self.scaled_pos.y)
+            # pygame.draw.rect(self.display_surface, self.dialog_color, dialog_rect)
+            self.image = pygame.transform.scale(self.image, (dialog_rect.w, dialog_rect.h))
+            self.display_surface.blit(self.image, dialog_rect)
 
-        # drawing dialog window
-        dialog_rect = pygame.Rect(0, 0, self.width, self.height)
-        dialog_rect.center = (self.pos.x, self.pos.y)
-        pygame.draw.rect(self.display_surface, self.dialog_color, dialog_rect)
+            dialog_height = sum(self.line_heights)
 
-        dialog_height = sum(self.line_heights)
+            # taking formatted string (lines) and using the for cycle goes through every row
+            for i, (line, fonts, surfaces) in enumerate(self.lines):
 
-        # taking formatted string (lines) and using the for cycle goes through every row
-        for i, (line, fonts, surfaces) in enumerate(self.lines):
+                # calculating total width of a line for the offset
+                total_width = (len(line) - 1) * fonts[0].size(" ")[0]
+                for word, font in zip(line, fonts):
+                    word_w, word_h = font.size(word)
+                    total_width += word_w
 
-            # calculating total width of a line for the offset
-            total_width = (len(line) - 1) * fonts[0].size(" ")[0]
-            for word, font in zip(line, fonts):
-                word_w, word_h = font.size(word)
-                total_width += word_w
+                # first x_offset in line
+                x_offset = (self.width - total_width) // 2
 
-            # first x_offset in line
-            x_offset = (self.width - total_width) // 2
+                # goes through every word in line - setting size, color and offset
+                for word, font, surface in zip(line, fonts, surfaces):
 
-            # goes through every word in line - setting size, color and offset
-            for word, font, surface in zip(line, fonts, surfaces):
+                    # font size of each word
+                    this_font_width, this_font_height = font.size(word)
 
-                # font size of each word
-                this_font_width, this_font_height = font.size(word)
+                    # offsets to
+                    # offsets words to the center of a line, some words can be bigger than others
+                    y_offset = (self.height - dialog_height + self.line_heights[i] - this_font_height) // 2 + sum(self.line_heights[:i])
 
-                # offsets to
-                # offsets words to the center of a line, some words can be bigger than others
-                y_offset = (self.height - dialog_height + self.line_heights[i] - this_font_height) // 2 + sum(self.line_heights[:i])
+                    # rendering words
+                    text_rect = surface.get_rect(topleft=(self.scaled_pos.x - self.width // 2 + x_offset, self.scaled_pos.y - self.height // 2 + y_offset))
+                    self.display_surface.blit(surface, text_rect)
 
-                # rendering words
-                text_rect = surface.get_rect(topleft=(self.pos.x - self.width // 2 + x_offset, self.pos.y - self.height // 2 + y_offset))
-                self.display_surface.blit(surface, text_rect)
-
-                # adding spaces between the words
-                if word != line[-1]:
-                    x_offset += font.size(word)[0] + font.size(" ")[0]
+                    # adding spaces between the words
+                    if word != line[-1]:
+                        x_offset += font.size(word)[0] + font.size(" ")[0]
 
     def split_lines(self):
         # splitting string into a list of words with its properties
@@ -156,3 +164,8 @@ class DialogWindow:
         # adding the biggest height to each row to lines heights
         line_heights.append(max_word_height)
         return lines, line_heights
+
+    def update(self):
+        if self.active:
+            self.scaled_pos.x = self.pos.x - self.camera_group.offset.x * self.camera_group.zoom_scale
+            self.scaled_pos.y = self.pos.y - self.camera_group.offset.y * self.camera_group.zoom_scale

@@ -2,22 +2,22 @@
 <tileset version="1.10" tiledversion="1.10.2" name="Buildings" class="V" tilewidth="200" tileheight="240" tilecount="14" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0" type="Building">
-  <image width="200" height="240" source="../../graphics/objects/house4.png"/>
+  <image width="200" height="210" source="../../graphics/objects/house4.png"/>
  </tile>
  <tile id="1" type="Building">
-  <image width="200" height="240" source="../../graphics/objects/house1.png"/>
+  <image width="200" height="220" source="../../graphics/objects/house1.png"/>
   <objectgroup draworder="index" id="2">
    <object id="3" x="20" y="31" width="158" height="187"/>
   </objectgroup>
  </tile>
  <tile id="2" type="Building">
-  <image width="200" height="240" source="../../graphics/objects/house2.png"/>
+  <image width="200" height="225" source="../../graphics/objects/house2.png"/>
   <objectgroup draworder="index" id="2">
    <object id="2" x="49" y="5" width="99.3333" height="227.333"/>
   </objectgroup>
  </tile>
  <tile id="3" type="Building">
-  <image width="200" height="240" source="../../graphics/objects/house3.png"/>
+  <image width="200" height="200" source="../../graphics/objects/house3.png"/>
   <objectgroup draworder="index" id="2">
    <object id="3" x="30.6667" y="89.3333" width="140" height="48"/>
   </objectgroup>
@@ -29,19 +29,16 @@
   </objectgroup>
  </tile>
  <tile id="5">
-  <image width="60" height="79" source="../../graphics/objects/statue.png"/>
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="4" y="57" width="50" height="18"/>
-  </objectgroup>
+  <image source="../../graphics/objects/statue.png"/>
  </tile>
  <tile id="6">
-  <image width="64" height="64" source="../../graphics/objects/statue2.png"/>
+  <image source="../../graphics/objects/statue2.png"/>
  </tile>
  <tile id="7">
-  <image width="64" height="64" source="../../graphics/objects/statue2_ii.png"/>
+  <image source="../../graphics/objects/statue2_ii.png"/>
  </tile>
  <tile id="8">
-  <image width="64" height="64" source="../../graphics/objects/statue2_iii.png"/>
+  <image source="../../graphics/objects/statue2_iii.png"/>
  </tile>
  <tile id="9">
   <image width="64" height="64" source="../../graphics/objects/statue2_iv.png"/>
