@@ -1,7 +1,7 @@
 from globalvariables import *
 
 
-class Sprite(pygame.sprite.Sprite):
+class OverworldSprite(pygame.sprite.Sprite):
     def __init__(self, pos, surf, group, name):
         super().__init__(group)
         self.name = name

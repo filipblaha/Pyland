@@ -1,8 +1,4 @@
-import sys
-
-import pytmx.pytmx
-
-from sprites import Sprite
+from overworldsprites import *
 from player import *
 from dialogwindow import *
 from CameraGroup import *
@@ -26,25 +22,19 @@ class OverWorld:
         self.barrier = None
         self.setup(tmx_map)
 
-        # smazat
-        pygame.mouse.set_visible(False)
-        self.mouse = pygame.Surface((10, 10))
-        self.mouse.fill((0, 0, 0))
-        self.mouse_mask = pygame.mask.from_surface(self.mouse)
-
     def setup(self, tmx_map):
         # tmx
         for layer in ['Floor', 'Pavement', 'Vegetation', 'Cliffs3', 'Cliffs2', 'Cliffs1', 'FloorDarkShadow',
                       'FloorBrightShadow']:
             for x, y, surf in tmx_map.get_layer_by_name(layer).tiles():
-                Sprite((x * TILE_SIZE, y * TILE_SIZE), surf, self.camera_group, 'Tile')
+                OverworldSprite((x * TILE_SIZE, y * TILE_SIZE), surf, self.camera_group, 'Tile')
 
         for obj in tmx_map.get_layer_by_name('Objects'):
             pos = obj.x, obj.y
             if obj.name == 'Player':
                 self.player = Player(pos, self.camera_group, tmx_map, 'Player')
             else:
-                Sprite(pos, obj.image, self.camera_group, obj.name)
+                OverworldSprite(pos, obj.image, self.camera_group, obj.name)
 
         for obj in tmx_map.get_layer_by_name('Zones'):
             pos = obj.x, obj.y
@@ -72,5 +62,5 @@ class OverWorld:
         self.camera_group.custom_draw(self.player)
         self.wizard_dialog_window.display()
 
-        self.display_surface.blit(self.mouse, pygame.mouse.get_pos())
+        # self.display_surface.blit(self.mouse, pygame.mouse.get_pos())
 

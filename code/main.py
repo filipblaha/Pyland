@@ -1,23 +1,23 @@
-import pygame
+import sys
 from pytmx.util_pygame import load_pygame
-from os.path import join
 from overworld import *
-from globalvariables import *
+from ide import *
 
 
 class Game:
     def __init__(self):
         pygame.init()
 
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN | pygame.SCALED)
+        self.display_surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN | pygame.SCALED).convert_alpha()
         pygame.display.set_caption('Pyland')
 
         # objects
         self.tmx_maps = {0: load_pygame(join('..', 'data', 'levels', 'map.tmx'))}
-        self.over_world = OverWorld(self.screen, self.tmx_maps[0])
+        self.over_world = OverWorld(self.display_surface, self.tmx_maps[0])
+        self.ide = IDE(self.display_surface)
 
         self.game_stage = GameState.OVER_WORLD
-        # self.game_state = GameState.IDE
+        # self.game_stage = GameState.IDE
 
         # Timing
         self.clock = pygame.time.Clock()
@@ -26,15 +26,15 @@ class Game:
     def logic(self, dt):
         if self.game_stage == GameState.OVER_WORLD:
             self.over_world.logic(dt)
-        # elif self.game_state == GameState.IDE:
-        #     self.ide.logic()
+        elif self.game_stage == GameState.IDE:
+            self.ide.logic()
 
     def render(self, dt):
         if self.game_stage == GameState.OVER_WORLD:
             self.over_world.render(dt)
-        # elif self.game_state == GameState.IDE:
-        #     self.ide.render()
-
+        elif self.game_stage == GameState.IDE:
+            # self.ide.render()
+            pass
         pygame.display.update()
 
     def run(self):
