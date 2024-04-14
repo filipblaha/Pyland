@@ -44,9 +44,7 @@ class OverWorld:
             if obj.name == 'Player':
                 self.player = Player(pos, self.camera_group, tmx_map, 'Player')
             else:
-                sprite_image = obj.image
-                Sprite(pos, sprite_image, self.camera_group, obj.name)
-                print(obj.gid)
+                Sprite(pos, obj.image, self.camera_group, obj.name)
 
         for obj in tmx_map.get_layer_by_name('Zones'):
             pos = obj.x, obj.y
