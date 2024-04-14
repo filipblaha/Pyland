@@ -1,0 +1,121 @@
+[
+  {
+    "Section": "IDE",
+    "Type": "Text",
+    "Location": "Town",
+    "Oponent": "Mystery man",
+    "Text": [
+      "There's no time to waste!",
+      "You have to STOP him before it's too late!",
+      "Quickly!",
+      "Tell me your name and GO !!!"
+    ]
+  },
+  {
+    "Section": "IDE",
+    "Type": "Text",
+    "Location": "Town",
+    "Oponent": "Wizard",
+    "Text": [
+      "It has done nothing!?",
+      "Try the for cycle.",
+      "You have won!"
+    ]
+  },
+  {
+    "Section": "IDE",
+    "Type": "Goal",
+    "Location": "Town",
+    "Oponent": "Wizard",
+    "Data": [
+      [
+        "name",
+        "name = filip"
+      ],
+      [
+        "wizard_health",
+        "wizard_health = 0",
+        {
+          "Ordered word": "for"
+        }
+      ],
+      [
+        "wizard_health",
+        "wizard_health = 0",
+        {
+          "Banned word": "for"
+        },
+        {
+          "Ordered word": "while"
+        }
+      ],
+      [
+        "wizard_health",
+        "wizard_health = 0",
+        {
+          "Banned word": "for"
+        },
+        {
+          "Ordered word": "while"
+        }
+      ]
+    ]
+  },
+  {
+    "Section": "IDE",
+    "Type": "Preset words",
+    "Location": "Town",
+    "Oponent": "Wizard",
+    "Data": [
+      {
+        "Hint": "# name = your_name"
+      },
+      {
+        "No Hint": "wizard_health = 10",
+        "Hint": [
+          [
+            "# will he die with no health?",
+            "",
+            "wizard_health = 10"
+          ]
+        ]
+      },
+      {
+        "No Hint": [
+          "wizard_health = 10",
+          "my_damage = 1"
+        ],
+        "Hint": [
+          [
+            "# for i in range(n):e",
+            "",
+            "wizard_health = 10",
+            "my_damage = 1"
+          ]
+        ]
+      },
+      {
+        "No Hint": [
+          "wizard_health = 10",
+          "my_damage = 1"
+        ],
+        "Hint": [
+          [
+            "# while statement_a > statement_b:",
+            "",
+            "wizard_health = 10",
+            "my_damage = 1"
+          ]
+        ]
+      },
+      {
+        "No Hint": [
+          "DEMO = False', 'GitHub = github.com/filipblaha",
+          "",
+          "",
+          "Thank you for playing"
+        ]
+      }
+    ]
+  }
+]
