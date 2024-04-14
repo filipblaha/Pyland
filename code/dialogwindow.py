@@ -2,7 +2,7 @@ from globalvariables import *
 
 
 class DialogWindow:
-    def __init__(self, camera_group, text, font_size, pos: tuple, width, height, highlight_words=None, highlight_font_size=None, highlight_color=None):
+    def __init__(self, text, font_size, pos: tuple, width, height, camera_group=None, highlight_words=None, highlight_font_size=None, highlight_color=None):
         """
             REQUIRED arguments: Text and font size. Position and size of the window.
 
@@ -33,7 +33,7 @@ class DialogWindow:
         self.text = text
         self.font_size = font_size
         self.pos = pygame.Vector2(pos)
-        self.scaled_pos = pygame.Vector2()
+        self.scaled_pos = pygame.Vector2(pos)
         self.width = width
         self.height = height
         self.max_width = width - 50
@@ -166,6 +166,6 @@ class DialogWindow:
         return lines, line_heights
 
     def update(self):
-        if self.active:
+        if self.active and self.camera_group:
             self.scaled_pos.x = self.pos.x - self.camera_group.offset.x * self.camera_group.zoom_scale
             self.scaled_pos.y = self.pos.y - self.camera_group.offset.y * self.camera_group.zoom_scale

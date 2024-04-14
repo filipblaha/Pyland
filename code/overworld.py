@@ -22,6 +22,12 @@ class OverWorld:
         self.barrier = None
         self.setup(tmx_map)
 
+        # mouse
+        pygame.mouse.set_visible(False)
+        self.mouse = pygame.Surface((10, 10))
+        self.mouse.fill((0, 0, 0))
+        self.mouse_mask = pygame.mask.from_surface(self.mouse)
+
     def setup(self, tmx_map):
         # tmx
         for layer in ['Floor', 'Pavement', 'Vegetation', 'Cliffs3', 'Cliffs2', 'Cliffs1', 'FloorDarkShadow',
@@ -43,7 +49,7 @@ class OverWorld:
 
         # dialog windows
 
-        self.wizard_dialog_window = DialogWindow(self.camera_group, 'Welcome home you piece of shit', 34, (-500, 580), 450, 150)
+        self.wizard_dialog_window = DialogWindow('Welcome home you piece of shit', 34, (-500, 580), 450, 150, self.camera_group)
 
     def logic(self, dt):
 

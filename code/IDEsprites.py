@@ -1,53 +1,48 @@
+import pygame.display
+
 from globalvariables import *
 
 
+def create_sprite(image_filename, pos):
+    image_path = os.path.join('../graphics/ide/', image_filename)
+    sprite = pygame.sprite.Sprite()
+    sprite.image = pygame.image.load(image_path).convert_alpha()
+    sprite.rect = sprite.image.get_rect(topleft=pos)
+    return sprite
+
+
 class IDESprites(pygame.sprite.Group):
-    def __init__(self, display_surface):
+    def __init__(self, display_surface, sprite_group):
         # camera setup
         super().__init__()
         self.display_surface = display_surface
-
-        # # making sprites for mystery man
-        # self.enemy0_surf = pygame.image.load('graphic/minigame/mystery_man_closeup.png').convert_alpha()
-        #
-        # self.enemy0_rect = self.enemy0_surf.get_rect(topleft=(1080, 200))
-
-        # making sprites for wizard
-        self.forest0_surf = pygame.image.load('../graphics/ide/forest0.png').convert_alpha()
-        self.enemy1_surf = pygame.image.load('../graphics/ide/wizard_closeup.png').convert_alpha()
-        self.enemy1_dead_surf = pygame.image.load('../graphics/ide/hat.png').convert_alpha()
-
-        self.forest0_rect = self.forest0_surf.get_rect(topleft=(0, 0))
-        self.enemy1_rect = self.enemy1_surf.get_rect(topleft=(1080, 200))
-        self.enemy1_dead_rect = self.enemy1_surf.get_rect(topleft=(1280, 570))
+        self.sprite_group = sprite_group
 
         # making sprites
-        self.code_paper_surf = pygame.image.load('../graphics/ide/code_paper.png').convert_alpha()
-        self.check_button_surf = pygame.image.load('../graphics/ide/check_button.png').convert_alpha()
+        self.forest_sprite = create_sprite('forest0.png', (0, 0))
+        self.wizard_sprite = create_sprite('wizard_closeup.png', (1300, 200))
+        self.wizard_hat_sprite = create_sprite('hat.png', (1280, 570))
+        self.code_paper_sprite = create_sprite('code_paper.png', (0, 10))
+        self.check_button_sprite = create_sprite('check_button.png', (850, 880))
 
-        self.code_paper_rect = self.code_paper_surf.get_rect(topleft=(0, 0))
-        self.check_button_rect = self.check_button_surf.get_rect(center=(850, 750))
+    def set_wizard_winning_scene(self):
+        self.sprite_group.empty()
 
-    # def update_mystery_man(self):
-    #     self.display_surface.blit(self.forest0_surf, self.forest0_rect.topleft)
-    #     self.display_surface.blit(self.code_paper_surf, self.code_paper_rect.topleft)
-    #     self.display_surface.blit(self.check_button_surf, self.check_button_rect.topleft)
-    #     self.display_surface.blit(self.enemy0_surf, self.enemy0_rect.topleft)
+        self.sprite_group.add(self.forest_sprite)
+        self.sprite_group.add(self.code_paper_sprite)
+        self.sprite_group.add(self.check_button_sprite)
+        self.sprite_group.add(self.wizard_hat_sprite)
 
-    def update_wizard_winning_scene(self):
-        self.display_surface.blit(self.forest0_surf, self.forest0_rect.topleft)
-        self.display_surface.blit(self.code_paper_surf, self.code_paper_rect.topleft)
-        self.display_surface.blit(self.check_button_surf, self.check_button_rect.topleft)
-        self.display_surface.blit(self.enemy1_dead_surf, self.enemy1_dead_rect.topleft)
+    def set_wizard(self):
+        self.sprite_group.empty()
 
-    def update_wizard(self):
-        self.display_surface.blit(self.forest0_surf, self.forest0_rect.topleft)
-        self.display_surface.blit(self.code_paper_surf, self.code_paper_rect.topleft)
-        self.display_surface.blit(self.check_button_surf, self.check_button_rect.topleft)
-        self.display_surface.blit(self.enemy1_surf, self.enemy1_rect.topleft)
+        self.sprite_group.add(self.forest_sprite)
+        self.sprite_group.add(self.code_paper_sprite)
+        self.sprite_group.add(self.check_button_sprite)
+        self.sprite_group.add(self.wizard_sprite)
 
     def blink_button(self):
-        enlarged_image_surf = pygame.transform.scale(self.check_button_surf, (450, 180))
+        enlarged_image_surf = pygame.transform.scale(self.check_button_sprite.image, (450, 180))
         self.display_surface.blit(enlarged_image_surf, (625, 660))
         pygame.display.flip()
         pygame.time.delay(200)  # waiting 200 ms

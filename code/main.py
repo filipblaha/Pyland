@@ -14,10 +14,10 @@ class Game:
         # objects
         self.tmx_maps = {0: load_pygame(join('..', 'data', 'levels', 'map.tmx'))}
         self.over_world = OverWorld(self.display_surface, self.tmx_maps[0])
-        self.ide = IDE(self.display_surface)
+        self.ide = IDE()
 
-        self.game_stage = GameState.OVER_WORLD
-        # self.game_stage = GameState.IDE
+        # self.game_stage = GameState.OVER_WORLD
+        self.game_stage = GameState.IDE
 
         # Timing
         self.clock = pygame.time.Clock()
@@ -33,8 +33,8 @@ class Game:
         if self.game_stage == GameState.OVER_WORLD:
             self.over_world.render(dt)
         elif self.game_stage == GameState.IDE:
-            # self.ide.render()
-            pass
+            self.ide.render()
+
         pygame.display.update()
 
     def run(self):

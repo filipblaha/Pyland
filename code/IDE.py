@@ -1,14 +1,18 @@
+import pygame.sprite
+
 from text import *
 from idesprites import *
+from hud import *
+from dialogwindow import *
 
 
 class IDE:
-    def __init__(self, display_surface):
+    def __init__(self):
 
-        self.display_surface = display_surface
-
-        self.text = Text(display_surface)
-        self.visible_sprites = IDESprites(self.display_surface)
+        self.display_surface = pygame.display.get_surface()
+        self.sprite_group = pygame.sprite.Group()
+        self.sprites = IDESprites(self.display_surface, self.sprite_group)
+        self.text = Text()
 
         self.current_time = pygame.time.get_ticks()
         self.minigame_type = 1
@@ -35,27 +39,26 @@ class IDE:
         self.mouse.fill((0, 0, 0))
         self.mouse_mask = pygame.mask.from_surface(self.mouse)
 
-    def logic(self):
+        self.dialog_window = DialogWindow('Kill the wizard!', 50, (1300, 120), 800, 200)
 
+    def logic(self):
         # mystery man
         if self.minigame_type == 0:
             # self.visible_sprites.update_mystery_man()
 
             if self.cutscene_frame >= 4:
                 self.cutscene_on = False
-            self.animate_cutscene()
 
         # wizard
         if self.minigame_type == 1:
             if self.you_win:
-                self.visible_sprites.update_wizard_winning_scene()
+                self.sprites.set_wizard_winning_scene()
             else:
-                self.visible_sprites.update_wizard()
+                self.sprites.set_wizard()
 
             # round 1
             if self.minigame_num == 0:
-                pass
-                # self.ui.show_dialog_window('Kill the wizard!', 950, 150, 500, 200, 40)
+                self.dialog_window.active = True
 
             # round 2
             elif self.minigame_num == 1:
@@ -84,10 +87,6 @@ class IDE:
 
         if self.current_time % 1000 < 500:
             self.text.blink_cursor()
-
-        # self.ui.show_hint()
-        self.text.render_preset_text()
-        self.text.render_user_text()
         self.current_time = pygame.time.get_ticks()
 
         # displaying error window
@@ -105,26 +104,36 @@ class IDE:
                 self.correct_answer = False
                 self.insert_preset_text()
 
+    def render(self):
+        self.sprite_group.draw(self.display_surface)
+        self.dialog_window.display()
+        self.animate_cutscene()
+
+        # self.ui.show_hint()
+        self.text.render_preset_text()
+        self.text.render_user_text()
+
     def animate_cutscene(self):
-        pass
-        # if self.cutscene_frame == 0:
-        #     self.ui.show_dialog_window('Hey you!', 950, 150, 500, 200, 30)
-        # elif self.cutscene_frame == 1:
-        #     self.ui.show_dialog_window("There's no time to waste!", 950, 150, 500, 200, 30)
-        # elif self.cutscene_frame == 2:
-        #     self.ui.show_dialog_window('', 950, 150, 500, 200, 30)
-        #     self.ui.show_dialog_text('You have to', 805, 110, 30, 'topleft')
-        #     self.ui.show_dialog_text('STOP HIM', 985, 110, 30, 'topleft', 'red')
-        #     self.ui.show_dialog_text("before it's too late!", 830, 150, 30, 'topleft')
-        # elif self.cutscene_frame == 3:
-        #     self.ui.show_dialog_window('Quickly!', 950, 150, 500, 200, 30)
-        # elif self.cutscene_frame >= 4:
-        #     self.ui.show_dialog_window('', 950, 150, 500, 200, 30)
-        #     self.ui.show_dialog_text('Tell me your name and', 780, 90, 30, 'topleft')
-        #     self.ui.show_dialog_text('GO!!!', 880, 130, 70, 'topleft', 'red')
-        # else:
-        #     return
-        # self.skip_cutscene = False
+        if self.cutscene_on:
+            pass
+            # if self.cutscene_frame == 0:
+            #     self.ui.show_dialog_window('Hey you!', 950, 150, 500, 200, 30)
+            # elif self.cutscene_frame == 1:
+            #     self.ui.show_dialog_window("There's no time to waste!", 950, 150, 500, 200, 30)
+            # elif self.cutscene_frame == 2:
+            #     self.ui.show_dialog_window('', 950, 150, 500, 200, 30)
+            #     self.ui.show_dialog_text('You have to', 805, 110, 30, 'topleft')
+            #     self.ui.show_dialog_text('STOP HIM', 985, 110, 30, 'topleft', 'red')
+            #     self.ui.show_dialog_text("before it's too late!", 830, 150, 30, 'topleft')
+            # elif self.cutscene_frame == 3:
+            #     self.ui.show_dialog_window('Quickly!', 950, 150, 500, 200, 30)
+            # elif self.cutscene_frame >= 4:
+            #     self.ui.show_dialog_window('', 950, 150, 500, 200, 30)
+            #     self.ui.show_dialog_text('Tell me your name and', 780, 90, 30, 'topleft')
+            #     self.ui.show_dialog_text('GO!!!', 880, 130, 70, 'topleft', 'red')
+            # else:
+            #     return
+            # self.skip_cutscene = False
 
     def goal(self):
         if self.minigame_type == 0:
