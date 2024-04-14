@@ -1,60 +1,60 @@
-import pygame
-import sys
+import ast
 
-# Inicializace Pygame
-pygame.init()
 
-# Nastavení velikosti okna
-width, height = 800, 600
-screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Testování polygonu")
+def check_code(code_lines, assignment):
+    code = '\n'.join(code_lines)
+    globals_dict = {}
 
-# Definice barvy
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
+    try:
+        ast.parse(code)
+    except SyntaxError as e:
+        return e  # Return SyntaxError object with error information
+    try:
+        # Execute assignment
+        exec(assignment[1], globals_dict)
+        assignment_result = globals_dict.get(assignment[0])
 
-# Definice polygonu
-polygon_vertices = [(100, 100), (200, 50), (300, 150), (250, 300), (150, 300), (300, 150), (250, 300), (150, 300), (100, 100), (200, 50), (300, 150), (250, 300),]
-
-def barrier_check():
-    num_intersections = 0
-    for i in range(len(polygon_vertices)):
-        p1 = polygon_vertices[i]
-        p2 = polygon_vertices[(i + 1) % len(polygon_vertices)]
-
-        if (p1[1] > mouse_pos[1]) != (p2[1] > mouse_pos[1]) and \
-                mouse_pos[0] < (p2[0] - p1[0]) * (mouse_pos[1] - p1[1]) / (p2[1] - p1[1]) + p1[0]:
-            num_intersections += 1
-
-    if num_intersections % 2 == 1:
-        return True
-    else:
-        return False
-
-# Hlavní smyčka programu
-running = True
-while running:
-    screen.fill(WHITE)
-
-    # Nakreslení polygonu
-    pygame.draw.polygon(screen, BLACK, polygon_vertices)
-
-    # Získání pozice myši
-    mouse_pos = pygame.mouse.get_pos()
-
-    # Kontrola zda je myš uvnitř polygonu
-    if pygame.mouse.get_pressed()[0]:
-        if barrier_check():
-            print("Myš je uvnitř polygonu!")
+        written_code_str = "\n".join(code_lines)
+        exec(written_code_str, globals_dict)
+        written_result = globals_dict.get(assignment[0])
+        # Compare results
+        if not assignment_result >= written_result or code_lines[-1] == ['']:
+            return ['Code is valid', 'Complete the quest']
         else:
-            print("Myš není uvnitř polygonu!")
+            return None
+    except Exception:
+        return ['Code is valid', 'Complete the quest']     # Return SyntaxError object with error information
 
-    # Události
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
 
-    pygame.display.flip()
+def banned_words(code_lines, banned):
+    for line in code_lines:
+        if banned in line:
+            # there is a banned word in the list
+            return True
+        else:
+            pass
+    # there is not a banned word in the list
+    return False
 
-pygame.quit()
-sys.exit()
+
+def ordered_word(code_lines, ordered):
+    for line in code_lines:
+        if ordered in line:
+            # there is an ordered word in the list
+            return True
+        else:
+            pass
+    # there is not an ordered word in the list
+    return False
+
+
+def log_errors(code_lines, error):
+    # The code is valid
+    if error is None:
+        return ['Well done!']
+    # The code is invalid
+    if error == ['Code is valid', 'Complete the quest']:
+        return error
+    else:
+        messages = ["Error in Line " + str(error.lineno), str(error.msg)]
+        return messages

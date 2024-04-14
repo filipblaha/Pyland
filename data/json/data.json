@@ -28,37 +28,21 @@
     "Location": "Town",
     "Oponent": "Wizard",
     "Data": [
-      [
-        "name",
-        "name = filip"
-      ],
-      [
-        "wizard_health",
-        "wizard_health = 0",
-        {
-          "Ordered word": "for"
-        }
-      ],
-      [
-        "wizard_health",
-        "wizard_health = 0",
-        {
-          "Banned word": "for"
-        },
-        {
-          "Ordered word": "while"
-        }
-      ],
-      [
-        "wizard_health",
-        "wizard_health = 0",
-        {
-          "Banned word": "for"
-        },
-        {
-          "Ordered word": "while"
-        }
-      ]
+      {
+        "Keyword": "name",
+        "Rule": "name = filip"
+      },
+      {
+        "Keyword": "wizard_health",
+        "Rule": "wizard_health = 0",
+        "Ordered word": "for"
+      },
+      {
+        "Keyword": "wizard_health",
+        "Rule": "wizard_health = 0",
+        "Ordered word": "while",
+        "Banned word": "for"
+      }
     ]
   },
   {

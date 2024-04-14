@@ -1,7 +1,7 @@
 import pygame.sprite
 
 from text import *
-from idesprites import *
+from IDEsprites import *
 from hud import *
 from dialogwindow import *
 

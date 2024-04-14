@@ -24,4 +24,4 @@ a = Data()
 a.load()
 for item in a.data:
     if item['Type'] == 'Goal':
-        print(item['Data'][0])
+        print(item['Data'][2]['Keyword'])

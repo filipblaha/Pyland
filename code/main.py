@@ -1,7 +1,7 @@
 import sys
 from pytmx.util_pygame import load_pygame
 from overworld import *
-from ide import *
+from IDE import *
 
 
 class Game:
