@@ -37,7 +37,7 @@ class IDE:
         # mouse
         pygame.mouse.set_visible(False)
         self.mouse = pygame.Surface((10, 10))
-        self.mouse.fill((0, 0, 0))
+        self.mouse.fill((255, 255, 255))
         self.mouse_mask = pygame.mask.from_surface(self.mouse)
 
         self.dialog_window = DialogWindow('', 50, (1300, 120), 800, 200)
@@ -54,11 +54,14 @@ class IDE:
             if item['Type'] == 'Preset words':
                 self.data_preset_words = item['Data']
 
-    def logic(self, dt):
-
+    def logic(self, dt, event):
         self.text.preset_text = self.data_preset_words[self.minigame_type]
 
-        # error = check_code(code, goal)
+        if event:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.sprites.check_button_sprite.rect.collidepoint(pygame.mouse.get_pos()):
+                    self.sprites.blink_button()
+        # check_code(code, goal)
         #
         # self.minigame.error_message = test_code.log_errors(code, error)
         # if not test_code.ordered_word(self.text.user_text, self.minigame.ordered_words):
@@ -107,6 +110,8 @@ class IDE:
         # self.ui.show_hint()
         self.text.render_preset_text()
         self.text.render_user_text()
+
+        self.display_surface.blit(self.mouse, pygame.mouse.get_pos())
 
     def goal(self):
         pass

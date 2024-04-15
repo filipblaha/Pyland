@@ -42,7 +42,10 @@ class IDESprites(pygame.sprite.Group):
         self.sprite_group.add(self.wizard_sprite)
 
     def blink_button(self):
-        enlarged_image_surf = pygame.transform.scale(self.check_button_sprite.image, (450, 180))
-        self.display_surface.blit(enlarged_image_surf, (625, 660))
+        enlarged_image_size = pygame.Vector2(self.check_button_sprite.image.get_size()) * 1.1
+        enlarged_image_surf = pygame.transform.scale(self.check_button_sprite.image, enlarged_image_size)
+        enlarged_image_rect = enlarged_image_surf.get_rect()
+        enlarged_image_rect.center = self.check_button_sprite.rect.center
+        self.display_surface.blit(enlarged_image_surf, enlarged_image_rect)
         pygame.display.flip()
-        pygame.time.delay(200)  # waiting 200 ms
+        pygame.time.delay(250)  # waiting 200 ms

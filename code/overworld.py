@@ -68,6 +68,3 @@ class OverWorld:
         # draw
         self.camera_group.custom_draw(self.player)
         self.wizard_dialog_window.display()
-
-        # self.display_surface.blit(self.mouse, pygame.mouse.get_pos())
-
