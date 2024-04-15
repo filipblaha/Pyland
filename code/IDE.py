@@ -1,5 +1,4 @@
 import pygame.sprite
-
 from text import *
 from IDEsprites import *
 from hud import *
@@ -7,12 +6,13 @@ from dialogwindow import *
 
 
 class IDE:
-    def __init__(self):
+    def __init__(self, data):
 
         self.display_surface = pygame.display.get_surface()
         self.sprite_group = pygame.sprite.Group()
         self.sprites = IDESprites(self.display_surface, self.sprite_group)
         self.text = Text()
+        self.data = data
 
         self.current_time = pygame.time.get_ticks()
         self.minigame_type = 1
@@ -39,9 +39,10 @@ class IDE:
         self.mouse.fill((0, 0, 0))
         self.mouse_mask = pygame.mask.from_surface(self.mouse)
 
-        self.dialog_window = DialogWindow('Kill the wizard!', 50, (1300, 120), 800, 200)
+        self.dialog_window = DialogWindow('', 50, (1300, 120), 800, 200)
+        self.dialog_window.change_text('')
 
-    def logic(self):
+    def logic(self, dt):
         # mystery man
         if self.minigame_type == 0:
             # self.visible_sprites.update_mystery_man()

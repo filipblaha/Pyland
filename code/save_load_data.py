@@ -4,6 +4,7 @@ import json
 class Data:
     def __init__(self):
         self.data = []
+        self.load()
 
     def save(self):
         try:
@@ -20,8 +21,8 @@ class Data:
             print(f"Error while loading data: {e}")
 
 
-a = Data()
-a.load()
-for item in a.data:
-    if item['Type'] == 'Goal':
-        print(item['Data'][2]['Keyword'])
+# data = Data()
+# data.load()
+# for item in data.data:
+#     if item['Type'] == 'Goal':
+#         print(item['Data'][2]['Keyword'])

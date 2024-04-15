@@ -1,5 +1,6 @@
 import sys
 from pytmx.util_pygame import load_pygame
+from save_load_data import *
 from overworld import *
 from IDE import *
 
@@ -13,8 +14,10 @@ class Game:
 
         # objects
         self.tmx_maps = {0: load_pygame(join('..', 'data', 'levels', 'map.tmx'))}
-        self.over_world = OverWorld(self.display_surface, self.tmx_maps[0])
-        self.ide = IDE()
+        self.data = Data()
+
+        self.over_world = OverWorld(self.tmx_maps[0], self.data)
+        self.ide = IDE(self.data)
 
         # self.game_stage = GameState.OVER_WORLD
         self.game_stage = GameState.IDE
@@ -27,7 +30,7 @@ class Game:
         if self.game_stage == GameState.OVER_WORLD:
             self.over_world.logic(dt)
         elif self.game_stage == GameState.IDE:
-            self.ide.logic()
+            self.ide.logic(dt)
 
     def render(self, dt):
         if self.game_stage == GameState.OVER_WORLD:

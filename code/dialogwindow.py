@@ -30,7 +30,6 @@ class DialogWindow:
         self.fonts = []
 
         self.camera_group = camera_group
-        self.text = text
         self.font_size = font_size
         self.pos = pygame.Vector2(pos)
         self.scaled_pos = pygame.Vector2(pos)
@@ -50,9 +49,12 @@ class DialogWindow:
         else:
             self.highlight_font_size = highlight_font_size
 
+        self.text = text
+        if self.text:
+            self.lines, self.line_heights = self.split_lines(self.text)
+
         if highlight_color is None or highlight_words == (0, 0, 0):
             self.highlight_color = (0, 0, 0)
-            self.lines, self.line_heights = self.split_lines()
         else:
             self.highlight_color = highlight_color
 
@@ -100,9 +102,9 @@ class DialogWindow:
                     if word != line[-1]:
                         x_offset += font.size(word)[0] + font.size(" ")[0]
 
-    def split_lines(self):
+    def split_lines(self, text):
         # splitting string into a list of words with its properties
-        words = self.text.split()
+        words = text.split()
 
         line_width = 0              # integer that watches if the line width isn't too long
         max_word_height = 0         # integer that watches the highest words
@@ -164,6 +166,27 @@ class DialogWindow:
         # adding the biggest height to each row to lines heights
         line_heights.append(max_word_height)
         return lines, line_heights
+
+    def change_text(self, text, font_size=None, highlight_words=None, highlight_font_size=None, highlight_color=None):
+        self.text = text
+        if self.text:
+            self.lines, self.line_heights = self.split_lines(self.text)
+
+        if highlight_words is None or highlight_words == []:
+            self.highlight_words = []
+        else:
+            self.highlight_words = highlight_words
+
+        # font
+        if highlight_font_size is None or highlight_words == 0:
+            self.highlight_font_size = 0
+        else:
+            self.highlight_font_size = highlight_font_size
+
+        if highlight_color is None or highlight_words == (0, 0, 0):
+            self.highlight_color = (0, 0, 0)
+        else:
+            self.highlight_color = highlight_color
 
     def update(self):
         if self.active and self.camera_group:

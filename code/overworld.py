@@ -5,10 +5,11 @@ from CameraGroup import *
 
 
 class OverWorld:
-    def __init__(self, screen, tmx_map):
+    def __init__(self, tmx_map, data):
 
         # get the display surface
-        self.display_surface = screen
+        self.display_surface = pygame.display.get_surface()
+        self.data = data
 
         # zones
         self.wizard_zone = []
