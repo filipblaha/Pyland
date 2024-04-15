@@ -24,6 +24,7 @@ class IDESprites(pygame.sprite.Group):
         self.wizard_hat_sprite = create_sprite('hat.png', (1280, 570))
         self.code_paper_sprite = create_sprite('code_paper.png', (0, 10))
         self.check_button_sprite = create_sprite('check_button.png', (850, 880))
+        self.cursor_sprite = create_sprite('cursor.png', (0, 0))
 
     def set_wizard_winning_scene(self):
         self.sprite_group.empty()

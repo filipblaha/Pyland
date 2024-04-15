@@ -33,11 +33,9 @@ class IDE:
 
         # mouse
         pygame.mouse.set_visible(False)
-        self.mouse = pygame.Surface((10, 10))
-        self.mouse.fill((255, 255, 255))
-        self.mouse_mask = pygame.mask.from_surface(self.mouse)
 
-        self.dialog_window = DialogWindow('', 50, (1300, 120), 800, 200)
+        self.dialog_window = DialogWindow('', 50, (1300, 120), 800, 200, None, 'hahahahahahah.')
+        self.dialog_window.change_text('Filip je borec a tereza ne hahahahahahah.')
         self.parse = Parse()
         self.hud = HUD()
         self.dialog_window.active = True
@@ -72,6 +70,27 @@ class IDE:
                 if self.sprites.check_button_sprite.rect.collidepoint(pygame.mouse.get_pos()):
                     self.sprites.blink_button_active = True
                     self.parse.check_code(self.data_assignment[self.minigame_type])
+                else:
+                    x, y = pygame.mouse.get_pos()
+                    text_width = 0
+                    text_height = 0
+                    cursor_row = len(self.text.user_text)-1
+                    cursor_index = len(self.text.user_text[self.text.cursor_row])
+
+                    for i in range(len(self.text.user_text)):
+                        text_height += self.text.user_text_height
+                        if text_height >= y - (self.text.pos.y + len(self.text.preset_text) * self.text.preset_text_height):
+                            cursor_row = i
+                            break
+
+                    for i in range(len(self.text.user_text[self.text.cursor_row])):
+                        text_width += self.text.font.size(self.text.user_text[self.text.cursor_row][i])[0]
+                        if text_width >= x - self.text.pos.x:
+                            cursor_index = i
+                            break
+
+                    self.text.cursor_row = cursor_row
+                    self.text.cursor_index = cursor_index
 
         # mystery man
         if self.minigame_type == 0:
@@ -100,4 +119,4 @@ class IDE:
         self.text.blink_cursor()
         self.sprites.blink_button()
 
-        self.display_surface.blit(self.mouse, pygame.mouse.get_pos())
+        self.display_surface.blit(self.sprites.cursor_sprite.image, pygame.mouse.get_pos())

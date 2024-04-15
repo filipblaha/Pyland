@@ -5,7 +5,7 @@ from globalvariables import *
 
 class Text:
     def __init__(self):
-        self.f = pygame.font.SysFont("Arial", 40)
+        self.font = pygame.font.SysFont("Arial", 40)
 
         self.display_surface = pygame.display.get_surface()
         self.user_text = []
@@ -20,7 +20,9 @@ class Text:
         self.blink_cursor_active = True
 
     def buttons_pressed(self, event):
-        # pressed LEFT KEY
+        ignored_keys = [pygame.K_LCTRL, pygame.K_RCTRL, pygame.K_LALT, pygame.K_RALT, pygame.K_CAPSLOCK,
+                        pygame.K_LSHIFT, pygame.K_RSHIFT]
+
         if event and event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 if self.cursor_index > 0:
@@ -29,7 +31,6 @@ class Text:
                     self.cursor_row -= 1
                     self.cursor_index = len(self.user_text[self.cursor_row])
 
-            # pressed RIGHT KEY
             elif event.key == pygame.K_RIGHT:
                 if self.cursor_index < len(self.user_text[self.cursor_row]):
                     self.cursor_index += 1
@@ -83,7 +84,7 @@ class Text:
                                                          self.user_text[self.cursor_row][
                                                          self.cursor_index:])
                 self.cursor_index += 4
-            else:
+            elif event.key not in ignored_keys:
                 self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][
                                                              :self.cursor_index] + event.unicode +
                                                              self.user_text[self.cursor_row][
@@ -92,7 +93,7 @@ class Text:
 
     def render_preset_text(self):
         for i, row in enumerate(self.preset_text):
-            text_surf = self.f.render(row, True, (50, 50, 50))
+            text_surf = self.font.render(row, True, (200, 0, 200))
             text_width, self.preset_text_height = text_surf.get_size()
 
             text_x = self.pos.x
@@ -101,7 +102,7 @@ class Text:
 
     def render_user_text(self):
         for i, row in enumerate(self.user_text):
-            text_surf = self.f.render(row, True, 'black')
+            text_surf = self.font.render(row, True, 'black')
             text_width, self.user_text_height = text_surf.get_size()
 
             text_x = self.pos.x
@@ -111,7 +112,7 @@ class Text:
     def blink_cursor(self):
         if self.blink_cursor_active:
 
-            cursor_x = self.pos.x + self.f.size(self.user_text[self.cursor_row][:self.cursor_index])[0]
+            cursor_x = self.pos.x + self.font.size(self.user_text[self.cursor_row][:self.cursor_index])[0]
             cursor_y = self.pos.y + len(self.preset_text) * self.preset_text_height + self.cursor_row * self.user_text_height
             cursor_rect = pygame.Rect(cursor_x, cursor_y, 2, 40)
             pygame.draw.rect(self.display_surface, 'black', cursor_rect)

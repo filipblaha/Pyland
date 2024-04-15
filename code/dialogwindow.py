@@ -2,7 +2,7 @@ from globalvariables import *
 
 
 class DialogWindow:
-    def __init__(self, text, font_size, pos: tuple, width, height, camera_group=None, highlight_words=None, highlight_font_size=None, highlight_color=None):
+    def __init__(self, text, font_size, pos: tuple, width, height, camera_group=None, highlight_words=None, highlight_font_size=None, highlight_color='red'):
         """
             REQUIRED arguments: Text and font size. Position and size of the window.
 
@@ -44,8 +44,8 @@ class DialogWindow:
             self.highlight_words = highlight_words
 
         # font
-        if highlight_font_size is None or highlight_words == 0:
-            self.highlight_font_size = 0
+        if highlight_font_size is None:
+            self.highlight_font_size = self.font_size
         else:
             self.highlight_font_size = highlight_font_size
 
@@ -53,7 +53,7 @@ class DialogWindow:
         if self.text:
             self.lines, self.line_heights = self.split_lines(self.text)
 
-        if highlight_color is None or highlight_words == (0, 0, 0):
+        if highlight_color is None:
             self.highlight_color = (0, 0, 0)
         else:
             self.highlight_color = highlight_color
@@ -117,7 +117,7 @@ class DialogWindow:
 
         # goes through every word in the text
         for word in words:
-            if word in self.highlight_words:
+            if word == self.highlight_words:
                 word_color = self.highlight_color
                 font = pygame.font.Font(FONT, self.highlight_font_size)
                 word_surf = font.render(word, True, word_color)
@@ -169,22 +169,25 @@ class DialogWindow:
 
     def change_text(self, text, font_size=None, highlight_words=None, highlight_font_size=None, highlight_color=None):
         self.text = text
+        if font_size is not None:
+            self.font_size = font_size
+
         if self.text:
             self.lines, self.line_heights = self.split_lines(self.text)
 
-        if highlight_words is None or highlight_words == []:
+        if highlight_words is None:
             self.highlight_words = []
         else:
             self.highlight_words = highlight_words
 
         # font
-        if highlight_font_size is None or highlight_words == 0:
-            self.highlight_font_size = 0
+        if highlight_font_size is None:
+            self.highlight_font_size = self.font_size
         else:
             self.highlight_font_size = highlight_font_size
 
-        if highlight_color is None or highlight_words == (0, 0, 0):
-            self.highlight_color = (0, 0, 0)
+        if highlight_color is None:
+            self.highlight_color = 'red'
         else:
             self.highlight_color = highlight_color
 
