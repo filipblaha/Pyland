@@ -48,9 +48,13 @@ class Text:
                     self.cursor_index = min(self.cursor_index, len(self.user_text[self.cursor_row]))
 
             elif event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN:
-                self.user_text.insert(self.cursor_row + 1, '')
+                next_line = self.user_text[self.cursor_row][self.cursor_index:]
+                self.user_text[self.cursor_row] = self.user_text[self.cursor_row][:self.cursor_index]
+                self.user_text.insert(self.cursor_row + 1, next_line)
+
                 self.cursor_row += 1
                 self.cursor_index = 0
+
             # pressed BACKSPACE
             elif event.key == pygame.K_BACKSPACE:
                 if self.cursor_index == 0 and self.cursor_row > 0:
