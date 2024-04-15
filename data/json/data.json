@@ -53,16 +53,18 @@
     "Oponent": "Wizard",
     "Data": [
       {
-        "Hint": "# name = your_name"
+        "Hint": [
+          "# name = your_name"
+        ]
       },
       {
-        "No Hint": "wizard_health = 10",
+        "No Hint": [
+          "wizard_health = 10"
+        ],
         "Hint": [
-          [
-            "# will he die with no health?",
-            "",
-            "wizard_health = 10"
-          ]
+          "# will he die with no health?",
+          "",
+          "wizard_health = 10"
         ]
       },
       {
@@ -85,12 +87,10 @@
           "my_damage = 1"
         ],
         "Hint": [
-          [
-            "# while statement_a > statement_b:",
-            "",
-            "wizard_health = 10",
-            "my_damage = 1"
-          ]
+          "# while statement_a > statement_b:",
+          "",
+          "wizard_health = 10",
+          "my_damage = 1"
         ]
       },
       {

@@ -1,5 +1,3 @@
-import pygame.display
-
 from globalvariables import *
 
 
@@ -17,6 +15,8 @@ class IDESprites(pygame.sprite.Group):
         super().__init__()
         self.display_surface = display_surface
         self.sprite_group = sprite_group
+
+        self.blink_button_active = False
 
         # making sprites
         self.forest_sprite = create_sprite('forest0.png', (0, 0))
@@ -42,10 +42,13 @@ class IDESprites(pygame.sprite.Group):
         self.sprite_group.add(self.wizard_sprite)
 
     def blink_button(self):
-        enlarged_image_size = pygame.Vector2(self.check_button_sprite.image.get_size()) * 1.1
-        enlarged_image_surf = pygame.transform.scale(self.check_button_sprite.image, enlarged_image_size)
-        enlarged_image_rect = enlarged_image_surf.get_rect()
-        enlarged_image_rect.center = self.check_button_sprite.rect.center
-        self.display_surface.blit(enlarged_image_surf, enlarged_image_rect)
-        pygame.display.flip()
-        pygame.time.delay(250)  # waiting 200 ms
+        if self.blink_button_active:
+            enlarged_image_size = pygame.Vector2(self.check_button_sprite.image.get_size()) * 1.1
+            enlarged_image_surf = pygame.transform.scale(self.check_button_sprite.image, enlarged_image_size)
+            enlarged_image_rect = enlarged_image_surf.get_rect()
+            enlarged_image_rect.center = self.check_button_sprite.rect.center
+            self.display_surface.blit(enlarged_image_surf, enlarged_image_rect)
+            pygame.display.flip()
+            pygame.time.delay(250)  # waiting 200 ms
+
+            self.blink_button_active = False

@@ -4,6 +4,7 @@ import ast
 class Parse:
     def __init__(self):
         self.error = None
+        self.error_message = None
         self.code = None
 
     def check_code(self, assignment):
@@ -16,12 +17,12 @@ class Parse:
             return e  # Return SyntaxError object with error information
         try:
             # Execute assignment
-            exec(assignment[1], globals_dict)
-            assignment_result = globals_dict.get(assignment[0])
+            exec(assignment['Rule'], globals_dict)
+            assignment_result = globals_dict.get(assignment['Keyword'])
 
             written_code_str = "\n".join(self.code)
             exec(written_code_str, globals_dict)
-            written_result = globals_dict.get(assignment[0])
+            written_result = globals_dict.get(assignment['Keyword'])
             # Compare results
             if not assignment_result >= written_result or self.code[-1] == ['']:
                 return ['Code is valid', 'Complete the quest']
@@ -33,22 +34,14 @@ class Parse:
     def banned_words(self, banned):
         for line in self.code:
             if banned in line:
-                # there is a banned word in the list
-                return True
-            else:
-                pass
-        # there is not a banned word in the list
-        return False
+                # there is not a banned word in the list
+                self.error_message = ['You are using banned words:', banned]
 
     def ordered_word(self, ordered):
         for line in self.code:
-            if ordered in line:
-                # there is an ordered word in the list
-                return True
-            else:
-                pass
-        # there is not an ordered word in the list
-        return False
+            if ordered not in line:
+                # there is not an ordered word in the list
+                self.error_message = ['You are not using ordered words:', ordered]
 
     def log_errors(self):
         # The code is valid
@@ -58,8 +51,9 @@ class Parse:
         if self.error == ['Code is valid', 'Complete the quest']:
             return self.error
         else:
-            messages = ["Error in Line " + str(self.error.lineno), str(self.error.msg)]
-            return messages
+            self.error_message = ["Error in Line " + str(self.error.lineno), str(self.error.msg)]
 
     def update_code(self, preset_text, user_text):
-        self.code = preset_text + user_text
+        if isinstance(preset_text, list):
+            preset_text = ''.join(preset_text)
+        self.code = preset_text + ''.join(user_text)
