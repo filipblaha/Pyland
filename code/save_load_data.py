@@ -19,10 +19,3 @@ class Data:
                 self.data = json.load(file)
         except Exception as e:
             print(f"Error while loading data: {e}")
-
-
-# data = Data()
-# data.load()
-# for item in data.data:
-#     if item['Type'] == 'Goal':
-#         print(item['Data'][2]['Keyword'])

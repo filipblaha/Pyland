@@ -2,6 +2,7 @@ import pygame.sprite
 from text import *
 from IDEsprites import *
 from hud import *
+from test_code import *
 from dialogwindow import *
 
 
@@ -40,9 +41,41 @@ class IDE:
         self.mouse_mask = pygame.mask.from_surface(self.mouse)
 
         self.dialog_window = DialogWindow('', 50, (1300, 120), 800, 200)
-        self.dialog_window.change_text('')
+        self.dialog_window.active = True
+
+        self.data_assignment = None
+        self.data_preset_words = None
+        self.setup()
+
+    def setup(self):
+        for item in self.data.data:
+            if item['Type'] == 'Goal':
+                self.data_assignment = item['Data']
+            if item['Type'] == 'Preset words':
+                self.data_preset_words = item['Data']
 
     def logic(self, dt):
+
+        self.text.preset_text = self.data_preset_words[self.minigame_type]
+
+        # error = check_code(code, goal)
+        #
+        # self.minigame.error_message = test_code.log_errors(code, error)
+        # if not test_code.ordered_word(self.text.user_text, self.minigame.ordered_words):
+        #     self.minigame.error_message = ['You are not using ordered words:', self.minigame.ordered_words]
+        # if test_code.banned_words(self.text.user_text,
+        #                           self.minigame.banned_words) and not self.minigame.banned_words == '':
+        #     self.minigame.error_message = ['You are using banned words:', self.minigame.banned_words]
+
+        if self.correct_answer:
+            self.minigame_num += 1
+            self.hint_request = False
+            if self.minigame_num == 3:
+                self.you_win = True
+                self.correct_answer = False
+            else:
+                self.correct_answer = False
+
         # mystery man
         if self.minigame_type == 0:
             # self.visible_sprites.update_mystery_man()
@@ -57,22 +90,6 @@ class IDE:
             else:
                 self.sprites.set_wizard()
 
-            # round 1
-            if self.minigame_num == 0:
-                self.dialog_window.active = True
-
-            # round 2
-            elif self.minigame_num == 1:
-                pass
-
-            # round 3
-            elif self.minigame_num == 2:
-                pass
-
-            # winning scene
-            elif self.minigame_num == 3:
-                pass
-
         if self.current_time % 1000 < 500:
             self.text.blink_cursor()
         self.current_time = pygame.time.get_ticks()
@@ -82,15 +99,6 @@ class IDE:
         if self.log:
             # self.ui.show_error(self.error_message)
             pass
-        if self.correct_answer:
-            self.minigame_num += 1
-            self.hint_request = False
-            if self.minigame_num == 3:
-                self.you_win = True
-                self.correct_answer = False
-            else:
-                self.correct_answer = False
-                self.insert_preset_text()
 
     def render(self):
         self.sprite_group.draw(self.display_surface)
