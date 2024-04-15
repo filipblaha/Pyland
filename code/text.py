@@ -63,17 +63,18 @@ class Text:
                     self.user_text[self.cursor_row] += self.user_text.pop(self.cursor_row + 1)
 
                 elif self.cursor_index > 0:
-                    self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][:self.cursor_index - 1]
-                                                                 + self.user_text[self.cursor_row][self.cursor_index:])
+                    self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][:self.cursor_index - 1] + self.user_text[self.cursor_row][self.cursor_index:])
                     self.cursor_index -= 1
 
             elif event.key == pygame.K_DELETE:
                 if self.cursor_index < len(self.user_text[self.cursor_row]):
-                    self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][:self.cursor_index]
-                                                                 + self.user_text[self.cursor_row][
-                                                                   self.cursor_index + 1:])
+                    self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][:self.cursor_index] + self.user_text[self.cursor_row][self.cursor_index + 1:])
+
                 elif self.cursor_row < len(self.user_text) - 1:
-                    self.user_text[self.cursor_row] = self.user_text.pop(self.cursor_row + 1)
+                    print(self.user_text[self.cursor_row][:] + self.user_text[self.cursor_row + 1][:])
+                    self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][:] + self.user_text[self.cursor_row + 1][:])
+                    self.user_text.pop(self.cursor_row + 1)
+                    print(0)
                     # pressed SPACE
             elif event.key == pygame.K_SPACE:
                 self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][

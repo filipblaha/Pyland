@@ -74,23 +74,21 @@ class IDE:
                     x, y = pygame.mouse.get_pos()
                     text_width = 0
                     text_height = 0
-                    cursor_row = len(self.text.user_text)-1
-                    cursor_index = len(self.text.user_text[self.text.cursor_row])
+                    self.text.cursor_index = len(max(self.text.user_text, key=len))
+                    self.text.cursor_row = len(self.text.user_text)-1
 
                     for i in range(len(self.text.user_text)):
                         text_height += self.text.user_text_height
                         if text_height >= y - (self.text.pos.y + len(self.text.preset_text) * self.text.preset_text_height):
-                            cursor_row = i
+                            self.text.cursor_row = i
                             break
 
                     for i in range(len(self.text.user_text[self.text.cursor_row])):
                         text_width += self.text.font.size(self.text.user_text[self.text.cursor_row][i])[0]
                         if text_width >= x - self.text.pos.x:
-                            cursor_index = i
+                            self.text.cursor_index = i
                             break
 
-                    self.text.cursor_row = cursor_row
-                    self.text.cursor_index = cursor_index
 
         # mystery man
         if self.minigame_type == 0:
