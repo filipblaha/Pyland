@@ -19,82 +19,172 @@ class Text:
         self.pos = pygame.Vector2(200, 272)
         self.blink_cursor_active = True
 
+        self.key_repeat = (0, 0)
+        self.repeat_delay = 400
+        self.repeat_interval = 35
+
+    def left_key(self):
+        if self.cursor_index > 0:
+            self.cursor_index -= 1
+        elif self.cursor_row > 0:
+            self.cursor_row -= 1
+            self.cursor_index = len(self.user_text[self.cursor_row])
+        self.key_repeat = (pygame.K_LEFT, pygame.time.get_ticks() + self.repeat_delay)
+
+    def right_key(self):
+        if self.cursor_index < len(self.user_text[self.cursor_row]):
+            self.cursor_index += 1
+        elif self.cursor_row < len(self.user_text) - 1:
+            self.cursor_row += 1
+            self.cursor_index = 0
+        self.key_repeat = (pygame.K_RIGHT, pygame.time.get_ticks() + self.repeat_delay)
+
+    def up_key(self):
+        if self.cursor_row > 0:
+            self.cursor_row -= 1
+            self.cursor_index = min(self.cursor_index, len(self.user_text[self.cursor_row]))
+        self.key_repeat = (pygame.K_UP, pygame.time.get_ticks() + self.repeat_delay)
+
+    def down_key(self):
+        if self.cursor_row < len(self.user_text) - 1:
+            self.cursor_row += 1
+            self.cursor_index = min(self.cursor_index, len(self.user_text[self.cursor_row]))
+        self.key_repeat = (pygame.K_DOWN, pygame.time.get_ticks() + self.repeat_delay)
+
+    def enter(self):
+        next_line = self.user_text[self.cursor_row][self.cursor_index:]
+        self.user_text[self.cursor_row] = self.user_text[self.cursor_row][:self.cursor_index]
+        self.user_text.insert(self.cursor_row + 1, next_line)
+
+        self.cursor_row += 1
+        self.cursor_index = 0
+
+        self.key_repeat = (pygame.K_KP_ENTER, pygame.time.get_ticks() + self.repeat_delay)
+
+    def backspace(self):
+        if self.cursor_index == 0 and self.cursor_row > 0:
+            self.cursor_row -= 1
+            self.cursor_index = len(self.user_text[self.cursor_row])
+            self.user_text[self.cursor_row] += self.user_text.pop(self.cursor_row + 1)
+
+        elif self.cursor_index > 0:
+            self.user_text[self.cursor_row] = (
+                    self.user_text[self.cursor_row][:self.cursor_index - 1] + self.user_text[self.cursor_row][
+                                                                              self.cursor_index:])
+            self.cursor_index -= 1
+        self.key_repeat = (pygame.K_BACKSPACE, pygame.time.get_ticks() + self.repeat_delay)
+
+    def delete(self):
+        if self.cursor_index < len(self.user_text[self.cursor_row]):
+            self.user_text[self.cursor_row] = (
+                    self.user_text[self.cursor_row][:self.cursor_index] + self.user_text[self.cursor_row][
+                                                                          self.cursor_index + 1:])
+
+        elif self.cursor_row < len(self.user_text) - 1:
+            print(self.user_text[self.cursor_row][:] + self.user_text[self.cursor_row + 1][:])
+            self.user_text[self.cursor_row] = (
+                    self.user_text[self.cursor_row][:] + self.user_text[self.cursor_row + 1][:])
+            self.user_text.pop(self.cursor_row + 1)
+            print(0)
+        self.key_repeat = (pygame.K_DELETE, pygame.time.get_ticks() + self.repeat_delay)
+
+    def space(self):
+        self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][
+                                           :self.cursor_index] + ' ' +
+                                           self.user_text[self.cursor_row][
+                                           self.cursor_index:])
+        self.cursor_index += 1
+
+    def tab(self):
+        self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][
+                                           :self.cursor_index] + '    ' +
+                                           self.user_text[self.cursor_row][
+                                           self.cursor_index:])
+        self.cursor_index += 4
+        self.key_repeat = (pygame.K_TAB, pygame.time.get_ticks() + self.repeat_delay)
+
+    def other_keys(self, key):
+        self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][
+                                           :self.cursor_index] + pygame.key.name(key) +
+                                           self.user_text[self.cursor_row][
+                                           self.cursor_index:])
+        self.cursor_index += 1
+
+        self.key_repeat = (key, pygame.time.get_ticks() + self.repeat_delay)
+
     def buttons_pressed(self, event):
         ignored_keys = [pygame.K_LCTRL, pygame.K_RCTRL, pygame.K_LALT, pygame.K_RALT, pygame.K_CAPSLOCK,
                         pygame.K_LSHIFT, pygame.K_RSHIFT]
 
         if event and event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                if self.cursor_index > 0:
-                    self.cursor_index -= 1
-                elif self.cursor_row > 0:
-                    self.cursor_row -= 1
-                    self.cursor_index = len(self.user_text[self.cursor_row])
+                self.left_key()
 
             elif event.key == pygame.K_RIGHT:
-                if self.cursor_index < len(self.user_text[self.cursor_row]):
-                    self.cursor_index += 1
-                elif self.cursor_row < len(self.user_text) - 1:
-                    self.cursor_row += 1
-                    self.cursor_index = 0
+                self.right_key()
 
             elif event.key == pygame.K_UP:
-                if self.cursor_row > 0:
-                    self.cursor_row -= 1
-                    self.cursor_index = min(self.cursor_index, len(self.user_text[self.cursor_row]))
+                self.up_key()
+
             elif event.key == pygame.K_DOWN:
-                if self.cursor_row < len(self.user_text) - 1:
-                    self.cursor_row += 1
-                    self.cursor_index = min(self.cursor_index, len(self.user_text[self.cursor_row]))
+                self.down_key()
 
             elif event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN:
-                next_line = self.user_text[self.cursor_row][self.cursor_index:]
-                self.user_text[self.cursor_row] = self.user_text[self.cursor_row][:self.cursor_index]
-                self.user_text.insert(self.cursor_row + 1, next_line)
+                self.enter()
 
-                self.cursor_row += 1
-                self.cursor_index = 0
-
-            # pressed BACKSPACE
             elif event.key == pygame.K_BACKSPACE:
-                if self.cursor_index == 0 and self.cursor_row > 0:
-                    self.cursor_row -= 1
-                    self.cursor_index = len(self.user_text[self.cursor_row])
-                    self.user_text[self.cursor_row] += self.user_text.pop(self.cursor_row + 1)
-
-                elif self.cursor_index > 0:
-                    self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][:self.cursor_index - 1] + self.user_text[self.cursor_row][self.cursor_index:])
-                    self.cursor_index -= 1
+                self.backspace()
 
             elif event.key == pygame.K_DELETE:
-                if self.cursor_index < len(self.user_text[self.cursor_row]):
-                    self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][:self.cursor_index] + self.user_text[self.cursor_row][self.cursor_index + 1:])
+                self.delete()
 
-                elif self.cursor_row < len(self.user_text) - 1:
-                    print(self.user_text[self.cursor_row][:] + self.user_text[self.cursor_row + 1][:])
-                    self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][:] + self.user_text[self.cursor_row + 1][:])
-                    self.user_text.pop(self.cursor_row + 1)
-                    print(0)
-                    # pressed SPACE
             elif event.key == pygame.K_SPACE:
-                self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][
-                                                             :self.cursor_index] + ' ' +
-                                                             self.user_text[self.cursor_row][
-                                                             self.cursor_index:])
-                self.cursor_index += 1
-                pass
+                self.space()
+
             elif event.key == pygame.K_TAB:
-                self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][
-                                                         :self.cursor_index] + '    ' +
-                                                         self.user_text[self.cursor_row][
-                                                         self.cursor_index:])
-                self.cursor_index += 4
+                self.tab()
+
             elif event.key not in ignored_keys:
-                self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][
-                                                             :self.cursor_index] + event.unicode +
-                                                             self.user_text[self.cursor_row][
-                                                             self.cursor_index:])
-                self.cursor_index += 1
+                self.other_keys(event.key)
+
+            elif event.type == pygame.KEYUP:
+                self.key_repeat = (0, 0)
+
+        self.repeat_key()
+
+    def repeat_key(self):
+        if self.key_repeat[0] and pygame.time.get_ticks() > self.key_repeat[1]:
+            if pygame.key.get_pressed()[self.key_repeat[0]]:
+                if self.key_repeat[0] == pygame.K_LEFT:
+                    self.left_key()
+
+                elif self.key_repeat[0] == pygame.K_RIGHT:
+                    self.right_key()
+
+                elif self.key_repeat[0] == pygame.K_UP:
+                    self.up_key()
+
+                elif self.key_repeat[0] == pygame.K_DOWN:
+                    self.down_key()
+
+                elif self.key_repeat[0] == pygame.K_KP_ENTER:
+                    self.enter()
+
+                elif self.key_repeat[0] == pygame.K_BACKSPACE:
+                    self.backspace()
+
+                elif self.key_repeat[0] == pygame.K_DELETE:
+                    self.delete()
+
+                elif self.key_repeat[0] == pygame.K_SPACE:
+                    self.space()
+
+                elif self.key_repeat[0] == pygame.K_TAB:
+                    self.tab()
+
+                else:
+                    self.other_keys(self.key_repeat[0])
+                self.key_repeat = (self.key_repeat[0], pygame.time.get_ticks() + self.repeat_interval)
 
     def render_preset_text(self):
         for i, row in enumerate(self.preset_text):
@@ -116,9 +206,9 @@ class Text:
 
     def blink_cursor(self):
         if self.blink_cursor_active:
-
             cursor_x = self.pos.x + self.font.size(self.user_text[self.cursor_row][:self.cursor_index])[0]
-            cursor_y = self.pos.y + len(self.preset_text) * self.preset_text_height + self.cursor_row * self.user_text_height
+            cursor_y = self.pos.y + len(
+                self.preset_text) * self.preset_text_height + self.cursor_row * self.user_text_height
             cursor_rect = pygame.Rect(cursor_x, cursor_y, 2, 40)
             pygame.draw.rect(self.display_surface, 'black', cursor_rect)
 
