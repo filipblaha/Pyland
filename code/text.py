@@ -116,7 +116,8 @@ class Text:
 
     def buttons_pressed(self, event):
         ignored_keys = [pygame.K_LCTRL, pygame.K_RCTRL, pygame.K_LALT, pygame.K_RALT, pygame.K_CAPSLOCK,
-                        pygame.K_LSHIFT, pygame.K_RSHIFT]
+                        pygame.K_LSHIFT, pygame.K_RSHIFT, pygame.K_INSERT, pygame.K_HOME,
+                        pygame.K_END, pygame.K_PAGEUP, pygame.K_PAGEDOWN, pygame.K_PRINTSCREEN]
 
         if event and event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
@@ -145,6 +146,40 @@ class Text:
 
             elif event.key == pygame.K_TAB:
                 self.tab()
+            # numpad
+            elif event.key == pygame.K_KP0:
+                self.other_keys(pygame.K_0)
+            elif event.key == pygame.K_KP1:
+                self.other_keys(pygame.K_1)
+            elif event.key == pygame.K_KP2:
+                self.other_keys(pygame.K_2)
+            elif event.key == pygame.K_KP3:
+                self.other_keys(pygame.K_3)
+            elif event.key == pygame.K_KP4:
+                self.other_keys(pygame.K_4)
+            elif event.key == pygame.K_KP5:
+                self.other_keys(pygame.K_5)
+            elif event.key == pygame.K_KP6:
+                self.other_keys(pygame.K_6)
+            elif event.key == pygame.K_KP7:
+                self.other_keys(pygame.K_7)
+            elif event.key == pygame.K_KP8:
+                self.other_keys(pygame.K_8)
+            elif event.key == pygame.K_KP9:
+                self.other_keys(pygame.K_9)
+            elif event.key == pygame.K_KP_MINUS:
+                self.other_keys(pygame.K_MINUS)
+            elif event.key == pygame.K_KP_PLUS:
+                self.other_keys(pygame.K_PLUS)
+            elif event.key == pygame.K_KP_DIVIDE:
+                self.other_keys(pygame.K_SLASH)
+            elif event.key == pygame.K_KP_MULTIPLY:
+                self.other_keys(pygame.K_ASTERISK)
+            elif event.key == pygame.K_KP_PERIOD:
+                self.other_keys(pygame.K_PERIOD)
+
+            elif event.key == pygame.K_KP9:
+                self.other_keys(pygame.K_9)
 
             elif event.key not in ignored_keys:
                 self.other_keys(event.key)
@@ -196,13 +231,14 @@ class Text:
             return True
 
     def render_preset_text(self):
-        for i, row in enumerate(self.preset_text):
-            text_surf = self.font.render(row, True, (200, 0, 200))
-            text_width, self.preset_text_height = text_surf.get_size()
+        if not self.preset_text == ['']:
+            for i, row in enumerate(self.preset_text):
+                text_surf = self.font.render(row, True, (200, 0, 200))
+                text_width, self.preset_text_height = text_surf.get_size()
 
-            text_x = self.pos.x
-            text_y = self.pos.y + i * self.preset_text_height
-            self.display_surface.blit(text_surf, (text_x, text_y))
+                text_x = self.pos.x
+                text_y = self.pos.y + i * self.preset_text_height
+                self.display_surface.blit(text_surf, (text_x, text_y))
 
     def render_user_text(self):
         for i, row in enumerate(self.user_text):

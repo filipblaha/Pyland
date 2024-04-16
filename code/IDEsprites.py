@@ -19,12 +19,33 @@ class IDESprites(pygame.sprite.Group):
         self.blink_button_active = False
 
         # making sprites
-        self.forest_sprite = create_sprite('forest0.png', (0, 0))
-        self.wizard_sprite = create_sprite('wizard_closeup.png', (1300, 200))
-        self.wizard_hat_sprite = create_sprite('hat.png', (1280, 570))
+        self.lake_sprite = create_sprite('lake.png', (0, 0))
+        self.forest_sprite = create_sprite('forest.png', (0, 0))
+        self.house_sprite = create_sprite('house.png', (0, 0))
         self.code_paper_sprite = create_sprite('code_paper.png', (0, 10))
         self.check_button_sprite = create_sprite('check_button.png', (850, 880))
         self.cursor_sprite = create_sprite('cursor.png', (0, 0))
+        self.fisherman_sprite = create_sprite('fisherman_closeup.png', (1000, 200))
+        self.wizard_sprite = create_sprite('wizard_closeup.png', (1300, 200))
+        self.wizard_hat_sprite = create_sprite('hat.png', (1280, 570))
+        self.knight_sprite = create_sprite('knight_closeup.png', (1300, 250))
+        self.ghost_sprite = create_sprite('ghost_closeup3.png', (1300, 250))
+
+    def set_fisherman_scene(self):
+        self.sprite_group.empty()
+
+        self.sprite_group.add(self.lake_sprite)
+        self.sprite_group.add(self.code_paper_sprite)
+        self.sprite_group.add(self.check_button_sprite)
+        self.sprite_group.add(self.fisherman_sprite)
+
+    def set_wizard_scene(self):
+        self.sprite_group.empty()
+
+        self.sprite_group.add(self.forest_sprite)
+        self.sprite_group.add(self.code_paper_sprite)
+        self.sprite_group.add(self.check_button_sprite)
+        self.sprite_group.add(self.wizard_sprite)
 
     def set_wizard_winning_scene(self):
         self.sprite_group.empty()
@@ -34,13 +55,21 @@ class IDESprites(pygame.sprite.Group):
         self.sprite_group.add(self.check_button_sprite)
         self.sprite_group.add(self.wizard_hat_sprite)
 
-    def set_wizard(self):
+    def set_knight_scene(self):
         self.sprite_group.empty()
 
         self.sprite_group.add(self.forest_sprite)
         self.sprite_group.add(self.code_paper_sprite)
         self.sprite_group.add(self.check_button_sprite)
-        self.sprite_group.add(self.wizard_sprite)
+        self.sprite_group.add(self.knight_sprite)
+
+    def set_ghost_scene(self):
+        self.sprite_group.empty()
+
+        self.sprite_group.add(self.house_sprite)
+        self.sprite_group.add(self.code_paper_sprite)
+        self.sprite_group.add(self.check_button_sprite)
+        self.sprite_group.add(self.ghost_sprite)
 
     def blink_button(self):
         if self.blink_button_active:

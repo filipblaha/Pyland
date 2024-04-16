@@ -53,6 +53,9 @@
     "Oponent": "Wizard",
     "Data": [
       {
+		"No Hint": [
+          ""
+        ],
         "Hint": [
           "# name = your_name"
         ]

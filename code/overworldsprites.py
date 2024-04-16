@@ -15,9 +15,10 @@ class OverworldSprite(pygame.sprite.Sprite):
                 self.animation.append(image)
 
             self.counter = 0
-            self.animation_speed = 0
+            self.animation_speed = 1500
             self.index = 0
             self.image = self.animation[0]
+
         elif self.name == 'knight':
             self.animation = []
             for i in range(2):
@@ -27,7 +28,7 @@ class OverworldSprite(pygame.sprite.Sprite):
                 self.animation.append(image)
 
             self.counter = 0
-            self.animation_speed = 0
+            self.animation_speed = 1000
             self.index = 0
             self.image = self.animation[0]
         else:
@@ -36,12 +37,12 @@ class OverworldSprite(pygame.sprite.Sprite):
         self.rect = self.image.get_frect(topleft=pos)
         self.old_rect = self.rect.copy()
 
-    def animate(self, dt, name, speed):
+    def animate(self, dt, name):
         if self.name == name:
-            self.animation_speed = speed * dt
+            speed = self.animation_speed * dt
             self.counter += 1
 
-            if self.counter >= self.animation_speed:
+            if self.counter >= speed:
                 self.counter = 0
                 self.index += 1
                 if self.index >= 2:
@@ -50,7 +51,7 @@ class OverworldSprite(pygame.sprite.Sprite):
                 self.image = self.animation[self.index]
 
     def update(self, dt):
-        self.animate(dt, 'wizard', 1900)
-        self.animate(dt, 'knight', 1600)
+        self.animate(dt, 'wizard')
+        self.animate(dt, 'knight')
 
 
