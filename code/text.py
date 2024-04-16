@@ -13,10 +13,11 @@ class Text:
         self.user_text_height = 0
         self.preset_text = []
         self.preset_text_height = 0
+        self.max_width = 470
 
         self.cursor_index = 0
         self.cursor_row = 0
-        self.pos = pygame.Vector2(200, 272)
+        self.pos = pygame.Vector2(180, 272)
         self.blink_cursor_active = True
 
         self.key_repeat = (0, 0)
@@ -52,14 +53,15 @@ class Text:
         self.key_repeat = (pygame.K_DOWN, pygame.time.get_ticks() + self.repeat_delay)
 
     def enter(self):
-        next_line = self.user_text[self.cursor_row][self.cursor_index:]
-        self.user_text[self.cursor_row] = self.user_text[self.cursor_row][:self.cursor_index]
-        self.user_text.insert(self.cursor_row + 1, next_line)
+        if len(self.user_text) + len(self.preset_text) <= 14:
+            next_line = self.user_text[self.cursor_row][self.cursor_index:]
+            self.user_text[self.cursor_row] = self.user_text[self.cursor_row][:self.cursor_index]
+            self.user_text.insert(self.cursor_row + 1, next_line)
 
-        self.cursor_row += 1
-        self.cursor_index = 0
+            self.cursor_row += 1
+            self.cursor_index = 0
 
-        self.key_repeat = (pygame.K_KP_ENTER, pygame.time.get_ticks() + self.repeat_delay)
+            self.key_repeat = (pygame.K_KP_ENTER, pygame.time.get_ticks() + self.repeat_delay)
 
     def backspace(self):
         if self.cursor_index == 0 and self.cursor_row > 0:
@@ -89,26 +91,26 @@ class Text:
         self.key_repeat = (pygame.K_DELETE, pygame.time.get_ticks() + self.repeat_delay)
 
     def space(self):
-        self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][
-                                           :self.cursor_index] + ' ' +
-                                           self.user_text[self.cursor_row][
-                                           self.cursor_index:])
-        self.cursor_index += 1
+        text = (self.user_text[self.cursor_row][:self.cursor_index] + ' ' + self.user_text[self.cursor_row][self.cursor_index:])
+        if self.check_bounding_box():
+            self.user_text[self.cursor_row] = text
+            self.cursor_index += 1
+
+        self.key_repeat = (pygame.K_SPACE, pygame.time.get_ticks() + self.repeat_delay)
 
     def tab(self):
-        self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][
-                                           :self.cursor_index] + '    ' +
-                                           self.user_text[self.cursor_row][
-                                           self.cursor_index:])
-        self.cursor_index += 4
+        text = (self.user_text[self.cursor_row][:self.cursor_index] + '    ' + self.user_text[self.cursor_row][self.cursor_index:])
+        if self.check_bounding_box():
+            self.user_text[self.cursor_row] = text
+            self.cursor_index += 4
+
         self.key_repeat = (pygame.K_TAB, pygame.time.get_ticks() + self.repeat_delay)
 
     def other_keys(self, key):
-        self.user_text[self.cursor_row] = (self.user_text[self.cursor_row][
-                                           :self.cursor_index] + pygame.key.name(key) +
-                                           self.user_text[self.cursor_row][
-                                           self.cursor_index:])
-        self.cursor_index += 1
+        text = (self.user_text[self.cursor_row][:self.cursor_index] + pygame.key.name(key) + self.user_text[self.cursor_row][self.cursor_index:])
+        if self.check_bounding_box():
+            self.user_text[self.cursor_row] = text
+            self.cursor_index += 1
 
         self.key_repeat = (key, pygame.time.get_ticks() + self.repeat_delay)
 
@@ -185,6 +187,13 @@ class Text:
                 else:
                     self.other_keys(self.key_repeat[0])
                 self.key_repeat = (self.key_repeat[0], pygame.time.get_ticks() + self.repeat_interval)
+
+    def check_bounding_box(self):
+        width, height = self.font.size(self.user_text[self.cursor_row])
+        if width >= self.max_width:
+            return False
+        else:
+            return True
 
     def render_preset_text(self):
         for i, row in enumerate(self.preset_text):
