@@ -6,7 +6,20 @@ class OverworldSprite(pygame.sprite.Sprite):
         super().__init__(group)
         self.name = name
 
-        if self.name == 'wizard':
+        if self.name == 'fisherman':
+            self.animation = []
+            for i in range(2):
+                filename = f"fisherman{i}.png"
+                image = pygame.image.load(os.path.join('..', 'graphics', 'characters', "fisherman", filename))
+                image = pygame.Surface.convert_alpha(image)
+                self.animation.append(image)
+
+            self.counter = 0
+            self.animation_speed = 1400
+            self.index = 0
+            self.image = self.animation[0]
+
+        elif self.name == 'wizard':
             self.animation = []
             for i in range(2):
                 filename = f"wizard{i}.png"
@@ -28,7 +41,7 @@ class OverworldSprite(pygame.sprite.Sprite):
                 self.animation.append(image)
 
             self.counter = 0
-            self.animation_speed = 1000
+            self.animation_speed = 1400
             self.index = 0
             self.image = self.animation[0]
         else:
@@ -53,5 +66,6 @@ class OverworldSprite(pygame.sprite.Sprite):
     def update(self, dt):
         self.animate(dt, 'wizard')
         self.animate(dt, 'knight')
+        self.animate(dt, 'fisherman')
 
 

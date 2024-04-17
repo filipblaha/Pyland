@@ -12,11 +12,13 @@ class OverWorld:
         self.data = data
 
         # zones
+        self.fisherman_zone = []
         self.wizard_zone = []
         self.knight_zone = []
         self.house_entry_zone = []
 
         # dialog windows
+        self.fisherman_dialog_window = None
         self.wizard_dialog_window = None
         self.knight_dialog_window = None
         self.house_entry_dialog_window = None
@@ -53,23 +55,28 @@ class OverWorld:
                 self.wizard_zone = pygame.Rect(pos[0], pos[1], obj.width, obj.height)
             if obj.name == 'knight_zone':
                 self.knight_zone = pygame.Rect(pos[0], pos[1], obj.width, obj.height)
+            if obj.name == 'fisherman_zone':
+                self.fisherman_zone = pygame.Rect(pos[0], pos[1], obj.width, obj.height)
             if obj.name == 'house_entry_zone':
                 self.house_entry_zone = pygame.Rect(pos[0], pos[1], obj.width, obj.height)
 
         # dialog windows
 
+        self.fisherman_dialog_window = DialogWindow('Welcome home you piece of shit', 34, (-300, -300), 450, 150, self.camera_group)
         self.wizard_dialog_window = DialogWindow('Welcome home you piece of shit', 34, (-500, 580), 450, 150, self.camera_group)
         self.knight_dialog_window = DialogWindow('Welcome home you piece of shit', 34, (480, 520), 450, 150, self.camera_group)
         self.house_entry_dialog_window = DialogWindow('Press E to enter', 34, (-830, 620), 250, 150, self.camera_group)
 
     def logic(self, dt):
         # zones
+        self.fisherman_dialog_window.active = self.player.zone_collision_check(self.fisherman_zone)
         self.wizard_dialog_window.active = self.player.zone_collision_check(self.wizard_zone)
         self.knight_dialog_window.active = self.player.zone_collision_check(self.knight_zone)
         self.house_entry_dialog_window.active = self.player.zone_collision_check(self.house_entry_zone)
 
         # update
         self.camera_group.update(dt)
+        self.fisherman_dialog_window.update()
         self.wizard_dialog_window.update()
         self.knight_dialog_window.update()
         self.house_entry_dialog_window.update()
@@ -77,6 +84,7 @@ class OverWorld:
     def render(self, dt):
         # draw
         self.camera_group.custom_draw(self.player)
+        self.fisherman_dialog_window.display()
         self.wizard_dialog_window.display()
         self.knight_dialog_window.display()
         self.house_entry_dialog_window.display()
