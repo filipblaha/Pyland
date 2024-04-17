@@ -29,7 +29,7 @@ class IDESprites(pygame.sprite.Group):
         self.wizard_sprite = create_sprite('wizard_closeup.png', (1300, 200))
         self.wizard_hat_sprite = create_sprite('hat.png', (1280, 570))
         self.knight_sprite = create_sprite('knight_closeup.png', (1300, 250))
-        self.ghost_sprite = create_sprite('ghost_closeup3.png', (1300, 250))
+        self.ghost_sprite = create_sprite('ghost_closeup.png', (1300, 250))
 
     def set_fisherman_scene(self):
         self.sprite_group.empty()

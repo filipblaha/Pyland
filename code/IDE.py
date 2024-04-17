@@ -16,7 +16,7 @@ class IDE:
         self.data = data
 
         self.current_time = pygame.time.get_ticks()
-        self.minigame_scene = 1
+        self.minigame_scene = 2
         self.minigame_num = 0
         self.cutscene_frame = 0
         self.correct_answer = False
