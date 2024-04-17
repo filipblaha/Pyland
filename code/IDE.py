@@ -16,7 +16,7 @@ class IDE:
         self.data = data
 
         self.current_time = pygame.time.get_ticks()
-        self.minigame_scene = 0
+        self.minigame_scene = 1
         self.minigame_num = 0
         self.cutscene_frame = 0
         self.correct_answer = False
@@ -34,8 +34,8 @@ class IDE:
         # mouse
         pygame.mouse.set_visible(False)
 
-        self.dialog_window = DialogWindow('', 50, (1300, 130), 800, 200, None, 'hahahahahahah.')
-        self.dialog_window.change_text('Filip je borec a tereza ne hahahahahahah.')
+        self.dialog_window = DialogWindow('', 50, (1300, 130), 800, 200)
+        self.dialog_window.change_text('Try the for cycle !', 50, ['for', 'cycle'])
         self.parse = Parse()
         self.hud = HUD()
         self.dialog_window.active = True

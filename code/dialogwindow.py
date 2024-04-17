@@ -117,7 +117,7 @@ class DialogWindow:
 
         # goes through every word in the text
         for word in words:
-            if word == self.highlight_words:
+            if word in self.highlight_words:
                 word_color = self.highlight_color
                 font = pygame.font.Font(FONT, self.highlight_font_size)
                 word_surf = font.render(word, True, word_color)
@@ -190,6 +190,8 @@ class DialogWindow:
             self.highlight_color = 'red'
         else:
             self.highlight_color = highlight_color
+
+        self.lines, self.line_heights = self.split_lines(self.text)
 
     def update(self):
         if self.active and self.camera_group:
