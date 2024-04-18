@@ -28,8 +28,8 @@ class Game:
         self.over_world = OverWorld(self.tmx_maps[0], self.data)
         self.ide = IDE(self.data)
 
-        # self.game_stage = GameState.OVER_WORLD
-        self.game_stage = GameState.IDE
+        self.game_stage = GameState.OVER_WORLD
+        # self.game_stage = GameState.IDE
 
         # Timing
         self.clock = pygame.time.Clock()

@@ -22,10 +22,12 @@ class OverWorld:
         self.wizard_dialog_window = None
         self.knight_dialog_window = None
         self.house_entry_dialog_window = None
+        self.hint_dialog_window = None
 
         # sprite setup
         self.camera_group = CameraGroup()
         self.player = None
+        self.sprites = {}
         self.barrier = None
         self.setup(tmx_map)
 
@@ -34,6 +36,12 @@ class OverWorld:
         self.mouse = pygame.Surface((10, 10))
         self.mouse.fill((0, 0, 0))
         self.mouse_mask = pygame.mask.from_surface(self.mouse)
+
+        # progress
+        self.task_done = {'Fisherman': False,
+                          'Knight': False,
+                          'Wizard': False,
+                          'Ghost': False}
 
     def setup(self, tmx_map):
         # tmx
@@ -47,7 +55,7 @@ class OverWorld:
             if obj.name == 'Player':
                 self.player = Player(pos, self.camera_group, tmx_map, 'Player')
             else:
-                OverworldSprite(pos, obj.image, self.camera_group, obj.name)
+                self.sprites[obj.name] = OverworldSprite(pos, obj.image, self.camera_group, obj.name)
 
         for obj in tmx_map.get_layer_by_name('Zones'):
             pos = obj.x, obj.y
@@ -62,29 +70,41 @@ class OverWorld:
 
         # dialog windows
 
-        self.fisherman_dialog_window = DialogWindow('Welcome home you piece of shit', 34, (-300, -300), 450, 150, self.camera_group)
-        self.wizard_dialog_window = DialogWindow('Welcome home you piece of shit', 34, (-500, 580), 450, 150, self.camera_group)
-        self.knight_dialog_window = DialogWindow('Welcome home you piece of shit', 34, (480, 520), 450, 150, self.camera_group)
-        self.house_entry_dialog_window = DialogWindow('Press E to enter', 34, (-830, 620), 250, 150, self.camera_group)
+        self.fisherman_dialog_window = DialogWindow('', 34, self.sprites['fisherman'].rect.center, 450, 150, self.camera_group)
+        self.wizard_dialog_window = DialogWindow('', 34, self.sprites['wizard'].rect.center, 450, 150, self.camera_group)
+        self.knight_dialog_window = DialogWindow('', 34, self.sprites['knight'].rect.center, 450, 150, self.camera_group)
+        self.house_entry_dialog_window = DialogWindow('', 34, (360, 640), 250, 150, self.camera_group)
+        self.hint_dialog_window = DialogWindow('Press E to interact.', 34, (1650, 100), 450, 150, self.camera_group, True, ['Press', 'E'])
 
     def logic(self, dt):
         # zones
-        self.fisherman_dialog_window.active = self.player.zone_collision_check(self.fisherman_zone)
+        if self.task_done['Fisherman']:
+            self.fisherman_dialog_window.active = self.player.zone_collision_check(self.fisherman_zone)
+        else:
+            self.fisherman_dialog_window.active = True
+        self.hint_dialog_window.active = self.player.zone_collision_check(self.fisherman_zone)
         self.wizard_dialog_window.active = self.player.zone_collision_check(self.wizard_zone)
         self.knight_dialog_window.active = self.player.zone_collision_check(self.knight_zone)
         self.house_entry_dialog_window.active = self.player.zone_collision_check(self.house_entry_zone)
 
         # update
         self.camera_group.update(dt)
-        self.fisherman_dialog_window.update()
-        self.wizard_dialog_window.update()
-        self.knight_dialog_window.update()
-        self.house_entry_dialog_window.update()
+        self.fisherman_dialog_window.update(self.player.rect.center)
+        self.wizard_dialog_window.update(self.player.rect.center)
+        self.knight_dialog_window.update(self.player.rect.center)
+        self.house_entry_dialog_window.update(self.player.rect.center)
+
+        # dialog windows
+        self.fisherman_dialog_window.change_text('Hey You! I need to tell you something!')
+
+        if self.task_done['Fisherman']:
+            self.knight_dialog_window.change_text('Yes')
 
     def render(self, dt):
         # draw
         self.camera_group.custom_draw(self.player)
         self.fisherman_dialog_window.display()
+        self.hint_dialog_window.display()
         self.wizard_dialog_window.display()
         self.knight_dialog_window.display()
         self.house_entry_dialog_window.display()

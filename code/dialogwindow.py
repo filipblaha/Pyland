@@ -1,8 +1,10 @@
+import pygame
+
 from globalvariables import *
 
 
 class DialogWindow:
-    def __init__(self, text, font_size, pos: tuple, width, height, camera_group=None, highlight_words=None, highlight_font_size=None, highlight_color='red'):
+    def __init__(self, text, font_size, pos: tuple, width, height, camera_group=None, static=False, highlight_words=None, highlight_font_size=None, highlight_color='red'):
         """
             REQUIRED arguments: Text and font size. Position and size of the window.
 
@@ -18,9 +20,12 @@ class DialogWindow:
             :param highlight_color:
         """
         self.active = False
+        self.static = static
 
         self.image = pygame.image.load(os.path.join('..', 'graphics', 'objects', "dialog_window.png"))
         self.image = pygame.Surface.convert_alpha(self.image)
+        self.scaled_surf = None
+        self.scaled_rect = None
 
         self.display_surface = pygame.display.get_surface()
         self.dialog_color = (200, 200, 200)
@@ -49,14 +54,14 @@ class DialogWindow:
         else:
             self.highlight_font_size = highlight_font_size
 
+        if highlight_color is None:
+            self.highlight_color = (255, 0, 0)
+        else:
+            self.highlight_color = highlight_color
+
         self.text = text
         if self.text:
             self.lines, self.line_heights = self.split_lines(self.text)
-
-        if highlight_color is None:
-            self.highlight_color = (0, 0, 0)
-        else:
-            self.highlight_color = highlight_color
 
     def display(self):
         """
@@ -65,8 +70,10 @@ class DialogWindow:
         if self.active:
             # drawing dialog window
             dialog_rect = pygame.Rect(0, 0, self.width, self.height)
-            dialog_rect.center = (self.scaled_pos.x, self.scaled_pos.y)
-            # pygame.draw.rect(self.display_surface, self.dialog_color, dialog_rect)
+            if self.static:
+                dialog_rect.center = self.pos
+            else:
+                dialog_rect.center = self.scaled_pos
             self.image = pygame.transform.scale(self.image, (dialog_rect.w, dialog_rect.h))
             self.display_surface.blit(self.image, dialog_rect)
 
@@ -95,7 +102,10 @@ class DialogWindow:
                     y_offset = (self.height - dialog_height + self.line_heights[i] - this_font_height) // 2 + sum(self.line_heights[:i])
 
                     # rendering words
-                    text_rect = surface.get_rect(topleft=(self.scaled_pos.x - self.width // 2 + x_offset, self.scaled_pos.y - self.height // 2 + y_offset))
+                    if self.static:
+                        text_rect = surface.get_rect(topleft=(self.pos.x - self.width // 2 + x_offset, self.pos.y - self.height // 2 + y_offset))
+                    else:
+                        text_rect = surface.get_rect(topleft=(self.scaled_pos.x - self.width // 2 + x_offset, self.scaled_pos.y - self.height // 2 + y_offset))
                     self.display_surface.blit(surface, text_rect)
 
                     # adding spaces between the words
@@ -168,32 +178,37 @@ class DialogWindow:
         return lines, line_heights
 
     def change_text(self, text, font_size=None, highlight_words=None, highlight_font_size=None, highlight_color=None):
-        self.text = text
-        if font_size is not None:
-            self.font_size = font_size
+        if not self.text == text:
+            self.text = text
+            if font_size is not None:
+                self.font_size = font_size
 
-        if self.text:
+            if self.text:
+                self.lines, self.line_heights = self.split_lines(self.text)
+
+            if highlight_words is None:
+                self.highlight_words = []
+            else:
+                self.highlight_words = highlight_words
+
+            # font
+            if highlight_font_size is None:
+                self.highlight_font_size = self.font_size
+            else:
+                self.highlight_font_size = highlight_font_size
+
+            if highlight_color is None:
+                self.highlight_color = 'red'
+            else:
+                self.highlight_color = highlight_color
+
             self.lines, self.line_heights = self.split_lines(self.text)
 
-        if highlight_words is None:
-            self.highlight_words = []
-        else:
-            self.highlight_words = highlight_words
-
-        # font
-        if highlight_font_size is None:
-            self.highlight_font_size = self.font_size
-        else:
-            self.highlight_font_size = highlight_font_size
-
-        if highlight_color is None:
-            self.highlight_color = 'red'
-        else:
-            self.highlight_color = highlight_color
-
-        self.lines, self.line_heights = self.split_lines(self.text)
-
-    def update(self):
+    def update(self, player_pos):
         if self.active and self.camera_group:
-            self.scaled_pos.x = self.pos.x - self.camera_group.offset.x * self.camera_group.zoom_scale
-            self.scaled_pos.y = self.pos.y - self.camera_group.offset.y * self.camera_group.zoom_scale
+            
+            self.scaled_pos.x = (self.pos.x - self.camera_group.offset.x + self.camera_group.internal_offset.x) * self.camera_group.zoom_scale
+            if player_pos[1] >= self.pos.y:
+                self.scaled_pos.y = (self.pos.y - self.camera_group.offset.y + self.camera_group.internal_offset.y) * self.camera_group.zoom_scale - 160
+            else:
+                self.scaled_pos.y = (self.pos.y - self.camera_group.offset.y + self.camera_group.internal_offset.y) * self.camera_group.zoom_scale + 160

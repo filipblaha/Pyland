@@ -5,6 +5,7 @@ class OverworldSprite(pygame.sprite.Sprite):
     def __init__(self, pos, surf, group, name):
         super().__init__(group)
         self.name = name
+        self.pos = pos
 
         if self.name == 'fisherman':
             self.animation = []
@@ -47,7 +48,7 @@ class OverworldSprite(pygame.sprite.Sprite):
         else:
             self.image = surf
 
-        self.rect = self.image.get_frect(topleft=pos)
+        self.rect = self.image.get_frect(topleft=self.pos)
         self.old_rect = self.rect.copy()
 
     def animate(self, dt, name):
@@ -67,5 +68,3 @@ class OverworldSprite(pygame.sprite.Sprite):
         self.animate(dt, 'wizard')
         self.animate(dt, 'knight')
         self.animate(dt, 'fisherman')
-
-

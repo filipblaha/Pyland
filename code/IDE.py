@@ -91,14 +91,11 @@ class IDE:
         if self.minigame_scene == 0:
             self.sprites.set_fisherman_scene()
 
-        if self.minigame_scene == 1:
-            if self.you_win:
-                self.sprites.set_wizard_winning_scene()
-            else:
-                self.sprites.set_wizard_scene()
+        elif self.minigame_scene == 1:
+            self.sprites.set_knight_scene()
 
         elif self.minigame_scene == 2:
-            self.sprites.set_knight_scene()
+            self.sprites.set_wizard_scene()
 
         elif self.minigame_scene == 3:
             self.sprites.set_ghost_scene()
