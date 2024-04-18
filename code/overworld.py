@@ -91,15 +91,19 @@ class OverWorld:
                                                True, ['Press', 'E'])
 
     def logic(self, dt, event):
+        if event:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
 
-        self.dialog_window_pos_update(dt)
+        self.dialog_windows_pos_update(dt)
         self.dialog_windows_active()
-        self.dialog_windows_text()
+        self.dialog_windows_select_text()
 
         if self.start_dialog(event):
             self.globals.change_game_stage('IDE')
 
-    def dialog_window_pos_update(self, dt):
+    def dialog_windows_pos_update(self, dt):
         self.camera_group.update(dt)
         self.fisherman_dialog_window.update(self.player.rect.center)
         self.wizard_dialog_window.update(self.player.rect.center)
@@ -123,10 +127,10 @@ class OverWorld:
         self.knight_dialog_window.active = self.player.zone_collision_check(self.knight_zone)
         self.house_entry_dialog_window.active = self.player.zone_collision_check(self.house_entry_zone)
 
-    def dialog_windows_text(self):
+    def dialog_windows_select_text(self):
         if self.current_task['Fisherman']:
-            self.fisherman_dialog_window.change_text('Hey you! I need to tell you something!')
-            self.knight_dialog_window.change_text('Fisherman wants to talk with you.')
+            self.fisherman_dialog_window.change_text('Hey you! You must help us!', 34, ['Hey', 'you!'])
+            self.knight_dialog_window.change_text('First, talk with the fisherman.')
             self.wizard_dialog_window.change_text('Get lost you nameless entity.')
             self.house_entry_dialog_window.change_text('Locked')
         elif self.current_task['Knight']:
@@ -135,16 +139,20 @@ class OverWorld:
             self.wizard_dialog_window.change_text('Do you even know what are cycles, ' + self.player_name + '?')
             self.house_entry_dialog_window.change_text('Locked')
         elif self.current_task['Wizard']:
-            self.fisherman_dialog_window.change_text('All fish are gone.')
-            self.knight_dialog_window.change_text(self.player_name + 'are you really going in there?')
-            self.wizard_dialog_window.change_text('What are you waiting for?')
-            self.house_entry_dialog_window.change_text('Unlocked')
+            self.fisherman_dialog_window.change_text('What are we gonna do?')
+            self.knight_dialog_window.change_text('Quickly, before he escapes!')
+            self.wizard_dialog_window.change_text('STOP RIGHT THERE!')
+            self.house_entry_dialog_window.change_text('Locked')
         elif self.current_task['Ghost']:
             self.fisherman_dialog_window.change_text('All fish are gone.')
-            self.knight_dialog_window.change_text('Are you really going in there?')
+            self.knight_dialog_window.change_text(self.player_name + ' are you really going in there?')
             self.wizard_dialog_window.change_text('What are you waiting for?')
             self.house_entry_dialog_window.change_text('Unlocked')
-            pass
+        else:
+            self.fisherman_dialog_window.change_text(self.player_name + ' is it over or will it return?.')
+            self.knight_dialog_window.change_text('I bow before you ' + self.player_name + '.')
+            self.wizard_dialog_window.change_text('He is gone for now, but he shall return.')
+            self.house_entry_dialog_window.change_text('Unlocked')
 
     def start_dialog(self, event):
         if event and event.type == pygame.KEYDOWN:

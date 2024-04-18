@@ -13,7 +13,8 @@ class HUD:
         self.width = 400
         self.height = 200
 
-        self.hint_rect = pygame.Rect(520, 40, 80, 30)
+        self.hint_rect = pygame.Rect(650, 55, 100, 60)
+        self.hint_color = 'black'
 
     def display_error_window(self, msg=None, msg_color='red'):
         """
@@ -42,6 +43,6 @@ class HUD:
             self.display_surface.blit(text_surf, (self.pos.x + 30, self.pos.y + 55 + i * text_text_height))
 
     def display_hint(self):
-        font = pygame.font.Font(self.globals.FONT, 25)
-        text_surf_name = font.render('Hint', False, 'black')
+        font = pygame.font.Font(self.globals.FONT, 50)
+        text_surf_name = font.render('Hint', False, self.hint_color)
         self.display_surface.blit(text_surf_name, self.hint_rect)

@@ -41,7 +41,7 @@ class DialogWindow:
         self.scaled_pos = pygame.Vector2(pos)
         self.width = width
         self.height = height
-        self.max_width = width - 50
+        self.max_width = width - 90
 
         # highlighted words
         if highlight_words is None or highlight_words == []:

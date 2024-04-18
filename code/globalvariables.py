@@ -1,7 +1,7 @@
 from pygame.math import Vector2 as vector
 import pygame
+import sys
 import os
-from enum import Enum
 
 
 class GlobalVariables:

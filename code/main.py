@@ -1,4 +1,4 @@
-import sys
+
 from pytmx.util_pygame import load_pygame
 from save_load_data import *
 from overworld import *
@@ -7,7 +7,7 @@ from IDE import *
 
 def player_input():
     for event in pygame.event.get():
-        if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+        if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
         else:
@@ -30,8 +30,8 @@ class Game:
 
         self.over_world = OverWorld(self.globals ,self.tmx_maps[0], self.data)
         self.ide = IDE(self.globals, self.data)
-        self.globals.change_game_stage('OVER_WORLD')
-        # self.game_stage = GameState.IDE
+        # self.globals.change_game_stage('OVER_WORLD')
+        self.globals.change_game_stage('IDE')
 
         # Timing
         self.clock = pygame.time.Clock()

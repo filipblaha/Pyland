@@ -3,31 +3,84 @@
     "Section": "IDE",
     "Type": "Text",
     "Location": "Town",
-    "Oponent": "Mystery man",
+    "Opponent": "Fisherman",
     "Text": [
-      "There's no time to waste!",
+      "*You aproach a frightened fisherman*",
+      "What's your name stranger?",
       "You have to STOP him before it's too late!",
-      "Quickly!",
-      "Tell me your name and GO !!!"
+      "There's no time to waste!",
+      "Find the knight, he will teach you."
     ]
   },
   {
     "Section": "IDE",
     "Type": "Text",
     "Location": "Town",
-    "Oponent": "Wizard",
+    "Opponent": "Knight",
     "Text": [
-      "Kill the wizard!",
-      "It has done nothing!?",
-      "Try the for cycle.",
-      "You have won!"
+      "*You aproach a tired knight*",
+      "Hey, there!",
+      "There is a demon in the wizard's hut.",
+      "We have to defeat him!",
+      "Hit me  10x using the for cycle.",
+      "Good job!",
+      "This won't be enough, let's try someting stronger.",
+      "Hit me 20x with the while cycle!",
+      "This is everything I know.",
+	  "The wizard is wiser, go find him!"
+    ]
+  },
+  {
+    "Section": "IDE",
+    "Type": "Text",
+    "Location": "Town",
+    "Opponent": "Wizard",
+    "Text": [
+      "*You aproach an annoyed wizard*",
+      "Who do you think you are?",
+      "You think that you can defeat the demon?",
+	  "I have tried everything!",
+	  "I bet you can't even use cycles correctly...",
+	  "*Show him the for cycle*",
+	  "That's everything you've got?",
+	  "Do it again without for cycle.",
+	  "Wow, the while cycle can be pretty strong.",
+      "I will teach you if statement, that could harm it.",
+      "I am going hit you, try to dodge it.",
+      "Last training before I let you in.",
+      "Use a cycle and if statement.",
+	  "When I hit you, strike me back!",
+      "What are you waiting for?",
+      "GO and teach him a lesson!!!"
+    ]
+  },
+  {
+    "Section": "IDE",
+    "Type": "Text",
+    "Location": "Town",
+    "Opponent": "Ghost",
+    "Text": [
+      "*Weird noises*",
+      "ArE yOu apROacHing mE!?",
+      "tHerE is nO cUMinG baCk",
+      "*Evil laught*",
+      "TaSTe tHis!",
+      "*Demon is attacking! Watch out*",
+      "tHis IS oNlY begGiNIng",
+      "*Try to counterattack!*",
+      "*Screaching noises*",
+      "hOW aRE yoU tHat fAst?",
+      "*The beast is losing it's power!*",
+      "*Finish him with the double for cycle!*",
+      "*The demon flew away through the window*",
+      "*You have defeated it!*"
     ]
   },
   {
     "Section": "IDE",
     "Type": "Goal",
     "Location": "Town",
-    "Oponent": "Wizard",
+    "Opponent": "Wizard",
     "Data": [
       {
         "Keyword": "name",
@@ -50,7 +103,7 @@
     "Section": "IDE",
     "Type": "Preset words",
     "Location": "Town",
-    "Oponent": "Wizard",
+    "Opponent": "Wizard",
     "Data": [
       {
 		"No Hint": [
