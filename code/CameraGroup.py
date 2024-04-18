@@ -11,7 +11,7 @@ class CameraGroup(pygame.sprite.Group):
         self.half_w = self.display_surface.get_size()[0]//2
         self.half_h = self.display_surface.get_size()[1]//2
 
-        # zoom
+        # infernal rect
         self.zoom_scale = 3
         self.internal_surf_size = (640, 360)
         self.internal_surf = pygame.Surface(self.internal_surf_size, pygame.SRCALPHA)

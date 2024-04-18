@@ -15,6 +15,7 @@ class IDESprites(pygame.sprite.Group):
         super().__init__()
         self.display_surface = display_surface
         self.sprite_group = sprite_group
+        self.globals = GlobalVariables()
 
         self.blink_button_active = False
 
@@ -31,45 +32,38 @@ class IDESprites(pygame.sprite.Group):
         self.knight_sprite = create_sprite('knight_closeup.png', (1300, 250))
         self.ghost_sprite = create_sprite('ghost_closeup.png', (1300, 250))
 
-    def set_fisherman_scene(self):
+    def set_scene(self):
         self.sprite_group.empty()
 
-        self.sprite_group.add(self.lake_sprite)
-        self.sprite_group.add(self.code_paper_sprite)
-        self.sprite_group.add(self.check_button_sprite)
-        self.sprite_group.add(self.fisherman_sprite)
+        if self.globals.MINIGAME_SCENE == 0:
+            self.sprite_group.add(self.lake_sprite)
+            self.sprite_group.add(self.code_paper_sprite)
+            self.sprite_group.add(self.check_button_sprite)
+            self.sprite_group.add(self.fisherman_sprite)
 
-    def set_wizard_scene(self):
-        self.sprite_group.empty()
+        elif self.globals.MINIGAME_SCENE == 1:
+            self.sprite_group.add(self.forest_sprite)
+            self.sprite_group.add(self.code_paper_sprite)
+            self.sprite_group.add(self.check_button_sprite)
+            self.sprite_group.add(self.wizard_sprite)
 
-        self.sprite_group.add(self.forest_sprite)
-        self.sprite_group.add(self.code_paper_sprite)
-        self.sprite_group.add(self.check_button_sprite)
-        self.sprite_group.add(self.wizard_sprite)
+        elif self.globals.MINIGAME_SCENE == 2:
+            self.sprite_group.add(self.forest_sprite)
+            self.sprite_group.add(self.code_paper_sprite)
+            self.sprite_group.add(self.check_button_sprite)
+            self.sprite_group.add(self.wizard_hat_sprite)
 
-    def set_wizard_winning_scene(self):
-        self.sprite_group.empty()
+        elif self.globals.MINIGAME_SCENE == 3:
+            self.sprite_group.add(self.forest_sprite)
+            self.sprite_group.add(self.code_paper_sprite)
+            self.sprite_group.add(self.check_button_sprite)
+            self.sprite_group.add(self.knight_sprite)
 
-        self.sprite_group.add(self.forest_sprite)
-        self.sprite_group.add(self.code_paper_sprite)
-        self.sprite_group.add(self.check_button_sprite)
-        self.sprite_group.add(self.wizard_hat_sprite)
-
-    def set_knight_scene(self):
-        self.sprite_group.empty()
-
-        self.sprite_group.add(self.forest_sprite)
-        self.sprite_group.add(self.code_paper_sprite)
-        self.sprite_group.add(self.check_button_sprite)
-        self.sprite_group.add(self.knight_sprite)
-
-    def set_ghost_scene(self):
-        self.sprite_group.empty()
-
-        self.sprite_group.add(self.house_sprite)
-        self.sprite_group.add(self.code_paper_sprite)
-        self.sprite_group.add(self.check_button_sprite)
-        self.sprite_group.add(self.ghost_sprite)
+        elif self.globals.MINIGAME_SCENE == 4:
+            self.sprite_group.add(self.house_sprite)
+            self.sprite_group.add(self.code_paper_sprite)
+            self.sprite_group.add(self.check_button_sprite)
+            self.sprite_group.add(self.ghost_sprite)
 
     def blink_button(self):
         if self.blink_button_active:

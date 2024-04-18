@@ -1,17 +1,20 @@
 from overworldsprites import *
 from player import *
-from dialogwindow import *
 from CameraGroup import *
+from dialogwindow import *
+from globalvariables import *
 
 
 class OverWorld:
-    def __init__(self, tmx_map, data):
+    def __init__(self, glob, tmx_map, data):
 
         # get the display surface
         self.display_surface = pygame.display.get_surface()
         self.data = data
+        self.globals = glob
 
         # zones
+        self.zones = []
         self.fisherman_zone = []
         self.wizard_zone = []
         self.knight_zone = []
@@ -38,17 +41,20 @@ class OverWorld:
         self.mouse_mask = pygame.mask.from_surface(self.mouse)
 
         # progress
-        self.task_done = {'Fisherman': False,
-                          'Knight': False,
-                          'Wizard': False,
-                          'Ghost': False}
+        self.current_task = {'Fisherman': True,
+                             'Knight': False,
+                             'Wizard': False,
+                             'Ghost': False}
+        # name
+        self.player_name = 'Maty Makrlik'
 
     def setup(self, tmx_map):
         # tmx
         for layer in ['Floor', 'Pavement', 'Vegetation', 'Cliffs3', 'Cliffs2', 'Cliffs1', 'FloorDarkShadow',
                       'FloorBrightShadow']:
             for x, y, surf in tmx_map.get_layer_by_name(layer).tiles():
-                OverworldSprite((x * TILE_SIZE, y * TILE_SIZE), surf, self.camera_group, 'Tile')
+                OverworldSprite((x * self.globals.TILE_SIZE, y * self.globals.TILE_SIZE), surf, self.camera_group,
+                                'Tile')
 
         for obj in tmx_map.get_layer_by_name('Objects'):
             pos = obj.x, obj.y
@@ -59,46 +65,107 @@ class OverWorld:
 
         for obj in tmx_map.get_layer_by_name('Zones'):
             pos = obj.x, obj.y
-            if obj.name == 'wizard_zone':
-                self.wizard_zone = pygame.Rect(pos[0], pos[1], obj.width, obj.height)
-            if obj.name == 'knight_zone':
-                self.knight_zone = pygame.Rect(pos[0], pos[1], obj.width, obj.height)
             if obj.name == 'fisherman_zone':
                 self.fisherman_zone = pygame.Rect(pos[0], pos[1], obj.width, obj.height)
+            if obj.name == 'knight_zone':
+                self.knight_zone = pygame.Rect(pos[0], pos[1], obj.width, obj.height)
+            if obj.name == 'wizard_zone':
+                self.wizard_zone = pygame.Rect(pos[0], pos[1], obj.width, obj.height)
             if obj.name == 'house_entry_zone':
                 self.house_entry_zone = pygame.Rect(pos[0], pos[1], obj.width, obj.height)
 
+        self.zones.append(self.fisherman_zone)
+        self.zones.append(self.knight_zone)
+        self.zones.append(self.wizard_zone)
+        self.zones.append(self.house_entry_zone)
+
         # dialog windows
+        self.fisherman_dialog_window = DialogWindow('', 34, self.sprites['fisherman'].rect.center, 450, 150,
+                                                    self.camera_group)
+        self.wizard_dialog_window = DialogWindow('', 34, self.sprites['wizard'].rect.center, 450, 150,
+                                                 self.camera_group)
+        self.knight_dialog_window = DialogWindow('', 34, self.sprites['knight'].rect.center, 450, 150,
+                                                 self.camera_group)
+        self.house_entry_dialog_window = DialogWindow('', 34, (360, 620), 250, 150, self.camera_group)
+        self.hint_dialog_window = DialogWindow('Press E to interact.', 34, (1650, 100), 450, 150, self.camera_group,
+                                               True, ['Press', 'E'])
 
-        self.fisherman_dialog_window = DialogWindow('', 34, self.sprites['fisherman'].rect.center, 450, 150, self.camera_group)
-        self.wizard_dialog_window = DialogWindow('', 34, self.sprites['wizard'].rect.center, 450, 150, self.camera_group)
-        self.knight_dialog_window = DialogWindow('', 34, self.sprites['knight'].rect.center, 450, 150, self.camera_group)
-        self.house_entry_dialog_window = DialogWindow('', 34, (360, 640), 250, 150, self.camera_group)
-        self.hint_dialog_window = DialogWindow('Press E to interact.', 34, (1650, 100), 450, 150, self.camera_group, True, ['Press', 'E'])
+    def logic(self, dt, event):
 
-    def logic(self, dt):
-        # zones
-        if self.task_done['Fisherman']:
-            self.fisherman_dialog_window.active = self.player.zone_collision_check(self.fisherman_zone)
-        else:
-            self.fisherman_dialog_window.active = True
-        self.hint_dialog_window.active = self.player.zone_collision_check(self.fisherman_zone)
-        self.wizard_dialog_window.active = self.player.zone_collision_check(self.wizard_zone)
-        self.knight_dialog_window.active = self.player.zone_collision_check(self.knight_zone)
-        self.house_entry_dialog_window.active = self.player.zone_collision_check(self.house_entry_zone)
+        self.dialog_window_pos_update(dt)
+        self.dialog_windows_active()
+        self.dialog_windows_text()
 
-        # update
+        if self.start_dialog(event):
+            self.globals.change_game_stage('IDE')
+
+    def dialog_window_pos_update(self, dt):
         self.camera_group.update(dt)
         self.fisherman_dialog_window.update(self.player.rect.center)
         self.wizard_dialog_window.update(self.player.rect.center)
         self.knight_dialog_window.update(self.player.rect.center)
         self.house_entry_dialog_window.update(self.player.rect.center)
 
-        # dialog windows
-        self.fisherman_dialog_window.change_text('Hey You! I need to tell you something!')
+    def dialog_windows_active(self):
 
-        if self.task_done['Fisherman']:
-            self.knight_dialog_window.change_text('Yes')
+        for zone in self.zones:
+            if self.player.zone_collision_check(zone):
+                self.hint_dialog_window.active = True
+                break
+            else:
+                self.hint_dialog_window.active = False
+
+        if self.current_task['Fisherman']:
+            self.fisherman_dialog_window.active = True
+        else:
+            self.fisherman_dialog_window.active = self.player.zone_collision_check(self.fisherman_zone)
+        self.wizard_dialog_window.active = self.player.zone_collision_check(self.wizard_zone)
+        self.knight_dialog_window.active = self.player.zone_collision_check(self.knight_zone)
+        self.house_entry_dialog_window.active = self.player.zone_collision_check(self.house_entry_zone)
+
+    def dialog_windows_text(self):
+        if self.current_task['Fisherman']:
+            self.fisherman_dialog_window.change_text('Hey you! I need to tell you something!')
+            self.knight_dialog_window.change_text('Fisherman wants to talk with you.')
+            self.wizard_dialog_window.change_text('Get lost you nameless entity.')
+            self.house_entry_dialog_window.change_text('Locked')
+        elif self.current_task['Knight']:
+            self.fisherman_dialog_window.change_text(self.player_name + ' go talk to sir Arnold')
+            self.knight_dialog_window.change_text('Quickly, before he escapes!')
+            self.wizard_dialog_window.change_text('Do you even know what are cycles, ' + self.player_name + '?')
+            self.house_entry_dialog_window.change_text('Locked')
+        elif self.current_task['Wizard']:
+            self.fisherman_dialog_window.change_text('All fish are gone.')
+            self.knight_dialog_window.change_text(self.player_name + 'are you really going in there?')
+            self.wizard_dialog_window.change_text('What are you waiting for?')
+            self.house_entry_dialog_window.change_text('Unlocked')
+        elif self.current_task['Ghost']:
+            self.fisherman_dialog_window.change_text('All fish are gone.')
+            self.knight_dialog_window.change_text('Are you really going in there?')
+            self.wizard_dialog_window.change_text('What are you waiting for?')
+            self.house_entry_dialog_window.change_text('Unlocked')
+            pass
+
+    def start_dialog(self, event):
+        if event and event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_e:
+                for num, zone in enumerate(self.zones):
+                    if self.player.zone_collision_check(zone):
+                        if self.current_task['Fisherman']:
+                            if zone == self.fisherman_zone:
+                                self.globals.MINIGAME_SCENE = num
+                                return True
+                        elif self.current_task['Knight']:
+                            if zone == self.fisherman_zone or zone == self.knight_zone:
+                                self.globals.MINIGAME_SCENE = num
+                                return True
+                        elif self.current_task['Wizard']:
+                            if not zone == self.house_entry_zone:
+                                self.globals.MINIGAME_SCENE = num
+                                return True
+                        elif self.current_task['Ghost']:
+                            self.globals.MINIGAME_SCENE = num
+                            return True
 
     def render(self, dt):
         # draw

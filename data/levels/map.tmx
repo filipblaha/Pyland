@@ -1462,7 +1462,7 @@
   <object id="9126" name="bush2" type="Bush" gid="1456" x="724.333" y="957.333" width="32" height="32"/>
   <object id="9129" name="sapling_big_green" type="Tree" gid="330" x="668.667" y="990" width="64" height="64"/>
   <object id="9131" name="rock_big3" type="Rock" gid="1450" x="1024.67" y="916" width="32" height="32"/>
-  <object id="9138" name="Player" type="Character" gid="1482" x="753.867" y="605.736" width="24.6667" height="37"/>
+  <object id="9138" name="Player" type="Character" gid="1482" x="363.367" y="263.736" width="24.6667" height="37"/>
   <object id="9140" name="rock_big2" type="Rock" gid="1449" x="831.167" y="495.167" width="32" height="32"/>
   <object id="9142" name="rock_big8" type="Rock" gid="2147485103" x="988" y="584.667" width="32" height="32"/>
   <object id="9144" name="tree_oak_yellow" type="Tree" gid="319" x="924" y="323.5" width="64" height="96"/>
@@ -1500,7 +1500,7 @@
   </object>
   <object id="9169" name="wizard_zone" type="Zone" x="400.167" y="566.667" width="110" height="80"/>
   <object id="9199" name="knight_zone" type="Zone" x="743.667" y="555.333" width="102" height="71"/>
-  <object id="9200" name="house_entry_zone" type="Zone" x="327.205" y="625.377" width="62.7471" height="36.8015" rotation="0.252347"/>
+  <object id="9200" name="house_entry_zone" type="Zone" x="327.245" y="616.373" width="62.7471" height="45.8058" rotation="0.252347"/>
   <object id="9204" name="fisherman_zone" type="Zone" x="494.045" y="260.545" width="88.6515" height="83.3182"/>
  </objectgroup>
 </map>

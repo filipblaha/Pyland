@@ -21,6 +21,7 @@ class DialogWindow:
         """
         self.active = False
         self.static = static
+        self.globals = GlobalVariables()
 
         self.image = pygame.image.load(os.path.join('..', 'graphics', 'objects', "dialog_window.png"))
         self.image = pygame.Surface.convert_alpha(self.image)
@@ -129,11 +130,11 @@ class DialogWindow:
         for word in words:
             if word in self.highlight_words:
                 word_color = self.highlight_color
-                font = pygame.font.Font(FONT, self.highlight_font_size)
+                font = pygame.font.Font(self.globals.FONT, self.highlight_font_size)
                 word_surf = font.render(word, True, word_color)
             else:
                 word_color = self.text_color
-                font = pygame.font.Font(FONT, self.font_size)
+                font = pygame.font.Font(self.globals.FONT, self.font_size)
                 word_surf = font.render(word, True, word_color)
 
             # adding word width
@@ -142,7 +143,7 @@ class DialogWindow:
 
             # adding space width after every word except the first one to line_width
             if current_line:
-                font_space = pygame.font.Font(FONT, self.font_size)
+                font_space = pygame.font.Font(self.globals.FONT, self.font_size)
                 space_w, space_h = font_space.size(' ')
                 line_width += space_w
 
@@ -206,7 +207,7 @@ class DialogWindow:
 
     def update(self, player_pos):
         if self.active and self.camera_group:
-            
+
             self.scaled_pos.x = (self.pos.x - self.camera_group.offset.x + self.camera_group.internal_offset.x) * self.camera_group.zoom_scale
             if player_pos[1] >= self.pos.y:
                 self.scaled_pos.y = (self.pos.y - self.camera_group.offset.y + self.camera_group.internal_offset.y) * self.camera_group.zoom_scale - 160

@@ -206,7 +206,7 @@ class Text:
     def render_preset_text(self):
         if not self.preset_text == ['']:
             for i, row in enumerate(self.preset_text):
-                text_surf = self.font.render(row, True, (200, 0, 200))
+                text_surf = self.font.render(row, True, (255, 50, 50))
                 text_width, self.preset_text_height = text_surf.get_size()
 
                 text_x = self.pos.x

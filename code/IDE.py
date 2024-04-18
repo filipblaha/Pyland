@@ -7,16 +7,15 @@ from dialogwindow import *
 
 
 class IDE:
-    def __init__(self, data):
+    def __init__(self, glob, data):
+        self.data = data
+        self.globals = glob
 
         self.display_surface = pygame.display.get_surface()
         self.sprite_group = pygame.sprite.Group()
         self.sprites = IDESprites(self.display_surface, self.sprite_group)
         self.text = Text()
-        self.data = data
-
         self.current_time = pygame.time.get_ticks()
-        self.minigame_scene = 2
         self.minigame_num = 0
         self.cutscene_frame = 0
         self.correct_answer = False
@@ -52,23 +51,36 @@ class IDE:
                 self.data_preset_words = item['Data']
 
     def logic(self, dt, event):
+        # timing
         self.current_time = pygame.time.get_ticks()
-        self.text.buttons_pressed(event)
-
         if self.current_time % 1000 < 500:
             self.text.blink_cursor_active = True
 
+        #
         if self.hint_active:
-            self.text.preset_text = self.data_preset_words[self.minigame_scene]['Hint']
+            self.text.preset_text = self.data_preset_words[self.globals.MINIGAME_SCENE]['Hint']
         else:
-            self.text.preset_text = self.data_preset_words[self.minigame_scene]['No Hint']
+            self.text.preset_text = self.data_preset_words[self.globals.MINIGAME_SCENE]['No Hint']
 
+        self.user_input(event)
         self.parse.update_code(self.text.preset_text, self.text.user_text)
 
+        self.sprites.set_scene()
+
+    def user_input(self, event):
+
+        # text editor
+        self.text.buttons_pressed(event)
+
         if event and event.type == pygame.MOUSEBUTTONDOWN:
+            # escaping IDE
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                self.globals.change_game_stage('OVER_WORLD')
+
+            # checking code
             if self.sprites.check_button_sprite.rect.collidepoint(pygame.mouse.get_pos()):
                 self.sprites.blink_button_active = True
-                self.parse.check_code(self.data_assignment[self.minigame_scene])
+                self.parse.check_code(self.data_assignment[self.globals.MINIGAME_SCENE])
             else:
                 x, y = pygame.mouse.get_pos()
                 text_width = 0
@@ -87,19 +99,6 @@ class IDE:
                     if text_width >= x - self.text.pos.x:
                         self.text.cursor_index = i
                         break
-
-        if self.minigame_scene == 0:
-            self.sprites.set_fisherman_scene()
-
-        elif self.minigame_scene == 1:
-            self.sprites.set_knight_scene()
-
-        elif self.minigame_scene == 2:
-            self.sprites.set_wizard_scene()
-
-        elif self.minigame_scene == 3:
-            self.sprites.set_ghost_scene()
-
     def render(self):
         self.sprite_group.draw(self.display_surface)
         self.dialog_window.display()

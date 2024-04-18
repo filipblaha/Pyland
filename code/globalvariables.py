@@ -3,21 +3,28 @@ import pygame
 import os
 from enum import Enum
 
-WIDTH = 1920
-HEIGHT = 1080
-FPS = 40
-TILE_SIZE = 16
 
-# font setup
-FONT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'graphics', 'font', 'Cabal-w5j3.ttf')
-FONT_SIZE = 18
+class GlobalVariables:
+    def __init__(self):
+        self.WIDTH = 1920
+        self.HEIGHT = 1080
+        self.FPS = 40
+        self.TILE_SIZE = 16
+        self.MINIGAME_SCENE = 0
 
+        # font setup
+        self.FONT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'graphics', 'font', 'Cabal-w5j3.ttf')
+        self.FONT_SIZE = 18
 
-# states in game
-class GameState(Enum):
-    MENU = 0
-    OVER_WORLD = 1
-    IDE = 2
+        # states in game
+        self.GAME_STAGE = {
+            'OVER_WORLD': False,
+            'IDE': False
+        }
 
-
-
+    def change_game_stage(self, selected_stage):
+        for stage in self.GAME_STAGE:
+            if stage == selected_stage:
+                self.GAME_STAGE[stage] = True
+            else:
+                self.GAME_STAGE[stage] = False
