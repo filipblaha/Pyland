@@ -2,7 +2,7 @@ import pygame.sprite
 from text import *
 from IDEsprites import *
 from hud import *
-from test_code import *
+from parse import *
 from dialogwindow import *
 
 
@@ -13,10 +13,9 @@ class IDE:
 
         self.display_surface = pygame.display.get_surface()
         self.sprite_group = pygame.sprite.Group()
-        self.sprites = IDESprites(self.display_surface, self.sprite_group)
+        self.sprites = IDESprites(glob, self.display_surface, self.sprite_group)
         self.text = Text()
         self.current_time = pygame.time.get_ticks()
-        self.task_num = 0
         self.cutscene_frame = 0
 
         self.correct_answer = False
@@ -28,19 +27,21 @@ class IDE:
         self.wizard_health = 10
         self.banned_words = ''
         self.ordered_words = ''
+        self.console_message = []
 
         # mouse
         pygame.mouse.set_visible(False)
 
         self.dialog_window = DialogWindow('', 50, (1350, 130), 1000, 200)
         self.parse = Parse()
-        self.hud = HUD()
+        self.hud = HUD(self.dialog_window)
         self.dialog_window.active = True
 
         self.data_assignment = None
         self.data_preset_words = None
         self.data_text = []
         self.setup()
+        self.tasks = [[0, 1, 2, 3], [4, 9, 15, 13], [[-1], [-1], [-1], [-1]]]
 
     def setup(self):
         for num, item in enumerate(self.data.data):
@@ -65,20 +66,37 @@ class IDE:
         self.user_input(event)
         self.parse.update_code(self.text.preset_text, self.text.user_text)
 
-        self.dialog_window_select_text()
-        self.cutscene()
+        for task in zip(*self.tasks):
+            self.dialog_window_select_text(task[0], task[1])
+            self.progress(*task)
 
         self.sprites.set_scene()
 
-    def cutscene(self):
-        if self.task_num == 0:
-            if self.cutscene_frame == 1:
-                self.cutscene_on = False
-            else:
-                self.cutscene_on = True
+    def progress(self, task_num, max_frames, stop_frames):
+        if self.you_win:
+            self.you_win = False
+            self.globals.change_game_stage('OVER_WORLD')
 
-    def dialog_window_select_text(self):
-        self.dialog_window.change_text(self.data_text[self.globals.MINIGAME_SCENE][self.cutscene_frame], 50)
+        if self.globals.MINIGAME_SCENE == task_num:
+            if self.cutscene_frame <= max_frames:
+                for frame in stop_frames:
+                    if self.cutscene_frame == frame:
+                        self.cutscene_on = False
+                    else:
+                        self.cutscene_on = True
+                        break
+
+                if self.correct_answer:
+                    self.cutscene_frame += 1
+                    self.correct_answer = False
+            else:
+                self.you_win = True
+                self.cutscene_frame = 0
+                self.globals.MINIGAME_SCENE += 1
+
+    def dialog_window_select_text(self, task_num, max_frames):
+        if self.globals.MINIGAME_SCENE == task_num and self.cutscene_frame <= max_frames:
+            self.dialog_window.change_text(self.data_text[self.globals.MINIGAME_SCENE][self.cutscene_frame], 50)
 
     def user_input(self, event):
         # text editor
@@ -113,9 +131,25 @@ class IDE:
                 if self.sprites.check_button_sprite.rect.collidepoint(pygame.mouse.get_pos()):
                     self.sprites.blink_button_active = True
                     self.parse.check_code(self.data_assignment[self.globals.MINIGAME_SCENE])
+
+                    msg = self.parse.console_message
+                    self.correct_answer = self.check_if_correct(msg)
+                    self.hud.format_message(msg)
                 # clicking on text
                 else:
                     self.mouse_cursor()
+
+    def check_if_correct(self, message):
+        if message is not None:
+            if message == 'Well done!':
+                self.hud.text_color = 'green'
+                return True
+            elif message == 'Code is valid. Complete the task':
+                self.hud.text_color = 'yellow'
+                return False
+            else:
+                self.hud.text_color = 'red'
+                return False
 
     def mouse_cursor(self):
         x, y = pygame.mouse.get_pos()
@@ -138,16 +172,16 @@ class IDE:
 
     def render(self):
         self.sprite_group.draw(self.display_surface)
+        self.hud.display_hint()
         self.dialog_window.display()
 
         # displaying error window
-        self.hud.display_error_window(self.parse.error_message)
+        self.hud.display_console_window()
 
         # self.ui.show_hint()
         self.text.render_preset_text()
         self.text.render_user_text()
         self.text.blink_cursor()
         self.sprites.blink_button()
-        self.hud.display_hint()
 
         self.display_surface.blit(self.sprites.cursor_sprite.image, pygame.mouse.get_pos())

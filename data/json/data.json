@@ -84,7 +84,7 @@
     "Data": [
       {
         "Keyword": "name",
-        "Rule": "name = filip"
+        "Rule": "name = 'filip'"
       },
       {
         "Keyword": "wizard_health",

@@ -40,11 +40,6 @@ class OverWorld:
         self.mouse.fill((0, 0, 0))
         self.mouse_mask = pygame.mask.from_surface(self.mouse)
 
-        # progress
-        self.current_task = {'Fisherman': True,
-                             'Knight': False,
-                             'Wizard': False,
-                             'Ghost': False}
         # name
         self.player_name = 'Maty Makrlik'
 
@@ -95,9 +90,8 @@ class OverWorld:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 sys.exit()
-
-        self.dialog_windows_pos_update(dt)
         self.dialog_windows_active()
+        self.dialog_windows_pos_update(dt)
         self.dialog_windows_select_text()
 
         if self.start_dialog(event):
@@ -111,7 +105,6 @@ class OverWorld:
         self.house_entry_dialog_window.update(self.player.rect.center)
 
     def dialog_windows_active(self):
-
         for zone in self.zones:
             if self.player.zone_collision_check(zone):
                 self.hint_dialog_window.active = True
@@ -119,7 +112,7 @@ class OverWorld:
             else:
                 self.hint_dialog_window.active = False
 
-        if self.current_task['Fisherman']:
+        if self.globals.MINIGAME_SCENE == 0:
             self.fisherman_dialog_window.active = True
         else:
             self.fisherman_dialog_window.active = self.player.zone_collision_check(self.fisherman_zone)
@@ -128,22 +121,22 @@ class OverWorld:
         self.house_entry_dialog_window.active = self.player.zone_collision_check(self.house_entry_zone)
 
     def dialog_windows_select_text(self):
-        if self.current_task['Fisherman']:
+        if self.globals.MINIGAME_SCENE == 0:
             self.fisherman_dialog_window.change_text('Hey you! You must help us!', 34, ['Hey', 'you!'])
             self.knight_dialog_window.change_text('First, talk with the fisherman.')
             self.wizard_dialog_window.change_text('Get lost you nameless entity.')
             self.house_entry_dialog_window.change_text('Locked')
-        elif self.current_task['Knight']:
+        elif self.globals.MINIGAME_SCENE == 1:
             self.fisherman_dialog_window.change_text(self.player_name + ' go talk to sir Arnold')
             self.knight_dialog_window.change_text('Quickly, before he escapes!')
             self.wizard_dialog_window.change_text('Do you even know what are cycles, ' + self.player_name + '?')
             self.house_entry_dialog_window.change_text('Locked')
-        elif self.current_task['Wizard']:
+        elif self.globals.MINIGAME_SCENE == 2:
             self.fisherman_dialog_window.change_text('What are we gonna do?')
             self.knight_dialog_window.change_text('Quickly, before he escapes!')
             self.wizard_dialog_window.change_text('STOP RIGHT THERE!')
             self.house_entry_dialog_window.change_text('Locked')
-        elif self.current_task['Ghost']:
+        elif self.globals.MINIGAME_SCENE == 3:
             self.fisherman_dialog_window.change_text('All fish are gone.')
             self.knight_dialog_window.change_text(self.player_name + ' are you really going in there?')
             self.wizard_dialog_window.change_text('What are you waiting for?')
@@ -157,23 +150,14 @@ class OverWorld:
     def start_dialog(self, event):
         if event and event.type == pygame.KEYDOWN:
             if event.key == pygame.K_e:
-                for num, zone in enumerate(self.zones):
-                    if self.player.zone_collision_check(zone):
-                        if self.current_task['Fisherman']:
-                            if zone == self.fisherman_zone:
-                                self.globals.MINIGAME_SCENE = num
-                                return True
-                        elif self.current_task['Knight']:
-                            if zone == self.fisherman_zone or zone == self.knight_zone:
-                                self.globals.MINIGAME_SCENE = num
-                                return True
-                        elif self.current_task['Wizard']:
-                            if not zone == self.house_entry_zone:
-                                self.globals.MINIGAME_SCENE = num
-                                return True
-                        elif self.current_task['Ghost']:
-                            self.globals.MINIGAME_SCENE = num
-                            return True
+                if self.globals.MINIGAME_SCENE == 0 and self.player.zone_collision_check(self.fisherman_zone):
+                    return True
+                elif self.globals.MINIGAME_SCENE == 1 and self.player.zone_collision_check(self.knight_zone):
+                    return True
+                elif self.globals.MINIGAME_SCENE == 2 and self.player.zone_collision_check(self.wizard_zone):
+                    return True
+                elif self.globals.MINIGAME_SCENE == 3 and self.player.zone_collision_check(self.house_entry_zone):
+                    return True
 
     def render(self, dt):
         # draw

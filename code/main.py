@@ -30,8 +30,8 @@ class Game:
 
         self.over_world = OverWorld(self.globals ,self.tmx_maps[0], self.data)
         self.ide = IDE(self.globals, self.data)
-        # self.globals.change_game_stage('OVER_WORLD')
-        self.globals.change_game_stage('IDE')
+        self.globals.change_game_stage('OVER_WORLD')
+        # self.globals.change_game_stage('IDE')
 
         # Timing
         self.clock = pygame.time.Clock()
@@ -39,7 +39,7 @@ class Game:
 
     def logic(self, dt, event):
         if self.globals.GAME_STAGE['OVER_WORLD']:
-            self.over_world.logic(dt, event, )
+            self.over_world.logic(dt, event)
         elif self.globals.GAME_STAGE['IDE']:
             self.ide.logic(dt, event)
 

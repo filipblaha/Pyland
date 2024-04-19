@@ -10,12 +10,12 @@ def create_sprite(image_filename, pos):
 
 
 class IDESprites(pygame.sprite.Group):
-    def __init__(self, display_surface, sprite_group):
+    def __init__(self, glob, display_surface, sprite_group):
         # camera setup
         super().__init__()
         self.display_surface = display_surface
         self.sprite_group = sprite_group
-        self.globals = GlobalVariables()
+        self.globals = glob
 
         self.blink_button_active = False
 
@@ -45,22 +45,16 @@ class IDESprites(pygame.sprite.Group):
             self.sprite_group.add(self.forest_sprite)
             self.sprite_group.add(self.code_paper_sprite)
             self.sprite_group.add(self.check_button_sprite)
-            self.sprite_group.add(self.wizard_sprite)
+            self.sprite_group.add(self.knight_sprite)
 
         elif self.globals.MINIGAME_SCENE == 2:
             self.sprite_group.add(self.forest_sprite)
             self.sprite_group.add(self.code_paper_sprite)
             self.sprite_group.add(self.check_button_sprite)
-            self.sprite_group.add(self.wizard_hat_sprite)
+            self.sprite_group.add(self.wizard_sprite)
 
         elif self.globals.MINIGAME_SCENE == 3:
             self.sprite_group.add(self.forest_sprite)
-            self.sprite_group.add(self.code_paper_sprite)
-            self.sprite_group.add(self.check_button_sprite)
-            self.sprite_group.add(self.knight_sprite)
-
-        elif self.globals.MINIGAME_SCENE == 4:
-            self.sprite_group.add(self.house_sprite)
             self.sprite_group.add(self.code_paper_sprite)
             self.sprite_group.add(self.check_button_sprite)
             self.sprite_group.add(self.ghost_sprite)

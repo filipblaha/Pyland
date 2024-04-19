@@ -4,54 +4,55 @@ import ast
 class Parse:
     def __init__(self):
         self.error = None
-        self.error_message = None
+        self.console_message = None
         self.code = None
 
     def check_code(self, assignment):
-        code = '\n'.join(self.code)
         globals_dict = {}
 
         try:
-            ast.parse(code)
-        except SyntaxError as e:
-            return e  # Return SyntaxError object with error information
+            ast.parse(self.code)
+        except SyntaxError as error:
+            self.log_errors(error)  # Return SyntaxError object with error information
+            return
         try:
             # Execute assignment
             exec(assignment['Rule'], globals_dict)
             assignment_result = globals_dict.get(assignment['Keyword'])
 
-            written_code_str = "\n".join(self.code)
-            exec(written_code_str, globals_dict)
+            exec(self.code, globals_dict)
             written_result = globals_dict.get(assignment['Keyword'])
             # Compare results
             if not assignment_result >= written_result or self.code[-1] == ['']:
-                return ['Code is valid', 'Complete the quest']
+                self.log_errors('Code is valid. Complete the task')
+                return
             else:
-                return None
+                self.log_errors('Well done!')
+                return
         except Exception:
-            return ['Code is valid', 'Complete the quest']     # Return SyntaxError object with error information
+            self.log_errors('Code is valid. Complete the task')
 
     def banned_words(self, banned):
         for line in self.code:
             if banned in line:
                 # there is not a banned word in the list
-                self.error_message = ['You are using banned words:', banned]
+                self.console_message = ['You are using banned words:', banned]
 
     def ordered_word(self, ordered):
         for line in self.code:
             if ordered not in line:
                 # there is not an ordered word in the list
-                self.error_message = ['You are not using ordered words:', ordered]
+                self.console_message = ['You are not using ordered words:', ordered]
 
-    def log_errors(self):
+    def log_errors(self, message):
         # The code is valid
-        if self.error is None:
-            return ['Well done!']
+        if message == 'Well done!':
+            self.console_message = message
+        elif message == 'Code is valid. Complete the task':
+            self.console_message = message
         # The code is invalid
-        if self.error == ['Code is valid', 'Complete the quest']:
-            return self.error
         else:
-            self.error_message = ["Error in Line " + str(self.error.lineno), str(self.error.msg)]
+            self.console_message = "Error in Line " + str(message.lineno) + str(message.msg)
 
     def update_code(self, preset_text, user_text):
         if isinstance(preset_text, list):

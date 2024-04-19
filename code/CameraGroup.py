@@ -32,7 +32,7 @@ class CameraGroup(pygame.sprite.Group):
         self.camera_rect.center = (600, 600)
         # self.camera_rect.center = (400, 240)
 
-    def box_target_camera(self, target):
+    def update_box(self, target):
         if target.rect.left < self.camera_rect.left:
             self.camera_rect.left = target.rect.left
         if target.rect.top < self.camera_rect.top:
@@ -46,7 +46,7 @@ class CameraGroup(pygame.sprite.Group):
         self.offset.y = self.camera_rect.top - self.camera_borders['top']
 
     def custom_draw(self, player):
-        self.box_target_camera(player)
+        self.update_box(player)
 
         for sprite in self.sprites():
             offset_pos = sprite.rect.topleft - self.offset + self.internal_offset

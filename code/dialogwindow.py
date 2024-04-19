@@ -62,7 +62,7 @@ class DialogWindow:
 
         self.text = text
         if self.text:
-            self.lines, self.line_heights = self.split_lines(self.text)
+            self.lines, self.line_heights = self.split_lines(self.text, self.max_width)
 
     def display(self):
         """
@@ -113,7 +113,7 @@ class DialogWindow:
                     if word != line[-1]:
                         x_offset += font.size(word)[0] + font.size(" ")[0]
 
-    def split_lines(self, text):
+    def split_lines(self, text, max_width):
         # splitting string into a list of words with its properties
         words = text.split()
 
@@ -148,7 +148,7 @@ class DialogWindow:
                 line_width += space_w
 
             # checking if the line width isn't too long
-            if line_width < self.max_width:
+            if line_width < max_width:
                 # adding word, font and surface
                 current_line.append(word)
                 current_font.append(font)
@@ -185,7 +185,7 @@ class DialogWindow:
                 self.font_size = font_size
 
             if self.text:
-                self.lines, self.line_heights = self.split_lines(self.text)
+                self.lines, self.line_heights = self.split_lines(self.text, self.max_width)
 
             if highlight_words is None:
                 self.highlight_words = []
@@ -203,7 +203,7 @@ class DialogWindow:
             else:
                 self.highlight_color = highlight_color
 
-            self.lines, self.line_heights = self.split_lines(self.text)
+            self.lines, self.line_heights = self.split_lines(self.text, self.max_width)
 
     def update(self, player_pos):
         if self.active and self.camera_group:
