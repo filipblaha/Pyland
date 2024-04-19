@@ -223,7 +223,7 @@ class Text:
             self.display_surface.blit(text_surf, (text_x, text_y))
 
     def blink_cursor(self):
-        if self.blink_cursor_active:
+        if self.blink_cursor_active and not self.user_text == ['']:
             cursor_x = self.pos.x + self.font.size(self.user_text[self.cursor_row][:self.cursor_index])[0]
             cursor_y = self.pos.y + len(
                 self.preset_text) * self.preset_text_height + self.cursor_row * self.user_text_height

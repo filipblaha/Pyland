@@ -92,7 +92,8 @@ class IDE:
                 if self.correct_answer:
                     self.cutscene_frame += 1
                     self.correct_answer = False
-                    self.hud.text = []
+                    self.text.user_text = ['']
+                    self.text.preset_text = []
                     self.task += 1
 
             else:

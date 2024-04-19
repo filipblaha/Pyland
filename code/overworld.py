@@ -133,16 +133,11 @@ class OverWorld:
             self.knight_dialog_window.change_text('Quickly, before he escapes!')
             self.wizard_dialog_window.change_text('STOP RIGHT THERE!')
             self.house_entry_dialog_window.change_text('Locked')
-        elif self.globals.MINIGAME_SCENE == 3:
-            self.fisherman_dialog_window.change_text('All fish are gone.')
-            self.knight_dialog_window.change_text(self.globals.PLAYER_NAME + ' are you really going in there?')
-            self.wizard_dialog_window.change_text('What are you waiting for?')
-            self.house_entry_dialog_window.change_text('Unlocked')
         else:
             self.fisherman_dialog_window.change_text(self.globals.PLAYER_NAME + ' is it over or will it return?.')
             self.knight_dialog_window.change_text('I bow before you ' + self.globals.PLAYER_NAME + '.')
-            self.wizard_dialog_window.change_text('He is gone for now, but he shall return.')
-            self.house_entry_dialog_window.change_text('Unlocked')
+            self.wizard_dialog_window.change_text('He escaped, but he shall return.')
+            self.house_entry_dialog_window.change_text('Locked')
 
     def start_dialog(self, event):
         if event and event.type == pygame.KEYDOWN:
@@ -152,8 +147,6 @@ class OverWorld:
                 elif self.globals.MINIGAME_SCENE == 1 and self.player.zone_collision_check(self.knight_zone):
                     return True
                 elif self.globals.MINIGAME_SCENE == 2 and self.player.zone_collision_check(self.wizard_zone):
-                    return True
-                elif self.globals.MINIGAME_SCENE == 3 and self.player.zone_collision_check(self.house_entry_zone):
                     return True
 
     def render(self, dt):

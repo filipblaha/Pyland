@@ -81,6 +81,7 @@ class Parse:
             self.console_message = "Error in Line " + str(message.lineno) + str(message.msg)
 
     def update_code(self, preset_text, user_text):
-        if isinstance(preset_text, list):
-            preset_text = ''.join(preset_text)
-        self.code = preset_text + ''.join(user_text)
+        # if isinstance(preset_text, list):
+        #     preset_text = ''.join(preset_text)
+        # self.code = preset_text + ''.join(user_text)
+        self.code = ''.join(user_text)
