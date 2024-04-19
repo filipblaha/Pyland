@@ -11,6 +11,7 @@ class GlobalVariables:
         self.FPS = 40
         self.TILE_SIZE = 16
         self.MINIGAME_SCENE = 0
+        self.PLAYER_NAME = 'Maty Makrlik'
 
         # font setup
         self.FONT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'graphics', 'font', 'Cabal-w5j3.ttf')

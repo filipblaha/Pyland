@@ -40,9 +40,6 @@ class OverWorld:
         self.mouse.fill((0, 0, 0))
         self.mouse_mask = pygame.mask.from_surface(self.mouse)
 
-        # name
-        self.player_name = 'Maty Makrlik'
-
     def setup(self, tmx_map):
         # tmx
         for layer in ['Floor', 'Pavement', 'Vegetation', 'Cliffs3', 'Cliffs2', 'Cliffs1', 'FloorDarkShadow',
@@ -127,9 +124,9 @@ class OverWorld:
             self.wizard_dialog_window.change_text('Get lost you nameless entity.')
             self.house_entry_dialog_window.change_text('Locked')
         elif self.globals.MINIGAME_SCENE == 1:
-            self.fisherman_dialog_window.change_text(self.player_name + ' go talk to sir Arnold')
+            self.fisherman_dialog_window.change_text(self.globals.PLAYER_NAME + ' go talk to sir Arnold')
             self.knight_dialog_window.change_text('Quickly, before he escapes!')
-            self.wizard_dialog_window.change_text('Do you even know what are cycles, ' + self.player_name + '?')
+            self.wizard_dialog_window.change_text('Do you even know what are cycles, ' + self.globals.PLAYER_NAME + '?')
             self.house_entry_dialog_window.change_text('Locked')
         elif self.globals.MINIGAME_SCENE == 2:
             self.fisherman_dialog_window.change_text('What are we gonna do?')
@@ -138,12 +135,12 @@ class OverWorld:
             self.house_entry_dialog_window.change_text('Locked')
         elif self.globals.MINIGAME_SCENE == 3:
             self.fisherman_dialog_window.change_text('All fish are gone.')
-            self.knight_dialog_window.change_text(self.player_name + ' are you really going in there?')
+            self.knight_dialog_window.change_text(self.globals.PLAYER_NAME + ' are you really going in there?')
             self.wizard_dialog_window.change_text('What are you waiting for?')
             self.house_entry_dialog_window.change_text('Unlocked')
         else:
-            self.fisherman_dialog_window.change_text(self.player_name + ' is it over or will it return?.')
-            self.knight_dialog_window.change_text('I bow before you ' + self.player_name + '.')
+            self.fisherman_dialog_window.change_text(self.globals.PLAYER_NAME + ' is it over or will it return?.')
+            self.knight_dialog_window.change_text('I bow before you ' + self.globals.PLAYER_NAME + '.')
             self.wizard_dialog_window.change_text('He is gone for now, but he shall return.')
             self.house_entry_dialog_window.change_text('Unlocked')
 

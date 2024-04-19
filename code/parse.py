@@ -2,35 +2,61 @@ import ast
 
 
 class Parse:
-    def __init__(self):
+    def __init__(self, glob):
         self.error = None
         self.console_message = None
         self.code = None
+        self.globals = glob
 
-    def check_code(self, assignment):
-        globals_dict = {}
+    def check_code(self, assignment, name_bool=False):
+        if not name_bool:
+            globals_dict = {}
 
-        try:
-            ast.parse(self.code)
-        except SyntaxError as error:
-            self.log_errors(error)  # Return SyntaxError object with error information
-            return
-        try:
-            # Execute assignment
-            exec(assignment['Rule'], globals_dict)
-            assignment_result = globals_dict.get(assignment['Keyword'])
+            try:
+                ast.parse(self.code)
+            except SyntaxError as error:
+                self.log_errors(error)  # Return SyntaxError object with error information
+                return
+            try:
+                # Execute assignment
+                exec(assignment['Rule'], globals_dict)
+                assignment_result = globals_dict.get(assignment['Keyword'])
 
-            exec(self.code, globals_dict)
-            written_result = globals_dict.get(assignment['Keyword'])
-            # Compare results
-            if not assignment_result >= written_result or self.code[-1] == ['']:
+                exec(self.code, globals_dict)
+                written_result = globals_dict.get(assignment['Keyword'])
+                # Compare results
+                if not assignment_result >= written_result or self.code[-1] == ['']:
+                    self.log_errors('Code is valid. Complete the task')
+                    return
+                else:
+                    self.log_errors('Well done!')
+                    return
+            except Exception:
                 self.log_errors('Code is valid. Complete the task')
+        else:
+            globals_dict = {}
+
+            try:
+                ast.parse(self.code)
+            except SyntaxError as error:
+                self.log_errors(error)  # Return SyntaxError object with error information
                 return
-            else:
-                self.log_errors('Well done!')
+            try:
+                # Execute assignment
+                exec(assignment['Rule'], globals_dict)
+                assignment_result = globals_dict.get(assignment['Keyword'])
+
+                exec(self.code, globals_dict)
+                written_result = globals_dict.get(assignment['Keyword'])
+                if isinstance(written_result, str):
+                    self.globals.PLAYER_NAME = written_result
+                    self.log_errors('Well done!')
+                else:
+                    self.log_errors('Code is valid. Complete the task')
+
                 return
-        except Exception:
-            self.log_errors('Code is valid. Complete the task')
+            except Exception:
+                self.log_errors('Code is valid. Complete the task')
 
     def banned_words(self, banned):
         for line in self.code:

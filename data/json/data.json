@@ -27,7 +27,7 @@
       "This won't be enough, let's try someting stronger.",
       "Hit me 20x with the while cycle!",
       "This is everything I know.",
-	  "The wizard is wiser, go find him!"
+      "The wizard is wiser, go find him!"
     ]
   },
   {
@@ -39,17 +39,17 @@
       "*You aproach an annoyed wizard*",
       "Who do you think you are?",
       "You think that you can defeat the demon?",
-	  "I have tried everything!",
-	  "I bet you can't even use cycles correctly...",
-	  "*Show him the for cycle*",
-	  "That's everything you've got?",
-	  "Do it again without for cycle.",
-	  "Wow, the while cycle can be pretty strong.",
+      "I have tried everything!",
+      "I bet you can't even use cycles correctly...",
+      "*Show him the for cycle*",
+      "That's everything you've got?",
+      "Do it again without for cycle.",
+      "Wow, the while cycle can be pretty strong.",
       "I will teach you if statement, that could harm it.",
       "I am going hit you, try to dodge it.",
       "Last training before I let you in.",
       "Use a cycle and if statement.",
-	  "When I hit you, strike me back!",
+      "Turn my life array to False.",
       "What are you waiting for?",
       "GO and teach him a lesson!!!"
     ]
@@ -87,15 +87,22 @@
         "Rule": "name = 'filip'"
       },
       {
-        "Keyword": "wizard_health",
-        "Rule": "wizard_health = 0",
-        "Ordered word": "for"
+        "Keyword": "knight_health",
+        "Rule": "knight_health = 0",
+        "Ordered word": "for",
+        "Banned word": ""
+      },
+      {
+        "Keyword": "knight_health",
+        "Rule": "knight_health = 0",
+        "Ordered word": "for",
+        "Banned word": ""
       },
       {
         "Keyword": "wizard_health",
         "Rule": "wizard_health = 0",
-        "Ordered word": "while",
-        "Banned word": "for"
+        "Ordered word": "for",
+        "Banned word": ""
       }
     ]
   },
@@ -104,9 +111,9 @@
     "Type": "Preset words",
     "Location": "Town",
     "Opponent": "Wizard",
-    "Data": [
+    "Data": [	
       {
-		"No Hint": [
+        "No Hint": [
           ""
         ],
         "Hint": [
@@ -115,46 +122,72 @@
       },
       {
         "No Hint": [
-          "wizard_health = 10"
+          "knight_health = 10",
+          "my_damage = 1"
         ],
         "Hint": [
-          "# will he die with no health?",
-          "",
-          "wizard_health = 10"
+          "# for cycle syntax",
+          "# for i in range(n):",
+          "knight_health = 10",
+          "my_damage = 1"
         ]
       },
       {
         "No Hint": [
-          "wizard_health = 10",
-          "my_damage = 1"
         ],
         "Hint": [
-          [
-            "# for i in range(n):e",
-            "",
-            "wizard_health = 10",
-            "my_damage = 1"
-          ]
+          "# while cycle syntax",
+		  "# while statement_a > statement_b:",
+          "knight_health = 20",
+          "my_damage = 1"
         ]
       },
       {
         "No Hint": [
-          "wizard_health = 10",
+          "wizard_health = 40",
           "my_damage = 1"
         ],
         "Hint": [
+          "# for cycle syntax",
+          "# for i in range(n):",
+          "wizard_health = 40",
+          "my_damage = 1"
+        ]
+      },
+      {
+        "No Hint": [
+          "wizard_health = 40",
+          "my_damage = 1"
+        ],
+        "Hint": [
+          "# while cycle syntax",
           "# while statement_a > statement_b:",
-          "",
-          "wizard_health = 10",
+          "wizard_health = 40",
           "my_damage = 1"
         ]
       },
       {
         "No Hint": [
-          "DEMO = False', 'GitHub = github.com/filipblaha",
+          "your_health = 100",
+          "wizard_damage = 10"
+        ],
+        "Hint": [
+          "# if statement syntax",
+          "# if statement_a == statement_b:",
+          "your_health = 100",
+          "wizard_damage = 10"
+        ]
+      },
+      {
+        "No Hint": [
+          "wizard = [True, True, True ,True]"
+        ],
+        "Hint": [
+          "# if statement syntax",
+          "# if statement_a == statement_b:",
           "",
-          "",
-          "Thank you for playing"
+          "# for cycle syntax",
+          "# for i in range(n):"
         ]
       }
     ]

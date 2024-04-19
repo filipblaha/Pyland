@@ -33,15 +33,16 @@ class IDE:
         pygame.mouse.set_visible(False)
 
         self.dialog_window = DialogWindow('', 50, (1350, 130), 1000, 200)
-        self.parse = Parse()
+        self.parse = Parse(glob)
         self.hud = HUD(self.dialog_window)
         self.dialog_window.active = True
 
         self.data_assignment = None
         self.data_preset_words = None
         self.data_text = []
+        self.task = 0
         self.setup()
-        self.tasks = [[0, 1, 2, 3], [4, 9, 15, 13], [[-1], [-1], [-1], [-1]]]
+        self.tasks = [[0, 1, 2, 3], [4, 9, 15, 13], [[1], [4, 7], [5, 7, 9, 13], [-1]]]
 
     def setup(self):
         for num, item in enumerate(self.data.data):
@@ -54,14 +55,16 @@ class IDE:
 
     def logic(self, dt, event):
         # timing
+
+        # self.globals.MINIGAME_SCENE = 1
         self.current_time = pygame.time.get_ticks()
         if self.current_time % 1000 < 500:
             self.text.blink_cursor_active = True
 
         if self.hint_active:
-            self.text.preset_text = self.data_preset_words[self.globals.MINIGAME_SCENE]['Hint']
+            self.text.preset_text = self.data_preset_words[self.task]['Hint']
         else:
-            self.text.preset_text = self.data_preset_words[self.globals.MINIGAME_SCENE]['No Hint']
+            self.text.preset_text = self.data_preset_words[self.task]['No Hint']
 
         self.user_input(event)
         self.parse.update_code(self.text.preset_text, self.text.user_text)
@@ -72,27 +75,32 @@ class IDE:
 
         self.sprites.set_scene()
 
-    def progress(self, task_num, max_frames, stop_frames):
+    def progress(self, minigame_num, max_frames, stop_frames):
         if self.you_win:
             self.you_win = False
             self.globals.change_game_stage('OVER_WORLD')
 
-        if self.globals.MINIGAME_SCENE == task_num:
+        if self.globals.MINIGAME_SCENE == minigame_num:
             if self.cutscene_frame <= max_frames:
                 for frame in stop_frames:
                     if self.cutscene_frame == frame:
                         self.cutscene_on = False
+                        break
                     else:
                         self.cutscene_on = True
-                        break
 
                 if self.correct_answer:
                     self.cutscene_frame += 1
                     self.correct_answer = False
+                    self.hud.text = []
+                    self.task += 1
+
             else:
                 self.you_win = True
                 self.cutscene_frame = 0
                 self.globals.MINIGAME_SCENE += 1
+                self.text.user_text = ['']
+                self.hud.text = []
 
     def dialog_window_select_text(self, task_num, max_frames):
         if self.globals.MINIGAME_SCENE == task_num and self.cutscene_frame <= max_frames:
@@ -121,23 +129,28 @@ class IDE:
                 # skipping cutscene
                 if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                     self.cutscene_frame += 1
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                # clicking on hint
-                if self.hud.hint_rect.collidepoint(pygame.mouse.get_pos()):
-                    self.hint_active = True
-                    self.hud.hint_color = 'red'
+            else:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    # clicking on hint
+                    if self.hud.hint_rect.collidepoint(pygame.mouse.get_pos()):
+                        self.hint_active = True
+                        self.hud.hint_color = 'red'
 
-                # clicking on button
-                if self.sprites.check_button_sprite.rect.collidepoint(pygame.mouse.get_pos()):
-                    self.sprites.blink_button_active = True
-                    self.parse.check_code(self.data_assignment[self.globals.MINIGAME_SCENE])
+                    # clicking on button
+                    if self.sprites.check_button_sprite.rect.collidepoint(pygame.mouse.get_pos()):
+                        self.sprites.blink_button_active = True
 
-                    msg = self.parse.console_message
-                    self.correct_answer = self.check_if_correct(msg)
-                    self.hud.format_message(msg)
-                # clicking on text
-                else:
-                    self.mouse_cursor()
+                        if self.globals.MINIGAME_SCENE == 0:
+                            self.parse.check_code(self.data_assignment[self.globals.MINIGAME_SCENE], True)
+                        else:
+                            self.parse.check_code(self.data_assignment[self.globals.MINIGAME_SCENE])
+
+                        msg = self.parse.console_message
+                        self.correct_answer = self.check_if_correct(msg)
+                        self.hud.format_message(msg)
+                    # clicking on text
+                    else:
+                        self.mouse_cursor()
 
     def check_if_correct(self, message):
         if message is not None:
