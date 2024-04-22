@@ -117,7 +117,7 @@
           ""
         ],
         "Hint": [
-          "# name = your_name"
+          "# name = 'your_name'"
         ]
       },
       {
