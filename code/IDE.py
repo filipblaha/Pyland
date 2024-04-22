@@ -56,7 +56,7 @@ class IDE:
     def logic(self, dt, event):
         # timing
 
-        # self.globals.MINIGAME_SCENE = 1
+        self.globals.MINIGAME_SCENE = 1
         self.current_time = pygame.time.get_ticks()
         if self.current_time % 1000 < 500:
             self.text.blink_cursor_active = True
@@ -78,6 +78,8 @@ class IDE:
     def progress(self, minigame_num, max_frames, stop_frames):
         if self.you_win:
             self.you_win = False
+            self.hint_active = False
+            self.task += 1
             self.globals.change_game_stage('OVER_WORLD')
 
         if self.globals.MINIGAME_SCENE == minigame_num:
@@ -92,9 +94,6 @@ class IDE:
                 if self.correct_answer:
                     self.cutscene_frame += 1
                     self.correct_answer = False
-                    self.text.user_text = ['']
-                    self.text.preset_text = []
-                    self.task += 1
 
             else:
                 self.you_win = True
@@ -108,15 +107,15 @@ class IDE:
             self.dialog_window.change_text(self.data_text[self.globals.MINIGAME_SCENE][self.cutscene_frame], 50)
 
     def user_input(self, event):
-        # text editor
-        if not self.cutscene_on:
-            self.text.buttons_pressed(event)
-
         if event:
             # escaping IDE
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.globals.change_game_stage('OVER_WORLD')
+
+            # typing
+            elif not self.cutscene_on:
+                self.text.buttons_pressed(event)
 
             # hint color
             if not self.hint_active:

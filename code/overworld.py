@@ -124,7 +124,7 @@ class OverWorld:
             self.wizard_dialog_window.change_text('Get lost you nameless entity.')
             self.house_entry_dialog_window.change_text('Locked')
         elif self.globals.MINIGAME_SCENE == 1:
-            self.fisherman_dialog_window.change_text(self.globals.PLAYER_NAME + ' go talk to sir Arnold')
+            self.fisherman_dialog_window.change_text(self.globals.PLAYER_NAME + ' go talk to sir Arnold.')
             self.knight_dialog_window.change_text('Quickly, before he escapes!')
             self.wizard_dialog_window.change_text('Do you even know what are cycles, ' + self.globals.PLAYER_NAME + '?')
             self.house_entry_dialog_window.change_text('Locked')

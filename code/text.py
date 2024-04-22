@@ -121,44 +121,43 @@ class Text:
         self.key_repeat_interval = pygame.time.get_ticks() + self.repeat_delay
 
     def buttons_pressed(self, event):
-        if event:
-            if event.type == pygame.KEYDOWN:
-                self.event = event
-                self.event_key = event.key
-            if event.type == pygame.KEYUP:
-                self.event = None
-                self.event_key = None
-                self.key_repeat_interval = 0
+        if event.type == pygame.KEYDOWN:
+            self.event = event
+            self.event_key = event.key
+        if event.type == pygame.KEYUP:
+            self.event = None
+            self.event_key = None
+            self.key_repeat_interval = 0
 
-            if self.event_key == pygame.K_LEFT:
-                self.left_key()
+        if self.event_key == pygame.K_LEFT:
+            self.left_key()
 
-            elif self.event_key == pygame.K_RIGHT:
-                self.right_key()
+        elif self.event_key == pygame.K_RIGHT:
+            self.right_key()
 
-            elif self.event_key == pygame.K_UP:
-                self.up_key()
+        elif self.event_key == pygame.K_UP:
+            self.up_key()
 
-            elif self.event_key == pygame.K_DOWN:
-                self.down_key()
+        elif self.event_key == pygame.K_DOWN:
+            self.down_key()
 
-            elif self.event_key == pygame.K_KP_ENTER or self.event_key == pygame.K_RETURN:
-                self.enter()
+        elif self.event_key == pygame.K_KP_ENTER or self.event_key == pygame.K_RETURN:
+            self.enter()
 
-            elif self.event_key == pygame.K_BACKSPACE:
-                self.backspace()
+        elif self.event_key == pygame.K_BACKSPACE:
+            self.backspace()
 
-            elif self.event_key == pygame.K_DELETE:
-                self.delete()
+        elif self.event_key == pygame.K_DELETE:
+            self.delete()
 
-            elif self.event_key == pygame.K_SPACE:
-                self.space()
+        elif self.event_key == pygame.K_SPACE:
+            self.space()
 
-            elif self.event_key == pygame.K_TAB:
-                self.tab()
+        elif self.event_key == pygame.K_TAB:
+            self.tab()
 
-            elif self.event_key:
-                self.other_keys()
+        elif self.event_key:
+            self.other_keys()
 
         if self.event_key:
             self.repeat(event)
